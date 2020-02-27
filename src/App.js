@@ -1,12 +1,12 @@
 import React from 'react';
 import './App.css';
 import Clarifai from 'clarifai'
+import WelcomeContainer from './js/welcome/welcomeContainer'
 
 function App() {
-  test()
   return (
     <div>
-      <p>Hello world!</p>
+      <WelcomeContainer/>
     </div>
   );
 }
