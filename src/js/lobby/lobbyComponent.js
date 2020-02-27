@@ -15,16 +15,16 @@ const playersToRows = players => {
     // In case there's one left
     if (i < players.length) pairs.push([players[i]])
     // Pair to row
-    return pairs.map(pair => 
+    return pairs.map((pair, i) => 
     // Player in pair to td
-    <tr>
-        {pair.map(player => <td>{player}</td>)}
+    <tr key = {i}>
+        {pair.map((player, i) => <td key={i}>{player}</td>)}
     </tr>
     )
 }
 
 const LobbyComponent = ({
-    players = []
+    players = ["Alice", "Bob", "Carla", "Duncan", "Erika", "Fandango"]
 }) =>
 (<div>
     <p>Game mode/title</p>

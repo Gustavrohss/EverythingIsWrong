@@ -3,6 +3,7 @@ import './App.css';
 import Clarifai from 'clarifai'
 import WelcomeContainer from './js/welcome/welcomeContainer'
 import AboutContainer from './js/about/aboutContainer'
+import LobbyContainer from './js/lobby/lobbyContainer'
 import {
   Switch,
   Route,
@@ -15,12 +16,16 @@ function App() {
 
   const aboutNav = ["About", () => history.push("/about")]
   const homeNav = ["Home", () => history.push("/")]
+  const lobbyNav = ["Lobby", () => history.push("/lobby")]
 
   return (
     <div>
       <Switch>
         <Route path="/about">
           <AboutContainer home={homeNav}/>
+        </Route>
+        <Route path="/lobby">
+          <LobbyContainer/>
         </Route>
         <Route path="/">
           <WelcomeContainer about={aboutNav}/>
