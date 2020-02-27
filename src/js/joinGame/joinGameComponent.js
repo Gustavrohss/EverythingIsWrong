@@ -1,6 +1,6 @@
 import React from 'react'
 
-// Join Game Component.
+// Join Game component.
 // Shown when a player wants to join a game.
 
 /*
