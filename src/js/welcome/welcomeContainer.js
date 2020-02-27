@@ -1,4 +1,4 @@
-import {WelcomeComponent} from './welcomeComponent'
+import WelcomeComponent from './welcomeComponent'
 import {connect} from 'react-redux'
 
 const mapStateToProps = (state, ownProps) => ({

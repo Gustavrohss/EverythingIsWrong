@@ -1,8 +1,8 @@
 import React from 'react'
 
 const WelcomeComponent = ({}) =>
-<p>
+(<p>
     This is the welcome screen! Welcome!
-</p>
+</p>)
 
 export default WelcomeComponent
