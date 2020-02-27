@@ -2,11 +2,30 @@ import React from 'react';
 import './App.css';
 import Clarifai from 'clarifai'
 import WelcomeContainer from './js/welcome/welcomeContainer'
+import AboutContainer from './js/about/aboutContainer'
+import {
+  Switch,
+  Route,
+  useHistory
+} from "react-router-dom";
+
 
 function App() {
+  let history = useHistory()
+
+  const aboutNav = ["About", () => history.push("/about")]
+  const homeNav = ["Home", () => history.push("/")]
+
   return (
     <div>
-      <WelcomeContainer/>
+      <Switch>
+        <Route path="/about">
+          <AboutContainer home={homeNav}/>
+        </Route>
+        <Route path="/">
+          <WelcomeContainer about={aboutNav}/>
+        </Route>
+      </Switch>
     </div>
   );
 }
