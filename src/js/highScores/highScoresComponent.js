@@ -9,7 +9,7 @@ const HighScoreComponent = ({
     </div>
     <ol>
         {scores.sort(
-            ([_, score1], [_, score2]) => score2 - score1
+            ([p1, score1], [p2, score2]) => score2 - score1
         ).map(([player, score]) =>
         <p>{player}:\t <b>{score}</b></p>
         )}

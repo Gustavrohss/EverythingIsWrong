@@ -1,6 +1,9 @@
 import React from 'react'
 
-const GameRoundComponent = ({}) =>
+const GameRoundComponent = ({
+    lobby: [lobbyLabel, lobbyCallback],
+    results: [resultsLabel, resultsCallback]
+}) =>
 (<div>
     <p>Here's a prompt!</p>
     <div>
@@ -14,6 +17,8 @@ const GameRoundComponent = ({}) =>
         <p>High Score and Results component might give some inspiration on how to do that.</p>
         <p>We might wanna know more about what shape the data takes before "plugging it in" here</p>
     </div>
+    <button onClick={lobbyCallback}>{lobbyLabel}</button>
+    <button onClick={resultsCallback}>{resultsLabel}</button>
 </div>)
 
 export default GameRoundComponent
