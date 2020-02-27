@@ -1,10 +1,10 @@
 import React from 'react'
 
 const WelcomeComponent = ({
-    join: [joinLabel, joinCallback], 
-    host: [hostLabel, hostCallback],
-    highScores: [highScoresLabel, highScoresCallback],
-    about: [aboutLabel, aboutCallback]
+    join: [joinLabel, joinCallback] = ["Join", () => {}], 
+    host: [hostLabel, hostCallback] = ["Host", () => {}],
+    highScores: [highScoresLabel, highScoresCallback] = ["High Scores", () => {}],
+    about: [aboutLabel, aboutCallback] = ["About", () => {}]
 }) =>
 (<div>
     <p>Welcome to Everything is Wrong!</p>
