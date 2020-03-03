@@ -1,3 +1,8 @@
+import firebase from 'firebase/app'
+import 'firebase/firebase-firestore'
+import 'firebase/firebase-functions'
+import 'firebase/firebase-database'
+
 const firebaseConfig = {
     apiKey: "AIzaSyBwiuE2VZI9bM21dbpJ9MgJbs0A-5IJtaE",
     authDomain: "micro-harbor-239311.firebaseapp.com",
@@ -11,9 +16,6 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig)
 
-// Used in js as well, might be moved there entirely!
-// Possibly integrated into redux?
-
-export const FIRESTORE = firebase.firestore()
-export const FUNCTIONS = firebase.functions()
-export const DATABASE = firebase.database()
+export const fbStore = firebase.firestore()
+export const fbFunctions = firebase.functions()
+export const fbDatabase = firebase.database()
