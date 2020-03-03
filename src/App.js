@@ -17,6 +17,7 @@ import {
 
 
 function App() {
+  imgur_test()
   let history = useHistory()
 
   const aboutNav = ["About", () => history.push("/about")]
@@ -112,3 +113,41 @@ function test() {
       })
 }
 */
+
+function imgur_test(){
+  var imgur_client_id = "Client ID 5ca180817daefb2" //api id here.
+//const imgur_client_key = "2d28cb41585547e755a4927c39461ecc3d2c4f45"
+
+
+  /*------ Test code to see that imgur get image api works. */
+  var myHeaders = new Headers();
+  myHeaders.append("Authorization", imgur_client_id);
+
+  var formdata = new FormData();
+
+  var requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+    //body: formdata,
+    redirect: 'follow'
+  };
+
+
+  const call_api = (uri) =>{
+    debugger;
+      var url = "https://api.imgur.com/3/" + uri; 
+      fetch(url, requestOptions)
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch(error => console.log('error', error));
+  }
+
+  const subreddit_gallery = (subreddit_name="FoodPorn") => {
+      var uri = "gallery/r/"+subreddit_name+"/top/all"; 
+      //"https://api.imgur.com/3/gallery/r/FoodPorn/top/all/3"
+      call_api(uri)
+  }
+
+  subreddit_gallery();
+  //subreddit_gallery("aww");
+}
