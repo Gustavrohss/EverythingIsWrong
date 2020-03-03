@@ -9,13 +9,17 @@ import React from 'react'
     Populate Settings - requires game design
 */
 
-const HostGameComponent = ({}) =>
+const HostGameComponent = ({
+    home: [homeLabel, homeCallback],
+    lobby: [lobbyLabel, lobbyCallback]
+}) =>
 (<div>
     <div>
         <p>Settings will go here</p>
     </div>
-    <input>Name</input>
-    <button>Host game</button>
+    Name: <input></input>
+    <button onClick = {homeCallback}>{homeLabel}</button>
+    <button onClick = {lobbyCallback}>{lobbyLabel}</button>
 </div>)
 
 export default HostGameComponent

@@ -1,30 +1,30 @@
 import React from 'react'
 
 const WelcomeComponent = ({
-    join: [joinLabel, joinCallback] = ["Join", () => {}],
-    host: [hostLabel, hostCallback] = ["Host", () => {}],
-    highScores: [highScoresLabel, highScoresCallback] = ["High Scores", () => {}],
-    about: [aboutLabel, aboutCallback]
+    host: [hostLabel, hostCallback],
+    join: [joinLabel, joinCallback],
+    about: [aboutLabel, aboutCallback],
+    highScores: [highScoresLabel, highScoresCallback]
 }) =>
 (<div>
     <p>Welcome to Everything is Wrong!</p>
     <table>
         <tbody>
             <tr>
-                <td><button onClick = {joinCallback}>
-                    {joinLabel}
-                </button></td>
-                <td><button onClick = {hostCallback}>
-                    {hostLabel}
-                </button></td>
+                <td>
+                    <button onClick = {joinCallback}>{joinLabel}</button>
+                </td>
+                <td>
+                    <button onClick = {hostCallback}>{hostLabel}</button>
+                </td>
             </tr>
             <tr>
-                <td><button onClick = {highScoresCallback}>
-                    {highScoresLabel}
-                </button></td>
-                <td><button onClick = {aboutCallback}>
-                    {aboutLabel}
-                </button></td>
+                <td>
+                    <button onClick = {highScoresCallback}>{highScoresLabel}</button>
+                </td>
+                <td>
+                    <button onClick = {aboutCallback}>{aboutLabel}</button>
+                </td>
             </tr>
         </tbody>
     </table>

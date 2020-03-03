@@ -24,9 +24,15 @@ const playersToRows = players => {
 }
 
 const LobbyComponent = ({
-    players = ["Alice", "Bob", "Carla", "Duncan", "Erika", "Fandango"]
+    players = ["Alice", "Bob", "Carla", "Duncan", "Erika", "Fandango"],
+    host: [hostLabel, hostCallback],
+    join: [joinLabel, joinCallback],
+    game: [gameLabel, gameCallbac]
 }) =>
 (<div>
+    <button onClick = {hostCallback}>{hostLabel}</button>
+    <button onClick = {joinCallback}>{joinLabel}</button>
+    <button onClick = {gameCallbac}>{gameLabel}</button>
     <p>Game mode/title</p>
     <b>Host</b>
     <table><tbody>

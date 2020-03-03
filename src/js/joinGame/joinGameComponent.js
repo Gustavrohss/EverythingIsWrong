@@ -9,11 +9,17 @@ import React from 'react'
     Styling
 */
 
-const JoinGameComponent = ({}) =>
+const JoinGameComponent = ({
+    home: [homeLabel, homeCallback],
+    lobby: [lobbyLabel, lobbyCallback]
+}) =>
 (<div>
-    <input>Link</input>
-    <input>Name</input>
-    <button>Join</button>
+    <div>
+        Name: <input></input>
+        Link: <input></input>
+    </div>
+    <button onClick = {homeCallback}>{homeLabel}</button>
+    <button onClick = {lobbyCallback}>{lobbyLabel}</button>
 </div>)
 
 export default JoinGameComponent

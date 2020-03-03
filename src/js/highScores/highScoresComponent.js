@@ -1,18 +1,22 @@
 import React from 'react'
 
 const HighScoreComponent = ({
-    scores = [[]] // scores = [[player, score], [player, score], [player, score]...]
+    home: [homeLabel, homeCallback],
+    scores = [
+        ["Alice", 10], ["Bob", 5], 
+        ["Carla", 20], ["Duncan", 12], 
+        ["Erika", 7], ["Fandango", 3000]]
 }) => 
 (<div>
+    <button onClick = {homeCallback}>{homeLabel}</button>
     <div>
         <p>If we have game modes, this nested component might contain some filtering options!</p>
     </div>
     <ol>
-        {scores.sort(
-            ([p1, score1], [p2, score2]) => score2 - score1
-        ).map(([player, score]) =>
-        <p>{player}:\t <b>{score}</b></p>
-        )}
+        {scores
+            .sort(([p1, score1], [p2, score2]) => score2 - score1)
+            .map(([player, score], index) => <p key = {index}>{player}: <b>{score}</b></p>)
+        }
     </ol>
 </div>)
 
