@@ -1,7 +1,9 @@
-import userReducer from './userReducer'
+import gameSessionReducer from './gameSessionReducer'
+import loaderReducer from './loaderReducer'
 
 const rootReducer = (state = {}, action) => ({
-  user: userReducer(state.user, action)
+  gameSession: gameSessionReducer(state.gameSession, action),
+  loader: loaderReducer(state.loader, action)
 })
 
 export default rootReducer
