@@ -80,6 +80,7 @@ function App() {
 
 export default App;
 
+/*
 function test() {  
   const clar = new Clarifai.App({
     apiKey: "abc" // Your key here
@@ -110,3 +111,4 @@ function test() {
         })
       })
 }
+*/
