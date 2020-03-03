@@ -80,7 +80,7 @@ function App() {
 
 export default App;
 
-function test() {
+function test() {  
   const clar = new Clarifai.App({
     apiKey: "abc" // Your key here
   })
