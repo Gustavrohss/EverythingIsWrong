@@ -18,31 +18,7 @@
     <!-- Add Firebase products that you want to use -->
     <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-firestore.js"></script>
-
-    <script>
-      // Your web app's Firebase configuration
-      const firebaseConfig = {
-        apiKey: "AIzaSyBwiuE2VZI9bM21dbpJ9MgJbs0A-5IJtaE",
-        authDomain: "micro-harbor-239311.firebaseapp.com",
-        databaseURL: "https://micro-harbor-239311.firebaseio.com",
-        projectId: "micro-harbor-239311",
-        storageBucket: "micro-harbor-239311.appspot.com",
-        messagingSenderId: "521646409448",
-        appId: "1:521646409448:web:633791726ff0795c56eb5d"
-      }
-
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig)
-
-      // Used in js as well, might be moved there entirely!
-      // Possibly integrated into redux?
-      const DATABASE = firebase.firestore()
-      // DATABASE.collection("highscores").get().then(querySnapshot => {
-      //   querySnapshot.forEach(playerDoc => {
-      //     const player = playerDoc.data()
-      //     console.log(`Player ${player.name} has score ${player.score}`)
-      //   })
-      // })
-    </script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.2/firebase-functions.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.2/firebase-database.js"></script>
   </body>
 </html>
