@@ -13,6 +13,8 @@ import {
   Route,
   useHistory
 } from "react-router-dom"
+import './js/backend'
+import { createLobby, joinLobby } from './js/backend';
 
 import './js/backend';
 import { destroyLobby } from './js/backend';
@@ -30,6 +32,9 @@ function App() {
   const hsNav = ["High Scores", () => history.push("/high_scores")]
 
   const backendDestroyLobby = destroyLobby;
+  const backendCreateLobby = createLobby;
+
+  const backendJoinLobby = joinLobby;
 
   return (
     <div>
@@ -41,12 +46,16 @@ function App() {
         </Route>
         <Route path="/host">
           <HostGameContainer
-            home={homeNav} lobby={lobbyNav} destroyLobby={backendDestroyLobby}
+            home={homeNav} lobby={lobbyNav}
+            createLobby={backendCreateLobby}
+            destroyLobby={backendDestroyLobby}
+
           />
         </Route>
         <Route path = "/join">
           <JoinGameContainer
             home={homeNav} lobby={lobbyNav}
+            joinLobby = {backendJoinLobby}
           />
         </Route>
         <Route path="/lobby">
