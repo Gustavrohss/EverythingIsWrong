@@ -14,7 +14,8 @@ export function createLobby(hostName) {
 
 //Join an existing lobby
 export function joinLobby(lobbyCode, user) {
-    fbDatabase.ref("/lobbies/" + lobbyCode).once("value", snapshot =>
+    const ref = fbDatabase.ref("/lobbies/" + lobbyCode)
+    ref.once("value", snapshot =>
     {
         if(snapshot.exists())//Check if lobby exists
         {
@@ -28,6 +29,9 @@ export function joinLobby(lobbyCode, user) {
             //console.log("Lobby " + lobbyCode + " does not exist!");
             return false; //Failure!
         }
+    })
+    ref.on("value", snapshot => {
+        console.log(snapshot)
     })
 }
 
