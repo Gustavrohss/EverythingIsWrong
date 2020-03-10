@@ -14,7 +14,6 @@ import {
   useHistory
 } from "react-router-dom"
 import './js/backend'
-import { createLobby } from './js/backend';
 
 function App() {
   const history = useHistory()
@@ -28,8 +27,6 @@ function App() {
   const resultsNav = ["Results", () => history.push("/results")]
   const hsNav = ["High Scores", () => history.push("/high_scores")]
 
-  const backendCreateLobby = createLobby
-
   return (
     <div>
       <Switch>
@@ -41,7 +38,6 @@ function App() {
         <Route path="/host">
           <HostGameContainer
             home={homeNav} lobby={lobbyNav}
-            createLobby={backendCreateLobby}
           />
         </Route>
         <Route path = "/join">

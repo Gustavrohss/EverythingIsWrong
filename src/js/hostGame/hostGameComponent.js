@@ -13,15 +13,19 @@ const HostGameComponent = ({
     home: [homeLabel, homeCallback],
     lobby: [lobbyLabel, lobbyCallback],
     createLobby
-}) =>
-(<div>
-    <div>
-        <p>Settings will go here</p>
-    </div>
-    Name: <input></input>
-    <button onClick = {() => createLobby()}> Create Lobby</button>
-    <button onClick = {homeCallback}>{homeLabel}</button>
-    <button onClick = {lobbyCallback}>{lobbyLabel}</button>
-</div>)
+}) => {
+
+    const [text,setText] = React.useState("")
+
+    return (<div>
+        <div>
+            <p>Settings will go here</p>
+        </div>
+        Name: <input onChange = {e => setText(e.target.value)} value={text}></input>
+        <button onClick = {() => createLobby(text)}> Create Lobby</button>
+        <button onClick = {homeCallback}>{homeLabel}</button>
+        <button onClick = {lobbyCallback}>{lobbyLabel}</button>
+    </div>)
+}
 
 export default HostGameComponent

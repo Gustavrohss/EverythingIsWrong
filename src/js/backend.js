@@ -3,10 +3,12 @@ import {fbDatabase} from "./firebaseConfig"
 /* Here we have functions to read and write from the database*/
 
 //Create a lobby in the database
-export function createLobby() {
-    const name = "AAAA"
+export function createLobby(hostName) {
+    const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    let name = ""
+    for (let i = 0; i < 4; i++) { name += CHARS.charAt(Math.floor(Math.random() * CHARS.length)) }
     fbDatabase.ref("/lobbies/" + name).set({
-        host: "Fatbear"
+        host: hostName
     });
 }
 
