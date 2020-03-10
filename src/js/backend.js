@@ -3,28 +3,39 @@ import {fbDatabase} from "./firebaseConfig"
 /* Here we have functions to read and write from the database*/
 
 //Create a lobby in the database
-export function createLobby(hostName) {
+export function createLobby(hostName, settings) {
     const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-    let name = ""
-    for (let i = 0; i < 4; i++) { name += CHARS.charAt(Math.floor(Math.random() * CHARS.length)) }
-    fbDatabase.ref("/lobbies/" + name).set({
-        host: hostName
-    });
+    let lobbyID = ""
+    for (let i = 0; i < 4; i++) { lobbyID += CHARS.charAt(Math.floor(Math.random() * CHARS.length)) }
+    const lobby = {
+        lobbyID: lobbyID,
+        settings: settings,
+        gameInfo: {
+            round: 0
+        },
+        players: {
+            host: {
+                name: hostName,
+                score: 0
+            }
+        }
+    }
+    return fbDatabase.ref("/lobbies/" + lobbyID).set(lobby).then(() => lobby);
 }
 
 //Join an existing lobby
 export function joinLobby(lobbyCode, user) {
     const ref = fbDatabase.ref("/lobbies/" + lobbyCode)
-    
+
     ref.once("value").then(snapshot =>
     {
         if(snapshot.exists())//Check if lobby exists
         {
-            fbDatabase.ref("/lobbies/" + lobbyCode + "/players").push({ //push new player 
+            fbDatabase.ref("/lobbies/" + lobbyCode + "/players").push({ //push new player
                 name: user,
                 score: 0
             });
-            
+
             return true; //Success!
         }
         else{
@@ -44,7 +55,7 @@ export function setListener(lobbyCode, gameInfoCallback, playerCallback){
     fbDatabase.ref("/lobbies/" + lobbyCode + "/gameInfo/").on("value", snapshot => {
         gameInfoCallback(snapshot.val())
     })
-    
+
     /*
     ref.on("value", snapshot => {
         callback(pareMetaContent(snapshot));
