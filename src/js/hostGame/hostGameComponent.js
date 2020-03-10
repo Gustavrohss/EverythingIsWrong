@@ -12,6 +12,7 @@ import React from 'react'
 const HostGameComponent = ({
     home: [homeLabel, homeCallback],
     lobby: [lobbyLabel, lobbyCallback],
+    destroyLobby,
     createLobby
 }) => {
 
@@ -22,6 +23,7 @@ const HostGameComponent = ({
             <p>Settings will go here</p>
         </div>
         Name: <input onChange = {e => setText(e.target.value)} value={text}></input>
+        <button onClick = {() => destroyLobby(text)}>destroyLobby</button>
         <button onClick = {() => createLobby(text)}> Create Lobby</button>
         <button onClick = {homeCallback}>{homeLabel}</button>
         <button onClick = {lobbyCallback}>{lobbyLabel}</button>
