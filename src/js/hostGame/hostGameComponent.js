@@ -11,13 +11,15 @@ import React from 'react'
 
 const HostGameComponent = ({
     home: [homeLabel, homeCallback],
-    lobby: [lobbyLabel, lobbyCallback]
+    lobby: [lobbyLabel, lobbyCallback],
+    createLobby
 }) =>
 (<div>
     <div>
         <p>Settings will go here</p>
     </div>
     Name: <input></input>
+    <button onClick = {() => createLobby()}> Create Lobby</button>
     <button onClick = {homeCallback}>{homeLabel}</button>
     <button onClick = {lobbyCallback}>{lobbyLabel}</button>
 </div>)

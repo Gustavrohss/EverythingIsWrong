@@ -1,14 +1,13 @@
-import fbDatabase from "firebaseConfig.js"
+import {fbDatabase} from "./firebaseConfig"
 
 /* Here we have functions to read and write from the database*/
 
 //Create a lobby in the database
-export function createLobby(lobbyName, user){
-    var lobbyData = {
-        name: lobbyName
-        //owner: user
-    };
-    fbDatabase.ref().set(lobbyData);
+export function createLobby() {
+    const name = "AAAA"
+    fbDatabase.ref("/lobbies/" + name).set({
+        host: "Fatbear"
+    });
 }
 
 //Create a name in a lobby
