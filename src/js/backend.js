@@ -15,7 +15,8 @@ export function createLobby(hostName) {
 //Join an existing lobby
 export function joinLobby(lobbyCode, user) {
     const ref = fbDatabase.ref("/lobbies/" + lobbyCode)
-    ref.once("value", snapshot =>
+    
+    ref.once("value").then(snapshot =>
     {
         if(snapshot.exists())//Check if lobby exists
         {
@@ -23,6 +24,7 @@ export function joinLobby(lobbyCode, user) {
                 name: user,
                 score: 0
             });
+            
             return true; //Success!
         }
         else{
@@ -30,9 +32,35 @@ export function joinLobby(lobbyCode, user) {
             return false; //Failure!
         }
     })
-    ref.on("value", snapshot => {
-        console.log(snapshot)
+
+    fbDatabase.ref("/lobbies/" + lobbyCode +"/players/").on("child_changed", (childSnapshot, prevChildKey) => {
+        console.log(childSnapshot.key);
+        console.log("No comes the prevChildKey!");
+        console.log(prevChildKey);
     })
+}
+
+export function setListener(lobbyCode, gameInfoCallback, playerCallback){
+    fbDatabase.ref("/lobbies/" + lobbyCode + "/gameInfo/").on("value", snapshot => {
+        gameInfoCallback(snapshot.val())
+    })
+    
+    /*
+    ref.on("value", snapshot => {
+        callback(pareMetaContent(snapshot));
+        console.log(snapshot.val()) // store.dispatch(setMLobbyMetaContent(parseMetaContent(snapshot)))
+    })
+    */
+   fbDatabase.ref("/lobbies/" + lobbyCode +"/players/").on("child_changed", (childSnapshot, prevChildKey) => {
+    playerCallback(childSnapshot.val(), childSnapshot.key) // childSnapshot.val() <--- {name: "childName", score: (int)}
+    //console.log(childSnapshot.val());
+    //console.log("No comes the prevChildKey!");
+    //console.log(prevChildKey);
+})
+}
+
+export function readLobby(){
+
 }
 
 //Create a name in a lobby
@@ -50,7 +78,7 @@ export function updateScore(){
 
 //Delete name in a lobby
 export function deleteUser(){
-
+    //ref.off() <-- stop listening to this.
 }
 
 //Delete lobby
@@ -60,4 +88,6 @@ export function destroyLobby(lobbyName){
     fbDatabase.ref('lobbies/' + lobbyName).remove()
         .then(()=> console.log("Removed "+ lobbyName + " successfully!"))
         .catch(error => console.log("Remove failed: " + error.message));
+
+    //ref.off() <-- stop listening to this.
 }
