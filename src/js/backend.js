@@ -7,17 +7,18 @@ import {fbDatabase} from "./firebaseConfig"
 export function createLobby() {
     const name = "AAAB"
     fbDatabase.ref("/lobbies/" + name).set({
-        host: "Fatbear2"
+        host: "Fatbear2",
+        players: false //create empty object to store players
     });
 }
 
+//Join an existing lobby
 export function joinLobby(lobbyCode, user) {
-
     fbDatabase.ref("/lobbies/" + lobbyCode).once("value", snapshot =>
     {
-        if(snapshot.exists())
+        if(snapshot.exists())//Check if lobby exists
         {
-            fbDatabase.ref("/lobbies/" + lobbyCode).push({
+            fbDatabase.ref("/lobbies/" + lobbyCode + "/players").push({ //push new player 
                 name: user,
                 score: 0
             });
