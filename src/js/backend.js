@@ -3,7 +3,7 @@ import fbDatabase from "firebaseConfig.js"
 /* Here we have functions to read and write from the database*/
 
 //Create a lobby in the database
-function createLobby(lobbyName, user){
+export function createLobby(lobbyName, user){
     var lobbyData = {
         name: lobbyName
         //owner: user
@@ -12,7 +12,7 @@ function createLobby(lobbyName, user){
 }
 
 //Create a name in a lobby
-function createUser(username){
+export function createUser(username){
     var userData = {
         name : username
     }
@@ -20,17 +20,17 @@ function createUser(username){
 }
 
 //Highscore stuff
-function updateScore(){
+export function updateScore(){
 
 }
 
 //Delete name in a lobby
-function deleteUser(){
+export function deleteUser(){
 
 }
 
 //Delete lobby
-function destroyLobby(lobbyName){
+export function destroyLobby(lobbyName){
     /*TODO: Remove users in the lobby?*/
 
     fbDatabase.ref('lobbies/' + lobbyName).remove()
