@@ -1,5 +1,4 @@
-import {fbDatabase} from '../firebaseConfig'
-import {createLobby as createLobbyBackend} from '../backend'
+import {createLobby as createLobbyBackend, joinLobby as joinLobbyBackend} from '../backend'
 import {getUsername, getSettings} from '../selectors/gameSessionSelectors'
 import {showLoader, hideLoader} from './loaderActions'
 
@@ -12,13 +11,14 @@ export const setUsername = function (newName) {
     }
 }
 
-export const CREATE_LOBBY_LOCAL = "CREATE_LOBBY_LOCAL"
+export const INIT_GAME_SESSION = "INIT_GAME_SESSION"
 
-export const createLobbyLocal = function(hostName) {
-    return {
-        type: CREATE_LOBBY_LOCAL,
-        hostName
-    }
+export const initGameSession = (playerID, lobby) => {
+  return {
+    type: INIT_GAME_SESSION,
+    playerID,
+    lobby
+  }
 }
 
 export const SET_PLAYERS = "SET_PLAYERS"
@@ -57,23 +57,36 @@ export const setLobbyID = (newID) => {
   }
 }
 
-export const createLobby = (hostName) => {
+export const createLobby = () => {
   return (dispatch, getState) => {
     dispatch(showLoader())
-    dispatch(setUsername(hostName))
     createLobbyBackend(getUsername(getState()), getSettings(getState()))
-        .then( lobby => {
-            dispatch(setPlayerID("host"))
-            dispatch(setLobbyID(lobby.lobbyID))
-            dispatch(setPlayers(lobby.players))
-            dispatch(setGameInfo(lobby.gameInfo))
-            dispatch(hideLoader())
+        .then(({playerID, lobby}) => {
+            dispatch(initGameSession(playerID, lobby))
             console.log(getState())
         })
         .catch(error => {
           console.log("Error when creating lobby:")
           console.log(error)
-          dispatch(hideLoader())
         })
+        .finally(() => dispatch(hideLoader()))
+  }
+}
+
+export const joinLobby = (lobbyID) => {
+  return (dispatch, getState) => {
+    dispatch(showLoader())
+    joinLobbyBackend(lobbyID, getUsername(getState()))
+        .then(({playerID, lobby}) => {
+            console.log("pID: " + playerID + ", lobby:")
+            console.log(lobby)
+            dispatch(initGameSession(playerID, lobby))
+            console.log(getState())
+        })
+        .catch(error => {
+          console.log("Error when joining lobby:")
+          console.log(error)
+        })
+        .finally(() => dispatch(hideLoader()))
   }
 }

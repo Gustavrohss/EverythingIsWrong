@@ -1,4 +1,4 @@
-import {SET_USERNAME, CREATE_LOBBY_LOCAL, SET_PLAYERS, SET_PLAYER_ID, SET_GAME_INFO, SET_LOBBY_ID} from '../actions/gameSessionActions'
+import {SET_USERNAME, INIT_GAME_SESSION, SET_PLAYERS, SET_PLAYER_ID, SET_GAME_INFO, SET_LOBBY_ID} from '../actions/gameSessionActions'
 
 const gameSessionReducer = function(state = {
     lobbyID: null,
@@ -19,6 +19,15 @@ const gameSessionReducer = function(state = {
                 self: Object.assign({}, state.self, {
                   username: action.newName
                 })})
+        case INIT_GAME_SESSION:
+            return Object.assign({}, state, {
+              players: action.lobby.players,
+              lobbyID: action.lobby.lobbyID,
+              gameInfo: action.lobby.gameInfo,
+              self: Object.assign({}, state.self, {
+                playerID: action.playerID
+              })
+            })
         case SET_PLAYERS:
             return Object.assign({}, state, {players: action.newPlayers})
         case SET_PLAYER_ID:

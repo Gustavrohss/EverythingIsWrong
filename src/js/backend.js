@@ -2,7 +2,8 @@ import {fbDatabase} from "./firebaseConfig"
 
 /* Here we have functions to read and write from the database*/
 
-//Create a lobby in the database
+// Create a lobby in the database
+// Returns a promise which returns the new lobby and the player ID of the host.
 export function createLobby(hostName, settings) {
     const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
     let lobbyID = ""
@@ -20,34 +21,32 @@ export function createLobby(hostName, settings) {
             }
         }
     }
-    return fbDatabase.ref("/lobbies/" + lobbyID).set(lobby).then(() => lobby);
+    return fbDatabase.ref("/lobbies/" + lobbyID).set(lobby).then(() => ({playerID: "host", lobby}));
 }
 
-//Join an existing lobby
+// Join an existing lobby
+// Returns a promise which returns the new lobby and the player ID of the user
 export function joinLobby(lobbyCode, user) {
     const ref = fbDatabase.ref("/lobbies/" + lobbyCode)
 
-    ref.once("value").then(snapshot =>
-    {
-        if(snapshot.exists())//Check if lobby exists
-        {
-            fbDatabase.ref("/lobbies/" + lobbyCode + "/players").push({ //push new player
+    return ref.once("value").then(snapshot => {
+        if(snapshot.exists()) { //Check if lobby exists
+            let pushReturn = fbDatabase.ref("/lobbies/" + lobbyCode + "/players").push({ //push new player
                 name: user,
                 score: 0
             });
 
-            return true; //Success!
-        }
-        else{
+            return pushReturn.then(() => {
+              return ref.once("value").then(snapshot => {
+                //console.log("pID: " + pushReturn.key + ", snapshot:")
+                //console.log(snapshot.val())
+                return {playerID: pushReturn.key, lobby: snapshot.val()}
+              })
+            }); //Success!
+        } else {
             //console.log("Lobby " + lobbyCode + " does not exist!");
-            return false; //Failure!
+            throw new Error("Lobby " + lobbyCode + " does not exist!"); //Failure!
         }
-    })
-
-    fbDatabase.ref("/lobbies/" + lobbyCode +"/players/").on("child_changed", (childSnapshot, prevChildKey) => {
-        console.log(childSnapshot.key);
-        console.log("No comes the prevChildKey!");
-        console.log(prevChildKey);
     })
 }
 
@@ -56,12 +55,6 @@ export function setListener(lobbyCode, gameInfoCallback, playerCallback){
         gameInfoCallback(snapshot.val())
     })
 
-    /*
-    ref.on("value", snapshot => {
-        callback(pareMetaContent(snapshot));
-        console.log(snapshot.val()) // store.dispatch(setMLobbyMetaContent(parseMetaContent(snapshot)))
-    })
-    */
    fbDatabase.ref("/lobbies/" + lobbyCode +"/players/").on("child_changed", (childSnapshot, prevChildKey) => {
     playerCallback(childSnapshot.val(), childSnapshot.key) // childSnapshot.val() <--- {name: "childName", score: (int)}
     //console.log(childSnapshot.val());

@@ -1,13 +1,16 @@
 import {connect} from 'react-redux'
 import HostGameComponent from './hostGameComponent'
-import {createLobby} from '../actions/gameSessionActions'
+import {createLobby, setUsername} from '../actions/gameSessionActions'
 
 const mapStateToProps = (state, ownProps) => ({
 
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-    createLobby: text => dispatch(createLobby(text))
+    createLobby: name => {
+      dispatch(setUsername(name))
+      dispatch(createLobby())
+    }
 })
 
 const HostGameContainer = connect(
