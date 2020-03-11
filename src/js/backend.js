@@ -115,9 +115,16 @@ export function readLobby(){
 
 }
 
-//Highscore stuff
-export function updateScore(){
-
+// Update the score of a specific player in a specific lobby
+export function updateScore(lobbyCode, playerID, newScore){
+    const playerPath = `lobbies/${lobbyCode}/players/${playerID}`
+    return fbDatabase.ref(playerPath).once("value").then(snapshot => {
+      if (snapshot.exists()) { // check if player exists
+        return fbDatabase.ref(playerPath + "/score").set(newScore)
+      } else {
+        throw new Error(`Player ${playerID} does not exist in ${lobbyCode}!`); //Failure!
+      }
+    })
 }
 
 // Delete a specific player in a lobby

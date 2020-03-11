@@ -2,13 +2,15 @@ import {
   createLobby as createLobbyBackend,
   joinLobby as joinLobbyBackend,
   setListener,
-  deletePlayer as deletePlayerBackend} from '../backend'
+  deletePlayer as deletePlayerBackend,
+  updateScore as updateScoreBackend} from '../backend'
 import {
   getUsername,
   getSettings,
   getLobbyID,
   getUnsubscribe,
-  getPlayerID} from '../selectors/gameSessionSelectors'
+  getPlayerID,
+  getScore} from '../selectors/gameSessionSelectors'
 import {showLoader, hideLoader} from './loaderActions'
 
 /**
@@ -51,7 +53,7 @@ export const resetGameSession = () => {
 // Assign a new value to the `players` value in the state
 export const SET_PLAYERS = "SET_PLAYERS"
 
-export const setPlayers = (newPlayers) => {
+export const setPlayers = newPlayers => {
   return {
     type: SET_PLAYERS,
     newPlayers
@@ -61,7 +63,7 @@ export const setPlayers = (newPlayers) => {
 // Assign a new value to the `playerID` value in the state
 export const SET_PLAYER_ID = "SET_PLAYER_ID"
 
-export const setPlayerID = (newID) => {
+export const setPlayerID = newID => {
   return {
     type: SET_PLAYER_ID,
     newID
@@ -71,7 +73,7 @@ export const setPlayerID = (newID) => {
 // Assign a new value to the `gameInfo` value in the state
 export const SET_GAME_INFO = "SET_GAME_INFO"
 
-export const setGameInfo = (newGameInfo) => {
+export const setGameInfo = newGameInfo => {
   return {
     type: SET_GAME_INFO,
     newGameInfo
@@ -81,7 +83,7 @@ export const setGameInfo = (newGameInfo) => {
 // Assign a new value to the `lobbyID` value in the state
 export const SET_LOBBY_ID = "SET_LOBBY_ID"
 
-export const setLobbyID = (newID) => {
+export const setLobbyID = newID => {
   return {
     type: SET_LOBBY_ID,
     newID
@@ -91,7 +93,7 @@ export const setLobbyID = (newID) => {
 // Assign a new value to the `unsubscribe` value in the state
 export const SET_UNSUBSCRIBE = "SET_UNSUBSCRIBE"
 
-export const setUnsubscribe = (func) => {
+export const setUnsubscribe = func => {
   return {
     type: SET_UNSUBSCRIBE,
     unsubscribe: func
@@ -114,10 +116,22 @@ export const modifyPlayer = (playerID, player) => {
 // `players` value in the state
 export const DELETE_PLAYER = "DELETE_PLAYER"
 
-export const deletePlayer = (playerID) => {
+export const deletePlayer = playerID => {
   return {
     type: DELETE_PLAYER,
     playerID
+  }
+}
+
+
+// Update the points of the player
+// note: will only update `self.score`, not the `players`-list
+export const SET_SCORE = "SET_SCORE"
+
+export const setScore = newScore => {
+  return {
+    type: SET_SCORE,
+    newScore
   }
 }
 
@@ -189,5 +203,22 @@ export const leaveLobby = () => {
         })
         .finally(() => dispatch(hideLoader()))
     }
+  }
+}
+
+// Increase the points of the current player in state and database
+// The score will be increased with `dx` points
+export const increaseScore = dx => {
+  return (dispatch, getState) => {
+    const state = getState()
+    const newScore = getScore(state) + dx
+    dispatch(setScore(newScore))
+    dispatch(showLoader())
+    return updateScoreBackend(getLobbyID(state), getPlayerID(state), newScore)
+      .catch( error => {
+        console.log("Error when updating score")
+        console.log(error)
+      })
+      .finally(() => dispatch(hideLoader()))
   }
 }

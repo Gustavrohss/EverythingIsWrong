@@ -8,7 +8,9 @@ import {
   MODIFY_PLAYER,
   DELETE_PLAYER,
   SET_UNSUBSCRIBE,
-  RESET_GAME_SESSION} from '../actions/gameSessionActions'
+  RESET_GAME_SESSION,
+  SET_SCORE
+} from '../actions/gameSessionActions'
 
 /**
  * Reducer handling the gameSession part of the state and all actions to it
@@ -21,7 +23,8 @@ const gameSessionReducer = function(state = {
     },
     self: {
       playerID: null,
-      username: null
+      username: null,
+      score: 0
     },
     gameInfo: null,
     unsubscribe: () => {}
@@ -34,13 +37,19 @@ const gameSessionReducer = function(state = {
                 self: Object.assign({}, state.self, {
                   username: action.newName
                 })})
+        case SET_SCORE:
+            return Object.assign({}, state, {
+              self: Object.assign({}, state.self, {
+                score: action.newScore
+              })})
         case INIT_GAME_SESSION:
             return Object.assign({}, state, {
               players: action.lobby.players,
               lobbyID: action.lobby.lobbyID,
               gameInfo: action.lobby.gameInfo,
               self: Object.assign({}, state.self, {
-                playerID: action.playerID
+                playerID: action.playerID,
+                score: 0
               })
             })
         case RESET_GAME_SESSION:
@@ -49,7 +58,8 @@ const gameSessionReducer = function(state = {
               players: null,
               self: {
                 playerID: null,
-                username: state.self.username
+                username: state.self.username,
+                score: 0
               },
               gameInfo: null,
               unsubscribe: () => {}

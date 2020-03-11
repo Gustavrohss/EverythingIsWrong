@@ -13,6 +13,7 @@ import { createSelector } from 'reselect'
 // Functions extracting the raw data from the state
 const username = state => state.gameSession.self.username
 const playerID = state => state.gameSession.self.playerID
+const score = state => state.gameSession.self.score
 const settings = state => state.gameSession.settings
 const lobbyID = state => state.gameSession.lobbyID
 const players = state => state.gameSession.players
@@ -29,6 +30,11 @@ export const getUsername = createSelector(
 export const getPlayerID = createSelector(
   [playerID],
   id => id
+)
+
+export const getScore = createSelector(
+  [score],
+  score => score
 )
 
 // Get the settings of the current game
