@@ -50,17 +50,51 @@ export function joinLobby(lobbyCode, user) {
     })
 }
 
-export function setListener(lobbyCode, gameInfoCallback, playerCallback){
-    fbDatabase.ref("/lobbies/" + lobbyCode + "/gameInfo/").on("value", snapshot => {
-        gameInfoCallback(snapshot.val())
-    })
+export function leaveLobby(lobbyCode, playerID) {
+  // TODO: write this function
+  return new Promise((resolve, reject) => resolve()) // Just placeholder code!
+}
 
-   fbDatabase.ref("/lobbies/" + lobbyCode +"/players/").on("child_changed", (childSnapshot, prevChildKey) => {
-    playerCallback(childSnapshot.val(), childSnapshot.key) // childSnapshot.val() <--- {name: "childName", score: (int)}
-    //console.log(childSnapshot.val());
-    //console.log("No comes the prevChildKey!");
-    //console.log(prevChildKey);
-})
+export function setListener(lobbyCode, gameInfoCallback, playerCallback){
+    const gameInfoListener = fbDatabase.ref("/lobbies/" + lobbyCode + "/gameInfo/")
+      .on("value", snapshot => {
+          console.log("Rewritten gameinfo in lobby " + lobbyCode)
+          gameInfoCallback({gameInfo: snapshot.val()})
+      })
+
+    const players = fbDatabase.ref("/lobbies/" + lobbyCode +"/players/")
+    const playerChangedListener = players.on("child_changed",
+      (childSnapshot, prevChildKey) => {
+          console.log("Player " + childSnapshot.key + " changed in lobby " + lobbyCode)
+          playerCallback({
+            player: childSnapshot.val(),
+            playerID: childSnapshot.key
+          }) // childSnapshot.val() <--- {name: "childName", score: (int)}
+          //console.log(childSnapshot.val());
+          //console.log("No comes the prevChildKey!");
+          //console.log(prevChildKey);
+      })
+
+    // This will currently be invoced for all initial children and afterwards for all new
+    // TODO: playerCallback should only be called when a new child is added.
+    const playerAddedListener = players.on("child_added",
+      (childSnapshot, prevChildKey) => {
+          console.log("Player " + childSnapshot.key + " added in lobby " + lobbyCode)
+          playerCallback({
+            player: childSnapshot.val(),
+            playerID: childSnapshot.key
+          }) // childSnapshot.val() <--- {name: "childName", score: (int)}
+      })
+
+    return {gameInfoListener, playerChangedListener, playerAddedListener}
+}
+
+export function stopListener(lobbyCode, {gameInfoListener, playerChangedListener, playerAddedListener}) {
+    console.log("Remove listeners in lobby " + lobbyCode)
+    fbDatabase.ref("/lobbies/" + lobbyCode + "/gameInfo/").off("value", gameInfoListener)
+    const players = fbDatabase.ref("/lobbies/" + lobbyCode +"/players/")
+    players.off("child_changed", playerChangedListener)
+    players.off("child_added", playerAddedListener)
 }
 
 export function readLobby(){

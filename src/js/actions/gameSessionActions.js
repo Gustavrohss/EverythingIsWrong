@@ -1,5 +1,15 @@
-import {createLobby as createLobbyBackend, joinLobby as joinLobbyBackend} from '../backend'
-import {getUsername, getSettings} from '../selectors/gameSessionSelectors'
+import {
+  createLobby as createLobbyBackend,
+  joinLobby as joinLobbyBackend,
+  setListener,
+  stopListener,
+  leaveLobby} from '../backend'
+import {
+  getUsername,
+  getSettings,
+  getLobbyID,
+  getLobbyListeners,
+  getPlayerID} from '../selectors/gameSessionSelectors'
 import {showLoader, hideLoader} from './loaderActions'
 
 export const SET_USERNAME = "SET_USERNAME";
@@ -18,6 +28,14 @@ export const initGameSession = (playerID, lobby) => {
     type: INIT_GAME_SESSION,
     playerID,
     lobby
+  }
+}
+
+export const RESET_GAME_SESSION = "RESET_GAME_SESSION"
+
+export const resetGameSession = () => {
+  return {
+    type: RESET_GAME_SESSION
   }
 }
 
@@ -57,13 +75,32 @@ export const setLobbyID = (newID) => {
   }
 }
 
+export const SET_LOBBY_LISTENERS = "SET_LOBBY_LISTENERS"
+
+export const setLobbyListeners = (listeners) => {
+  return {
+    type: SET_LOBBY_LISTENERS,
+    listeners
+  }
+}
+
+export const MODIFY_PLAYER = "MODIFY_PLAYER"
+
+export const modifyPlayer = (playerID, player) => {
+  return {
+    type: MODIFY_PLAYER,
+    playerID,
+    player
+  }
+}
+
 export const createLobby = () => {
   return (dispatch, getState) => {
     dispatch(showLoader())
     createLobbyBackend(getUsername(getState()), getSettings(getState()))
         .then(({playerID, lobby}) => {
             dispatch(initGameSession(playerID, lobby))
-            console.log(getState())
+            setBackendListeners(dispatch, getState)
         })
         .catch(error => {
           console.log("Error when creating lobby:")
@@ -78,15 +115,39 @@ export const joinLobby = (lobbyID) => {
     dispatch(showLoader())
     joinLobbyBackend(lobbyID, getUsername(getState()))
         .then(({playerID, lobby}) => {
-            console.log("pID: " + playerID + ", lobby:")
-            console.log(lobby)
             dispatch(initGameSession(playerID, lobby))
-            console.log(getState())
+            setBackendListeners(dispatch, getState)
         })
         .catch(error => {
           console.log("Error when joining lobby:")
           console.log(error)
         })
         .finally(() => dispatch(hideLoader()))
+  }
+}
+
+const setBackendListeners = (dispatch, getState) => {
+  const listeners = setListener(
+    getLobbyID(getState()),
+    ({gameInfo}) => dispatch(setGameInfo(gameInfo)),
+    ({playerID, player}) => dispatch(modifyPlayer(playerID, player))
+  )
+  dispatch(setLobbyListeners(listeners))
+}
+
+export const exitLobby = () => {
+  return (dispatch, getState) => {
+    const state = getState()
+    if (getLobbyID(state)) {
+      dispatch(showLoader())
+      stopListener(getLobbyID(state), getLobbyListeners(state))
+      return leaveLobby(getLobbyID(state), getPlayerID(state))
+        .then(() => dispatch(resetGameSession()))
+        .catch(error => {
+          console.log("Error when leaving lobby")
+          console.log(error)
+        })
+        .finally(() => dispatch(hideLoader()))
+    }
   }
 }
