@@ -6,9 +6,12 @@ import {
   SET_GAME_INFO,
   SET_LOBBY_ID,
   MODIFY_PLAYER,
-  SET_LOBBY_LISTENERS,
+  SET_UNSUBSCRIBE,
   RESET_GAME_SESSION} from '../actions/gameSessionActions'
 
+/**
+ * Reducer handling the gameSession part of the state and all actions to it
+ */
 const gameSessionReducer = function(state = {
     lobbyID: null,
     players: null,
@@ -20,7 +23,7 @@ const gameSessionReducer = function(state = {
       username: null
     },
     gameInfo: null,
-    lobbyListeners: null
+    unsubscribe: () => {}
 }, action) {
     switch(action.type) {
         case SET_USERNAME:
@@ -48,7 +51,7 @@ const gameSessionReducer = function(state = {
                 username: state.self.username
               },
               gameInfo: null,
-              lobbyListeners: null
+              unsubscribe: () => {}
             })
         case SET_PLAYERS:
             return Object.assign({}, state, {players: action.newPlayers})
@@ -66,9 +69,9 @@ const gameSessionReducer = function(state = {
                 [action.playerID]: action.player
               })
             })
-        case SET_LOBBY_LISTENERS:
+        case SET_UNSUBSCRIBE:
             return Object.assign({}, state, {
-              lobbyListeners: action.listeners
+              unsubscribe: action.unsubscribe
             })
         default:
             return state

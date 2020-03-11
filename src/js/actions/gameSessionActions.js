@@ -2,13 +2,12 @@ import {
   createLobby as createLobbyBackend,
   joinLobby as joinLobbyBackend,
   setListener,
-  stopListener,
   leaveLobby} from '../backend'
 import {
   getUsername,
   getSettings,
   getLobbyID,
-  getLobbyListeners,
+  getUnsubscribe,
   getPlayerID} from '../selectors/gameSessionSelectors'
 import {showLoader, hideLoader} from './loaderActions'
 
@@ -89,13 +88,13 @@ export const setLobbyID = (newID) => {
   }
 }
 
-// Assign a new value to the `lobbyListeners` value in the state
-export const SET_LOBBY_LISTENERS = "SET_LOBBY_LISTENERS"
+// Assign a new value to the `unsubscribe` value in the state
+export const SET_UNSUBSCRIBE = "SET_UNSUBSCRIBE"
 
-export const setLobbyListeners = (listeners) => {
+export const setUnsubscribe = (func) => {
   return {
-    type: SET_LOBBY_LISTENERS,
-    listeners
+    type: SET_UNSUBSCRIBE,
+    unsubscribe: func
   }
 }
 
@@ -152,12 +151,12 @@ export const joinLobby = (lobbyID) => {
 // *helpfunction* - adds listeners to the lobby in the database
 // and saves them in the state, in order to be able to turn them off later on
 const setBackendListeners = (dispatch, getState) => {
-  const listeners = setListener(
+  const unsubscribe = setListener(
     getLobbyID(getState()),
     ({gameInfo}) => dispatch(setGameInfo(gameInfo)),
     ({playerID, player}) => dispatch(modifyPlayer(playerID, player))
   )
-  dispatch(setLobbyListeners(listeners))
+  dispatch(setUnsubscribe(unsubscribe))
 }
 
 // Makes the player leave a lobby and unsubscribe to future changes to it
@@ -166,7 +165,8 @@ export const exitLobby = () => {
     const state = getState()
     if (getLobbyID(state)) {
       dispatch(showLoader())
-      stopListener(getLobbyID(state), getLobbyListeners(state))
+      const unsubscribe = getUnsubscribe(state)
+      unsubscribe()
       return leaveLobby(getLobbyID(state), getPlayerID(state))
         .then(() => dispatch(resetGameSession()))
         .catch(error => {

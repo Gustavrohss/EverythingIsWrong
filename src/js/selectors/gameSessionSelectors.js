@@ -16,7 +16,7 @@ const playerID = state => state.gameSession.self.playerID
 const settings = state => state.gameSession.settings
 const lobbyID = state => state.gameSession.lobbyID
 const players = state => state.gameSession.players
-const lobbyListeners = state => state.gameSession.lobbyListeners
+const unsubscribe = state => state.gameSession.unsubscribe
 
 
 // Get the username to the player
@@ -68,9 +68,9 @@ export const getPlayerListSorted = createSelector(
   }
 )
 
-// Get the listener object that will be needed to unsubscribe to
-// the current lobby
-export const getLobbyListeners = createSelector(
-  [lobbyListeners],
-  listeners => listeners
+// Get the unsubscribe-function which will unsubscribe to changes
+// in the current lobby if called.
+export const getUnsubscribe = createSelector(
+  [unsubscribe],
+  func => func
 )

@@ -55,6 +55,8 @@ export function leaveLobby(lobbyCode, playerID) {
   return new Promise((resolve, reject) => resolve()) // Just placeholder code!
 }
 
+// Set listeners to the lobby with ID `lobbyCode`
+// Returns a function that will unsubscribe to the lobby
 export function setListener(lobbyCode, gameInfoCallback, playerCallback){
     const gameInfoListener = fbDatabase.ref("/lobbies/" + lobbyCode + "/gameInfo/")
       .on("value", snapshot => {
@@ -86,10 +88,10 @@ export function setListener(lobbyCode, gameInfoCallback, playerCallback){
           }) // childSnapshot.val() <--- {name: "childName", score: (int)}
       })
 
-    return {gameInfoListener, playerChangedListener, playerAddedListener}
+    return () => stopListener(lobbyCode, gameInfoListener, playerChangedListener, playerAddedListener)
 }
 
-export function stopListener(lobbyCode, {gameInfoListener, playerChangedListener, playerAddedListener}) {
+export function stopListener(lobbyCode, gameInfoListener, playerChangedListener, playerAddedListener) {
     console.log("Remove listeners in lobby " + lobbyCode)
     fbDatabase.ref("/lobbies/" + lobbyCode + "/gameInfo/").off("value", gameInfoListener)
     const players = fbDatabase.ref("/lobbies/" + lobbyCode +"/players/")
