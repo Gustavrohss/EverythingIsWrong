@@ -27,9 +27,24 @@ export const getLobbyID = createSelector(
   id => id
 )
 
-export const getPlayers = createSelector(
+export const getPlayerList = createSelector(
   [players],
-  pList => pList
+  playersObj => {
+    return playersObj ?
+    Object.keys(playersObj)
+      .map(pID => ({
+        playerID: pID,
+        name: playersObj[pID].name,
+        score: playersObj[pID].score
+      })) : []
+  }
+)
+
+export const getPlayerListSorted = createSelector(
+  [getPlayerList],
+  players => {
+    return players.sort((p1, p2) => p2.score - p1.score)
+  }
 )
 
 export const getLobbyListeners = createSelector(

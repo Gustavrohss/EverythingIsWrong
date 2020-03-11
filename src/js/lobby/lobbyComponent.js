@@ -18,13 +18,13 @@ const playersToRows = players => {
     return pairs.map((pair, i) =>
     // Player in pair to td
     <tr key = {i}>
-        {pair.map((player, i) => <td key={i}>{player}</td>)}
+        {pair.map(player => <td key={player.playerID} className={player.playerID === "host" ? "host" : ""}>{player.name}</td>)}
     </tr>
     )
 }
 
 const LobbyComponent = ({
-    players = ["Alice", "Bob", "Carla", "Duncan", "Erika", "Fandango"],
+    players,
     game: [gameLabel, gameCallbac]
 }) =>
 (<div>

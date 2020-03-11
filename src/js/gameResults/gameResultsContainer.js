@@ -1,9 +1,10 @@
 import {connect} from 'react-redux'
 import GameResultsComponent from './gameResultsComponent'
 import {exitLobby} from '../actions/gameSessionActions'
+import {getPlayerListSorted} from '../selectors/gameSessionSelectors'
 
 const mapStateToProps = (state, ownProps) => ({
-
+  scores: getPlayerListSorted(state)
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => {
