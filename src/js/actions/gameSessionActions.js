@@ -2,7 +2,7 @@ import {
   createLobby as createLobbyBackend,
   joinLobby as joinLobbyBackend,
   setListener,
-  leaveLobby} from '../backend'
+  deletePlayer as deletePlayerBackend} from '../backend'
 import {
   getUsername,
   getSettings,
@@ -98,7 +98,7 @@ export const setUnsubscribe = (func) => {
   }
 }
 
-// Add or modify a player element with key `playerID` in the
+// Add or modify the player element with key `playerID` in the
 // `players` value in the state.
 export const MODIFY_PLAYER = "MODIFY_PLAYER"
 
@@ -107,6 +107,17 @@ export const modifyPlayer = (playerID, player) => {
     type: MODIFY_PLAYER,
     playerID,
     player
+  }
+}
+
+// Delete the player element with key `playerID` in the
+// `players` value in the state
+export const DELETE_PLAYER = "DELETE_PLAYER"
+
+export const deletePlayer = (playerID) => {
+  return {
+    type: DELETE_PLAYER,
+    playerID
   }
 }
 
@@ -151,23 +162,26 @@ export const joinLobby = (lobbyID) => {
 // *helpfunction* - adds listeners to the lobby in the database
 // and saves them in the state, in order to be able to turn them off later on
 const setBackendListeners = (dispatch, getState) => {
+  const modifyPlayerCallback = ({playerID, player}) => dispatch(modifyPlayer(playerID, player))
   const unsubscribe = setListener(
     getLobbyID(getState()),
     ({gameInfo}) => dispatch(setGameInfo(gameInfo)),
-    ({playerID, player}) => dispatch(modifyPlayer(playerID, player))
+    modifyPlayerCallback,
+    modifyPlayerCallback,
+    ({playerID}) => dispatch(deletePlayer(playerID))
   )
   dispatch(setUnsubscribe(unsubscribe))
 }
 
 // Makes the player leave a lobby and unsubscribe to future changes to it
-export const exitLobby = () => {
+export const leaveLobby = () => {
   return (dispatch, getState) => {
     const state = getState()
     if (getLobbyID(state)) {
       dispatch(showLoader())
       const unsubscribe = getUnsubscribe(state)
       unsubscribe()
-      return leaveLobby(getLobbyID(state), getPlayerID(state))
+      return deletePlayerBackend(getLobbyID(state), getPlayerID(state))
         .then(() => dispatch(resetGameSession()))
         .catch(error => {
           console.log("Error when leaving lobby")

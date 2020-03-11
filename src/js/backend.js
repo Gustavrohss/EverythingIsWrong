@@ -50,65 +50,69 @@ export function joinLobby(lobbyCode, user) {
     })
 }
 
-export function leaveLobby(lobbyCode, playerID) {
-  // TODO: write this function
-  return new Promise((resolve, reject) => resolve()) // Just placeholder code!
-}
-
 // Set listeners to the lobby with ID `lobbyCode`
 // Returns a function that will unsubscribe to the lobby
-export function setListener(lobbyCode, gameInfoCallback, playerCallback){
-    const gameInfoListener = fbDatabase.ref("/lobbies/" + lobbyCode + "/gameInfo/")
-      .on("value", snapshot => {
-          console.log("Rewritten gameinfo in lobby " + lobbyCode)
-          gameInfoCallback({gameInfo: snapshot.val()})
-      })
-
+export function setListener(
+  lobbyCode,
+  gameInfoCallback,
+  addPlayerCallback,
+  changePlayerCallback,
+  removePlayerCallback
+){
     const players = fbDatabase.ref("/lobbies/" + lobbyCode +"/players/")
-    const playerChangedListener = players.on("child_changed",
-      (childSnapshot, prevChildKey) => {
-          console.log("Player " + childSnapshot.key + " changed in lobby " + lobbyCode)
-          playerCallback({
-            player: childSnapshot.val(),
-            playerID: childSnapshot.key
-          }) // childSnapshot.val() <--- {name: "childName", score: (int)}
-          //console.log(childSnapshot.val());
-          //console.log("No comes the prevChildKey!");
-          //console.log(prevChildKey);
-      })
+    const listeners = {
+      gameInfoListener: fbDatabase.ref("/lobbies/" + lobbyCode + "/gameInfo/")
+        .on("value", snapshot => {
+            console.log("Rewritten gameinfo in lobby " + lobbyCode)
+            gameInfoCallback({gameInfo: snapshot.val()})
+        }),
 
-    // This will currently be invoced for all initial children and afterwards for all new
-    // TODO: playerCallback should only be called when a new child is added.
-    const playerAddedListener = players.on("child_added",
-      (childSnapshot, prevChildKey) => {
-          console.log("Player " + childSnapshot.key + " added in lobby " + lobbyCode)
-          playerCallback({
-            player: childSnapshot.val(),
-            playerID: childSnapshot.key
-          }) // childSnapshot.val() <--- {name: "childName", score: (int)}
-      })
+      playerChangedListener: players.on("child_changed",
+        (childSnapshot, prevChildKey) => {
+            console.log("Player " + childSnapshot.key + " changed in lobby " + lobbyCode)
+            changePlayerCallback({
+              player: childSnapshot.val(),
+              playerID: childSnapshot.key
+            }) // childSnapshot.val() <--- {name: "childName", score: (int)}
+        }),
 
-    return () => stopListener(lobbyCode, gameInfoListener, playerChangedListener, playerAddedListener)
+      // This will currently be invoced for all initial children and afterwards for all new
+      // TODO: playerCallback should only be called when a new child is added.
+      playerAddedListener: players.on("child_added",
+        (childSnapshot, prevChildKey) => {
+            console.log("Player " + childSnapshot.key + " added in lobby " + lobbyCode)
+            addPlayerCallback({
+              player: childSnapshot.val(),
+              playerID: childSnapshot.key
+            }) // childSnapshot.val() <--- {name: "childName", score: (int)}
+        }),
+
+      playerRemovedListener: players.on("child_removed",
+        oldChildSnapshot => {
+            console.log("Player " + oldChildSnapshot.key + " removed from lobby " + lobbyCode)
+            removePlayerCallback({playerID: oldChildSnapshot.key})
+        })
+    }
+
+    return () => stopListener(lobbyCode, listeners)
 }
 
-export function stopListener(lobbyCode, gameInfoListener, playerChangedListener, playerAddedListener) {
+export function stopListener(lobbyCode, {
+    gameInfoListener,
+    playerChangedListener,
+    playerAddedListener,
+    playerRemovedListener
+  }) {
     console.log("Remove listeners in lobby " + lobbyCode)
     fbDatabase.ref("/lobbies/" + lobbyCode + "/gameInfo/").off("value", gameInfoListener)
     const players = fbDatabase.ref("/lobbies/" + lobbyCode +"/players/")
     players.off("child_changed", playerChangedListener)
     players.off("child_added", playerAddedListener)
+    players.off("child_removed", playerRemovedListener)
 }
 
 export function readLobby(){
 
-}
-
-//Create a name in a lobby
-export function createUser(username){
-    var userData = {
-        name : username
-    }
-    var newUserKey = fbDatabase.ref().child()
 }
 
 //Highscore stuff
@@ -116,16 +120,19 @@ export function updateScore(){
 
 }
 
-//Delete name in a lobby
-export function deleteUser(){
-    //ref.off() <-- stop listening to this.
+// Delete a specific player in a lobby
+// NOTE: make sure to unsubscribe listeners before removal
+export function deletePlayer(lobbyCode, playerID){
+    return fbDatabase.ref(`lobbies/${lobbyCode}/players/${playerID}`).remove()
+        .then(() => console.log(`Successfully removed player ${playerID} from ${lobbyCode}`))
+        .catch(error => console.log(`Remove failed: ${error.message}`))
 }
 
 //Delete lobby
 export function destroyLobby(lobbyName){
     /*TODO: Remove users in the lobby?*/
     //const name = "AAAB"
-    fbDatabase.ref('lobbies/' + lobbyName).remove()
+    return fbDatabase.ref('lobbies/' + lobbyName).remove()
         .then(()=> console.log("Removed "+ lobbyName + " successfully!"))
         .catch(error => console.log("Remove failed: " + error.message));
 

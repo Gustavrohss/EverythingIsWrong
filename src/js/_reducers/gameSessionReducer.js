@@ -6,6 +6,7 @@ import {
   SET_GAME_INFO,
   SET_LOBBY_ID,
   MODIFY_PLAYER,
+  DELETE_PLAYER,
   SET_UNSUBSCRIBE,
   RESET_GAME_SESSION} from '../actions/gameSessionActions'
 
@@ -69,6 +70,12 @@ const gameSessionReducer = function(state = {
                 [action.playerID]: action.player
               })
             })
+        case DELETE_PLAYER:
+            const newPlayers = Object.assign({}, state.players)
+            delete newPlayers[action.playerID]
+
+            return Object.assign({}, state, {players: newPlayers})
+
         case SET_UNSUBSCRIBE:
             return Object.assign({}, state, {
               unsubscribe: action.unsubscribe
