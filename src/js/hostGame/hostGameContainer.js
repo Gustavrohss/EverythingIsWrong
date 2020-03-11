@@ -1,6 +1,6 @@
 import {connect} from 'react-redux'
 import HostGameComponent from './hostGameComponent'
-import {createLobby, setUsername, exitLobby} from '../actions/gameSessionActions'
+import {createLobby, setUsername, leaveLobby} from '../actions/gameSessionActions'
 import {destroyLobby} from '../backend'
 
 const mapStateToProps = (state, ownProps) => ({
@@ -16,13 +16,13 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     destroyLobby: lobbyID => {
       destroyLobby(lobbyID)
-      dispatch(exitLobby())
+      dispatch(leaveLobby())
     },
     home: [
       homeLabel,
       () => {
           homeCallback()
-          dispatch(exitLobby())
+          dispatch(leaveLobby())
     }]
 }}
 

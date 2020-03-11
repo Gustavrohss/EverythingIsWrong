@@ -1,6 +1,6 @@
 import {connect} from 'react-redux'
 import JoinGameComponent from './joinGameComponent'
-import {joinLobby, exitLobby, setUsername} from '../actions/gameSessionActions'
+import {joinLobby, leaveLobby, setUsername} from '../actions/gameSessionActions'
 
 const mapStateToProps = (state, ownProps) => ({
 
@@ -17,7 +17,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       homeLabel,
       () => {
           homeCallback()
-          dispatch(exitLobby())
+          dispatch(leaveLobby())
     }]
 }}
 
