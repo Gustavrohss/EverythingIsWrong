@@ -25,10 +25,12 @@ const playersToRows = players => {
 
 const LobbyComponent = ({
     players,
+    lobbyID,
     game: [gameLabel, gameCallbac]
 }) =>
 (<div>
     <button onClick = {gameCallbac}>{gameLabel}</button>
+    <p>Session code: {lobbyID}</p>
     <p>Game mode/title</p>
     <b>Host</b>
     <table><tbody>
