@@ -30,7 +30,7 @@ function App() {
     <div>
       <Switch>
         <Route path="/about">
-          <AboutContainer 
+          <AboutContainer
             home={homeNav}
           />
         </Route>
@@ -46,13 +46,12 @@ function App() {
         </Route>
         <Route path="/lobby">
           <LobbyContainer
-            join={joinNav} host={hostNav}
             game={gameNav}
           />
         </Route>
         <Route path="/game">
           <GameRoundContainer
-            lobby={lobbyNav} results={resultsNav}
+            results={resultsNav}
           />
         </Route>
         <Route path="/results">
@@ -66,7 +65,7 @@ function App() {
           />
         </Route>
         <Route path="/">
-          <WelcomeContainer 
+          <WelcomeContainer
             about={aboutNav} highScores={hsNav}
             join={joinNav} host={hostNav}
           />

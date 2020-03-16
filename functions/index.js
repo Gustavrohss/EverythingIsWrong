@@ -16,6 +16,13 @@ exports.BIGSCORE = functions.database.ref("/highscores/")
             .set({name: val.name.toUpperCase(), score: val.score + 1000})
     })
 
+
+//=================================
+//When a new game round starts, "when game-round changes", make a call to imgur API and choose.abs
+
+
+//=================================
+
 // THIS DOES NOT WORK EITHER
 // Tried several workarounds
 // No success

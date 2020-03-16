@@ -3,20 +3,18 @@ import React from 'react'
 const GameResultsComponent = ({
     home: [homeLabel, homeCallback],
     game: [gameLabel, gameCallback],
-    scores = [
-        ["Alice", 10], ["Bob", 5], 
-        ["Carla", 20], ["Duncan", 12], 
-        ["Erika", 7], ["Fandango", 3000]]
-}) => 
+    scores
+}) =>
 // TODO
 // Show the winner in a more stylish way than "top of list"
 // Winners deserve the clout
 (<div>
-    <p>We have a winner! Congratulations, [actually the winner isn't calculated already!]</p>
+    {(scores && scores.length > 0) ?
+      <p>The winner is <b>{scores[0].name}</b>!</p> :
+      <p> No players in the game, so there is no winner... </p>}
     <ol>
         {scores
-            .sort(([p1, score1], [p2, score2]) => score2 - score1)
-            .map(([player, score], index) => <p key = {index}> {player}: <b>{score}</b></p>)
+            .map(player => <p key = {player.playerID}> {player.name}: <b>{player.score}</b></p>)
         }
     </ol>
     <button onClick={homeCallback}>{homeLabel}</button>

@@ -1,5 +1,8 @@
 import {HIDE_LOADER, SHOW_LOADER} from '../actions/loaderActions'
 
+/**
+ * Reducer handling loads in the app. Is something loading or not?
+ */
 const loaderReducer = function(state = {
   isLoading: false
 }, action) {
