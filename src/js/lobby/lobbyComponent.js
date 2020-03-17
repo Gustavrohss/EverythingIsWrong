@@ -2,6 +2,7 @@ import React from 'react'
 
 // Returns a list of players (currently seen only as strings) as table rows
 // Two players per row
+// This is for the visual flare
 const playersToRows = players => {
     // Will be mapped to rows
     let pairs = []
@@ -23,6 +24,8 @@ const playersToRows = players => {
     )
 }
 
+// Lobby component
+// What the player, and host, sees when waiting to start a game
 const LobbyComponent = ({
     players,
     game: [gameLabel, gameCallbac]

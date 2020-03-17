@@ -9,6 +9,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 
 })
 
+// Container for the about page
 const AboutContainer = connect(
     mapStateToProps,
     mapDispatchToProps

@@ -2,13 +2,6 @@ import React from 'react'
 
 // Host Game component.
 // This is where a user starts a game by hosting it.
-
-/*
-    TODO
-    Pass custom events to input, button
-    Populate Settings - requires game design
-*/
-
 const HostGameComponent = ({
     home: [homeLabel, homeCallback],
     lobby: [lobbyLabel, lobbyCallback],

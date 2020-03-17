@@ -9,6 +9,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 
 })
 
+// Container for welcome page component
 const WelcomeContainer = connect(
     mapStateToProps,
     mapDispatchToProps

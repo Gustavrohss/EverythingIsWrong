@@ -1,5 +1,6 @@
 import React from 'react'
 
+// Component for the About page.
 const AboutComponent = ({
   home: [homeLabel, homeCallback]
 }) => (

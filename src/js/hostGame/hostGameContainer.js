@@ -21,11 +21,13 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     home: [
       homeLabel,
       () => {
+          // Composed function, navigation callback and stop listening to database changes
           homeCallback()
           dispatch(leaveLobby())
     }]
 }}
 
+// Container for host game component
 const HostGameContainer = connect(
     mapStateToProps,
     mapDispatchToProps

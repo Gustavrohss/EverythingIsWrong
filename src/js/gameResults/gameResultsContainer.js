@@ -13,12 +13,14 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     home: [
       homeLabel,
       () => {
+          // Composed function to use callback and also stop listening to database events
           homeCallback()
           dispatch(leaveLobby())
     }]
   }
 }
 
+// Container for game results component
 const GameResultContainer = connect(
     mapStateToProps,
     mapDispatchToProps
