@@ -25,6 +25,9 @@ import {fbDatabase} from "./firebaseConfig"
  * }
  */
 
+ // Create an initial player object with a specific username
+ const getInitialPlayerObject = (name) => ({name, score: 0, status: "READY"})
+
 /**
  * Create a lobby in the database
  * @param {str} hostName - the chosen alias for the host
@@ -44,10 +47,7 @@ export function createLobby(hostName, settings) {
             round: 0
         },
         players: {
-            host: {
-                name: hostName,
-                score: 0
-            }
+            host: getInitialPlayerObject(hostName)
         }
     }
     return fbDatabase.ref("/lobbies/" + lobbyID).set(lobby).then(() => ({playerID: "host", lobby}));
@@ -68,10 +68,8 @@ export function joinLobby(lobbyCode, user) {
 
     return ref.once("value").then(snapshot => {
         if(snapshot.exists()) { //Check if lobby exists
-            let pushReturn = fbDatabase.ref("/lobbies/" + lobbyCode + "/players").push({ //push new player
-                name: user,
-                score: 0
-            });
+            let pushReturn = fbDatabase.ref("/lobbies/" + lobbyCode + "/players")
+                .push(getInitialPlayerObject(user)); //push new player
 
             // TODO: check that the players in the lobby haven't started playing yet.
             return pushReturn.then(() => {
@@ -173,11 +171,6 @@ export function stopListener(lobbyCode, {
     players.off("child_removed", playerRemovedListener)
 }
 
-export function readLobby(){
-
-}
-
-// Update the score of a specific player in a specific lobby
 /**
  * Updates the score of a specific player in a specific lobby.
  * @param {str} lobbyCode - the ID of the lobby
@@ -196,6 +189,30 @@ export function updateScore(lobbyCode, playerID, newScore){
         throw new Error(`Player ${playerID} does not exist in ${lobbyCode}!`); //Failure!
       }
     })
+}
+
+/**
+ * Update the status of a player in a specific lobby. The status must be one
+ * of "LOBBY", "READY", "FETCHING" or "ANSWERING".
+ * @param {str} lobbyCode - the ID of the lobby
+ * @param {str} playerID - the ID of the player
+ * @param {str} newStatus - the new staus
+ *
+ * @return {Promise} Returns a promise that will fail if the player or
+ *    lobby does not exist, or if the status is not a valid status.
+ */
+export function updateStatus(lobbyCode, playerID, newStatus) {
+    const statuses = ["LOBBY", "READY", "FETCHING", "ANSWERING"]
+    const playerPath = `lobbies/${lobbyCode}/players/${playerID}`
+    return statuses.includes(newStatus) ?
+      fbDatabase.ref(playerPath).once("value").then(snapshot => {
+        if (snapshot.exists()) { // check if player exists
+          return fbDatabase.ref(playerPath + "/status").set(newStatus)
+        } else {
+          throw new Error(`Player ${playerID} does not exist in ${lobbyCode}!`); //Failure!
+        }
+      }) :
+      Promise.reject(new Error("Invalid status")) // Returns a failing promise
 }
 
 /**
