@@ -8,6 +8,7 @@ import HostGameContainer from './js/hostGame/hostGameContainer'
 import GameRoundContainer from './js/gameRound/gameRoundContainer'
 import GameResultsContainer from './js/gameResults/gameResultsContainer'
 import HighScoresContainer from './js/highScores/highScoresContainer'
+import {get_images, update_images} from './js/backend'
 import {
   Switch,
   Route,
@@ -22,7 +23,7 @@ function App() {
   const lobbyNav = ["Lobby", () => history.push("/lobby")]
   const joinNav = ["Join game", () => history.push("/join")]
   const hostNav = ["Host game", () => history.push("/host")]
-  const gameNav = ["Game round", () => history.push("/game")]
+  const gameNav = ["Game round", () => {history.push("/game"); update_images("FoodPorn", 3, "UAA8"); get_images("UAA8", images => {console.log(images)})}] //TESTING IMAGES PART
   const resultsNav = ["Results", () => history.push("/results")]
   const hsNav = ["High Scores", () => history.push("/high_scores")]
 

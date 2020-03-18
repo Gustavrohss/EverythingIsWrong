@@ -1,4 +1,5 @@
 import {fbDatabase} from "./firebaseConfig"
+import {imgur_client_ID} from "./configAPI_imgur"
 
 /* Here we have functions to read and write from the database*/
 
@@ -145,3 +146,84 @@ export function destroyLobby(lobbyName){
 
     //ref.off() <-- stop listening to this.
 }
+
+function imgur_call_api(uri){
+  var myHeaders = new Headers();
+  myHeaders.append("Authorization", imgur_client_ID);
+
+  var requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+    //body: formdata,
+    redirect: 'follow'
+  };
+
+  var url = "https://api.imgur.com/3/" + uri;
+
+  return fetch(url, requestOptions)
+      .then(response => response.json())
+      .then(result => result.data)
+      .catch(error => console.log('error', error));
+}
+
+function imgur_subreddit(subreddit="FoodPorn"){
+  var uri = "gallery/r/"+subreddit+"/top/all";
+  return imgur_call_api(uri); 
+}
+
+//retrieve and add images to a specific lobby-code. ONLY THE HOST OF THE GAME CAN USE THIS!!!
+//MIGHT GET REPLACED BY A CLOUD FUNCTION INSTEAD
+export function update_images(subreddit, num_images, lobbyCode=""){
+  //if lobby-code is not valid
+  const ref = fbDatabase.ref("/lobbies/" + lobbyCode)
+
+  ref.once("value").then(snapshot => {
+    if(snapshot.exists()){  //If lobby code exists
+      imgur_subreddit().then(data => {
+        var images = {}
+        for(let i = 0; i < num_images; i++){
+          //console.log(data[Math.floor(Math.random() * data.length)])
+          images[i] = data[Math.floor(Math.random() * data.length)].link
+        }
+        fbDatabase.ref("/lobbies/"+lobbyCode+"/images/").set(images) //update the database.
+        //console.log(data)
+      });
+    }else {
+      //lobby does not exist
+      throw new Error("Lobby " + lobbyCode + " does not exist!"); //Failure!
+    }
+
+  })
+  //Get #num_images random entries 
+}
+
+//Function that get images and do something with them.
+//Inspired from this thread: Problem is asynchronousicity
+//https://stackoverflow.com/questions/34905600/best-way-to-retrieve-firebase-data-and-return-it-or-an-alternative-way
+export function get_images(lobbyCode="", callback){
+  const ref = fbDatabase.ref("/lobbies/" + lobbyCode + "/images/")
+
+  ref.once("value").then(snapshot => {
+    if(snapshot.exists()) { //Check if lobby exists
+      //console.log("images exxist!");
+      //console.log(snapshot.val());
+      //console.log(snapshot.val()[0]);
+      var images = snapshot.val();
+      callback(images);
+      //return snapshot.val();
+    }
+    else {
+      throw new Error("Lobby " + lobbyCode + " does not exist!");
+    }
+  })
+}
+/*
+Example usage:
+
+print_images(){
+  get_images(lobbyCode, images => {
+    //Do your stuff with the images here.
+    link_0 = images[0] //eg
+  })
+}
+*/
