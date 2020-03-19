@@ -3,7 +3,8 @@ import React from 'react'
 const GameRoundComponent = ({
     results: [resultsLabel, resultsCallback],
     roundInfo = {
-        promptString: "Which of these locations is secretly a pie?",
+        modelType: "Food",
+        imageType: "Celebrity",
         options: [
             [
                 "https://i.ytimg.com/vi/Tdac7EAyL80/maxresdefault.jpg",
@@ -31,19 +32,22 @@ const GameRoundComponent = ({
 }) => {
 
 // State hook
+// Placeholder
 // https://reactjs.org/docs/hooks-state.html
 const [showResults, setShowResults] = React.useState(false)
 /*
 
     Images are a column, not a row, currently.
     This might be preferable for mobile use.
-    Design work left as a TODO.
+    Styling work left as a TODO.
 
     What works right now should give an idea of how to implement further functionality.
 
 */
 return (<div>
-    <p align = {"center"}>{roundInfo.promptString}</p>
+    <p align = {"center"}>
+        {makePrompt(roundInfo.imageType, roundInfo.modelType)}
+    </p>
     <div>
         {roundInfo.options.map(
             ([image, value, correct], index) => 
@@ -79,7 +83,7 @@ const makePrompt = function(imageType, modelType) {
 
     let promptString = "What "
     const rand = (array) => {
-        idx = Math.floor(Math.random() * array.length)
+        const idx = Math.floor(Math.random() * array.length)
         return array[idx]
     }
 

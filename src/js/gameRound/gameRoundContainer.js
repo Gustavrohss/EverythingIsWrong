@@ -3,7 +3,7 @@ import GameRoundComponent from './gameRoundComponent'
 import {increaseScore} from '../actions/gameSessionActions'
 
 const mapStateToProps = (state, ownProps) => ({
-
+  
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => {
