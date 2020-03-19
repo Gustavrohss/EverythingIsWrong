@@ -147,6 +147,16 @@ export function destroyLobby(lobbyName){
     //ref.off() <-- stop listening to this.
 }
 
+
+
+//=====================================
+/*
+CLARIFAI BACKEND
+*/
+
+
+
+//Call the imgur api
 function imgur_call_api(uri){
   var myHeaders = new Headers();
   myHeaders.append("Authorization", imgur_client_ID);
@@ -176,8 +186,7 @@ function imgur_subreddit(subreddit="FoodPorn"){
 export function update_images(subreddit, num_images, lobbyCode=""){
   //if lobby-code is not valid
   const ref = fbDatabase.ref("/lobbies/" + lobbyCode)
-
-  ref.once("value").then(snapshot => {
+  return ref.once("value").then(snapshot => {
     if(snapshot.exists()){  //If lobby code exists
       imgur_subreddit().then(data => {
         var images = {}
@@ -185,30 +194,28 @@ export function update_images(subreddit, num_images, lobbyCode=""){
           //console.log(data[Math.floor(Math.random() * data.length)])
           images[i] = data[Math.floor(Math.random() * data.length)].link
         }
-        fbDatabase.ref("/lobbies/"+lobbyCode+"/images/").set(images) //update the database.
+        return fbDatabase.ref("/lobbies/"+lobbyCode+"/images/").set(images) //update the database.
         //console.log(data)
       });
     }else {
       //lobby does not exist
       throw new Error("Lobby " + lobbyCode + " does not exist!"); //Failure!
     }
-
   })
-  //Get #num_images random entries 
 }
 
 //Function that get images and do something with them.
 //Inspired from this thread: Problem is asynchronousicity
 //https://stackoverflow.com/questions/34905600/best-way-to-retrieve-firebase-data-and-return-it-or-an-alternative-way
 export function get_images(lobbyCode="", callback){
-  const ref = fbDatabase.ref("/lobbies/" + lobbyCode + "/images/")
+  const ref = fbDatabase.ref("/lobbies/" + lobbyCode)
 
   ref.once("value").then(snapshot => {
     if(snapshot.exists()) { //Check if lobby exists
       //console.log("images exxist!");
       //console.log(snapshot.val());
       //console.log(snapshot.val()[0]);
-      var images = snapshot.val();
+      var images = snapshot.child("images").val();
       callback(images);
       //return snapshot.val();
     }
