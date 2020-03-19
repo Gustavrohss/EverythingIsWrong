@@ -2,54 +2,64 @@ import React from 'react'
 
 const GameRoundComponent = ({
     results: [resultsLabel, resultsCallback],
-    roundInfo = {
-        modelType: "Food",
-        imageType: "Celebrity",
-        options: [
-            [
-                "https://i.ytimg.com/vi/Tdac7EAyL80/maxresdefault.jpg",
-                0.3, false
-            ],
-            [
-                "https://i.ytimg.com/vi/WRsPwaDT8Ao/maxresdefault.jpg",
-                0.4, false
-            ],
-            [
-                "https://i.ytimg.com/vi/UobKColhhtU/maxresdefault.jpg",
-                0.7, true
-            ]
-        ],
-        answers: [  // null before the answers start coming in
-            ["Alice", "Bob"],
-            ["Carla", "Duncan", "Erika"],
-            ["Fandango"]
-        ]
-    }
+    gameInfo,
+    players,
     /*
         Exact shape/specification of roundInfo TBD
         See default argument for testing example
     */
 }) => {
 
+// DEBUGGING PLACEHOLDER
+if (true) gameInfo = {
+    modelType: "Food",
+    imageType: "Celebrity",
+    options: [
+        [
+            "https://i.ytimg.com/vi/Tdac7EAyL80/maxresdefault.jpg",
+            0.3, false
+        ],
+        [
+            "https://i.ytimg.com/vi/WRsPwaDT8Ao/maxresdefault.jpg",
+            0.4, false
+        ],
+        [
+            "https://i.ytimg.com/vi/UobKColhhtU/maxresdefault.jpg",
+            0.7, true
+        ]
+    ],
+    answers: [  // null before the answers start coming in
+        ["Alice", "Bob"],
+        ["Carla", "Duncan", "Erika"],
+        ["Fandango"]
+    ]
+}
+// END
+
+
 // State hook
 // Placeholder
+// This will be based on whether or not, some variation of:
+// -- All players have answered
+// -- Some single field is set (which, in turn, is set when all players have answered)
 // https://reactjs.org/docs/hooks-state.html
 const [showResults, setShowResults] = React.useState(false)
-/*
 
-    Images are a column, not a row, currently.
+
+/*
+    Images are currently a column, not a row, in the view.
     This might be preferable for mobile use.
     Styling work left as a TODO.
 
     What works right now should give an idea of how to implement further functionality.
-
 */
 return (<div>
     <p align = {"center"}>
-        {makePrompt(roundInfo.imageType, roundInfo.modelType)}
+    <b>Round {gameInfo.round}: </b>
+        {makePrompt(gameInfo.imageType, gameInfo.modelType)}
     </p>
     <div>
-        {roundInfo.options.map(
+        {gameInfo.options.map(
             ([image, value, correct], index) => 
             <figure key = {index}>
                 <img 
@@ -62,7 +72,7 @@ return (<div>
                 {showResults ? 
                 (<figcaption>
                     {value}
-                    {roundInfo.answers[index].map(
+                    {gameInfo.answers[index].map(
                         (player, index2) => correct ?
                         (<p key = {index2}>
                             <b>{player} + 1</b>

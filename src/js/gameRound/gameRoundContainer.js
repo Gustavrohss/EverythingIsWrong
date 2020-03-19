@@ -3,7 +3,8 @@ import GameRoundComponent from './gameRoundComponent'
 import {increaseScore} from '../actions/gameSessionActions'
 
 const mapStateToProps = (state, ownProps) => ({
-  
+  gameInfo: state.gameSession.gameInfo,
+  players: state.gameSession.players
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => {
@@ -13,6 +14,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       resultsLabel,
       () => {
         // Composed function to use callback and (placeholder) increase player score on database
+        // Place holder
         resultsCallback()
         dispatch(increaseScore(1))
       }
