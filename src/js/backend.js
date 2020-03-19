@@ -1,10 +1,39 @@
 import {fbDatabase} from "./firebaseConfig"
 import {imgur_client_ID} from "./configAPI_imgur"
 
-/* Here we have functions to read and write from the database*/
+/**
+ * Here we have functions to read and write from the Realtime Database
+ * Basic guide for read/write operations: https://firebase.google.com/docs/database/web/read-and-write
+ * Docs: https://firebase.google.com/docs/reference/js/firebase.database
+ *
+ * The structure of the database is:
+ * lobbise: {
+ *   <lobbyID>: {
+ *     players: {
+ *       gameInfo: {
+ *         round: (int)
+ *       },
+ *       <playerID>: {
+ *         score: (int),
+ *         name: (str),
+ *         status: LOBBY/FETCHING/READY/ANSWERING
+ *       },
+ *       settings: {
+ *         gameType: 0
+ *       }
+ *     }
+ *   }
+ * }
+ */
 
-// Create a lobby in the database
-// Returns a promise which returns the new lobby and the player ID of the host.
+/**
+ * Create a lobby in the database
+ * @param {str} hostName - the chosen alias for the host
+ * @param {Object} settings - a setting-object with the settings of the game
+ *
+ * @return {Object} Returns the new lobby and the player ID of the host as an
+ *          object with a `playerID` and a `lobby` element.
+ */
 export function createLobby(hostName, settings) {
     const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
     let lobbyID = ""
@@ -25,8 +54,16 @@ export function createLobby(hostName, settings) {
     return fbDatabase.ref("/lobbies/" + lobbyID).set(lobby).then(() => ({playerID: "host", lobby}));
 }
 
-// Join an existing lobby
-// Returns a promise which returns the new lobby and the player ID of the user
+/**
+ * Join an existing lobby.
+ * @param {str} lobbyCode - the ID of the lobby that should be joined
+ * @param {str} user - the chosen alias for the player that will join the lobby
+ *
+ * @return {Promise} Returns a promise which returns the new lobby and the
+ *          player ID of the user as an object on the form {playerID, lobby}.
+ *          If the lobby doesn't exist (or a game session is already running
+ *          in the lobby),the returned promise will fail.
+ */
 export function joinLobby(lobbyCode, user) {
     const ref = fbDatabase.ref("/lobbies/" + lobbyCode)
 
@@ -37,6 +74,7 @@ export function joinLobby(lobbyCode, user) {
                 score: 0
             });
 
+            // TODO: check that the players in the lobby haven't started playing yet.
             return pushReturn.then(() => {
               return ref.once("value").then(snapshot => {
                 //console.log("pID: " + pushReturn.key + ", snapshot:")
@@ -51,8 +89,20 @@ export function joinLobby(lobbyCode, user) {
     })
 }
 
-// Set listeners to the lobby with ID `lobbyCode`
-// Returns a function that will unsubscribe to the lobby
+/**
+ * Start subscribing to changes in a specific lobby.
+ * @param {str} lobbyCode - the ID of the lobby
+ * @param {({gameInfo: Object}) => any} gameInfoCallback - A function handling
+ *    updates to the gameInfo value in the lobby. Gets the new gameInfo-value.
+ * @param {({player: Object, playerID: str}) => any} addPlayerCallback - A function
+ *    handling new players that has joined the lobby.
+ * @param {({player: Object, playerID: str}) => any} changePlayerCallback - A function
+ *    handling changes to a specific player. Gets the new player value.
+ * @param {({playerID: str}) => any} removePlayerCallback - A function handling
+ *    deletion of a specific player in the lobby.
+ *
+ * @return {() => undefined} Returns a function which will unsubscribe to the lobby.
+ */
 export function setListener(
   lobbyCode,
   gameInfoCallback,
@@ -98,6 +148,18 @@ export function setListener(
     return () => stopListener(lobbyCode, listeners)
 }
 
+/**
+ * Turn off listeners connected to a specific lobbby.
+ * @param {str} lobbyCode - the ID of the lobby
+ * @param gameInfoListener - a callback that can be passed to `ref.off()`
+ *    to turn off the listener on gameInfo-changes
+ * @param playerChangedListener - a callback that can be passed to `ref.off()`
+ *    to turn off the listener on player updates
+ * @param playerAddedListener - a callback that can be passed to `ref.off()`
+ *    to turn off the listeners on added players
+ * @param playerRemovedListener - a callback that can be passed to `ref.off()`
+ *    to turn off the listeners on player removals
+ */
 export function stopListener(lobbyCode, {
     gameInfoListener,
     playerChangedListener,
@@ -117,6 +179,15 @@ export function readLobby(){
 }
 
 // Update the score of a specific player in a specific lobby
+/**
+ * Updates the score of a specific player in a specific lobby.
+ * @param {str} lobbyCode - the ID of the lobby
+ * @param {str} playerID - the ID of the player
+ * @param {number} newScore - the new score of the player
+ *
+ * @return {Promise} Returns a promise that will fail if the player or
+ *    lobby does not exist.
+ */
 export function updateScore(lobbyCode, playerID, newScore){
     const playerPath = `lobbies/${lobbyCode}/players/${playerID}`
     return fbDatabase.ref(playerPath).once("value").then(snapshot => {
@@ -128,19 +199,33 @@ export function updateScore(lobbyCode, playerID, newScore){
     })
 }
 
-// Delete a specific player in a lobby
-// NOTE: make sure to unsubscribe listeners before removal
+/**
+ * Delete a specific player in a specific lobby.
+ * NOTE: make sure to unsubscribe listeners before removal
+ * @param {str} lobbyCode - the ID of the lobby
+ * @param {str} playerID - the ID of the player
+ *
+ * @return {Promise}
+ */
 export function deletePlayer(lobbyCode, playerID){
     return fbDatabase.ref(`lobbies/${lobbyCode}/players/${playerID}`).remove()
+        // TODO: remove these console.logs... The client should handle failure instead
+        // Should maybe check if lobby and player exist
         .then(() => console.log(`Successfully removed player ${playerID} from ${lobbyCode}`))
         .catch(error => console.log(`Remove failed: ${error.message}`))
 }
 
-//Delete lobby
+/**
+ * Delete a specific lobby from the database
+ * @param {str} lobbyName - the ID of the lobby
+ *
+ * @return {Promise}
+ */
 export function destroyLobby(lobbyName){
     /*TODO: Remove users in the lobby?*/
     //const name = "AAAB"
     return fbDatabase.ref('lobbies/' + lobbyName).remove()
+        // TODO: remove these console.logs... The client should handle failure instead
         .then(()=> console.log("Removed "+ lobbyName + " successfully!"))
         .catch(error => console.log("Remove failed: " + error.message));
 

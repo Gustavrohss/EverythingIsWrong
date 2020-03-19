@@ -9,6 +9,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 
 })
 
+// Container for high scores component
 const HighScoreContainer = connect(
     mapStateToProps,
     mapDispatchToProps

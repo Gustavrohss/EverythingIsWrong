@@ -16,6 +16,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 
+// Container for lobby component
 const LobbyContainer = connect(
     mapStateToProps,
     mapDispatchToProps

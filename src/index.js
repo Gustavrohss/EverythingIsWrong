@@ -11,6 +11,7 @@ import {BrowserRouter} from "react-router-dom";
 const store = createStore(
     rootReducer,
     applyMiddleware(
+        // This is what allows us to dispatch functions rather than objects
         ReduxThunk
     )
 )

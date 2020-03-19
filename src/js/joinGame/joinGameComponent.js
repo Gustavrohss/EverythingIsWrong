@@ -2,18 +2,13 @@ import React from 'react'
 
 // Join Game component.
 // Shown when a player wants to join a game.
-
-/*
-    TODO
-    Pass custom events to inputs, buttons
-    Styling
-*/
-
 const JoinGameComponent = ({
     home: [homeLabel, homeCallback],
     lobby: [lobbyLabel, lobbyCallback],
     joinLobby
 }) => {
+// State hooks
+// https://reactjs.org/docs/hooks-state.html
 const [text, setText] = React.useState("");
 const [code, setCode] = React.useState("");
 

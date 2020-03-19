@@ -1,0 +1,22 @@
+[debug] [2020-03-19T17:43:50.167Z] ----------------------------------------------------------------------
+[debug] [2020-03-19T17:43:50.170Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Daniel\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js functions:shell
+[debug] [2020-03-19T17:43:50.170Z] CLI Version:   7.15.1
+[debug] [2020-03-19T17:43:50.170Z] Platform:      win32
+[debug] [2020-03-19T17:43:50.171Z] Node Version:  v12.16.1
+[debug] [2020-03-19T17:43:50.172Z] Time:          Thu Mar 19 2020 18:43:50 GMT+0100 (GMT+01:00)
+[debug] [2020-03-19T17:43:50.172Z] ----------------------------------------------------------------------
+[debug] [2020-03-19T17:43:50.172Z] 
+[debug] [2020-03-19T17:43:50.182Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-03-19T17:43:50.183Z] > authorizing via signed-in user
+[debug] [2020-03-19T17:43:50.183Z] [iam] checking project micro-harbor-239311 for permissions ["firebase.projects.get"]
+[debug] [2020-03-19T17:43:50.185Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/micro-harbor-239311:testIamPermissions  
+
+[debug] [2020-03-19T17:43:51.124Z] <<< HTTP RESPONSE 200
+[warn] !  Your requested "node" version "8" doesn't match your global version "12"
+[info] +  functions: functions emulator started at http://localhost:5000
+[debug] [2020-03-19T17:43:52.168Z] [functions] Watching "C:\Users\Daniel\Desktop\EverythingIsWrong\functions" for Cloud Functions...
+[debug] [2020-03-19T17:43:52.195Z] DEBUG: [worker-pool] addWorker(~diagnostic~)
+[debug] [2020-03-19T17:43:52.196Z] DEBUG: [worker-pool] Adding worker with key ~diagnostic~, total=1
+[debug] [2020-03-19T17:43:52.196Z] DEBUG: [worker-pool] submitWork(triggerId=)
+[debug] [2020-03-19T17:43:52.197Z] DEBUG: [worker-~diagnostic~-f8668fc7-ee41-46d1-947b-731a20dbd649]: Assigning socketPath: \\?\pipe\C:\Users\Daniel\Desktop\EverythingIsWrong\functions\26344
+[debug] [2020-03-19T17:43:52.197Z] DEBUG: [worker-~diagnostic~-f8668fc7-ee41-46d1-947b-731a20dbd649]: BUSY
