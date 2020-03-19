@@ -240,8 +240,12 @@ CLARIFAI BACKEND
 */
 
 
-
 //Call the imgur api
+//Documentation: https://apidocs.imgur.com/?version=latest
+/**
+ * 
+ * @param {str} uri 
+ */
 function imgur_call_api(uri){
   var myHeaders = new Headers();
   myHeaders.append("Authorization", imgur_client_ID);
@@ -249,7 +253,6 @@ function imgur_call_api(uri){
   var requestOptions = {
     method: 'GET',
     headers: myHeaders,
-    //body: formdata,
     redirect: 'follow'
   };
 
@@ -261,13 +264,25 @@ function imgur_call_api(uri){
       .catch(error => console.log('error', error));
 }
 
+/**
+ * 
+ * @param {str} subreddit 
+ */
 function imgur_subreddit(subreddit="FoodPorn"){
   var uri = "gallery/r/"+subreddit+"/top/all";
   return imgur_call_api(uri); 
 }
 
 //retrieve and add images to a specific lobby-code. ONLY THE HOST OF THE GAME CAN USE THIS!!!
-//MIGHT GET REPLACED BY A CLOUD FUNCTION INSTEAD
+//Documentation: https://apidocs.imgur.com/?version=latest#98f68034-15a0-4044-a9ac-5ff3dc75c6b0
+/**
+ * 
+ * @param {str} subreddit 
+ * @param {number} num_images 
+ * @param {str} lobbyCode 
+ * 
+ * @return {Promise} 
+ */
 export function update_images(subreddit, num_images, lobbyCode=""){
   //if lobby-code is not valid
   const ref = fbDatabase.ref("/lobbies/" + lobbyCode)
@@ -276,7 +291,6 @@ export function update_images(subreddit, num_images, lobbyCode=""){
       imgur_subreddit().then(data => {
         var images = {}
         for(let i = 0; i < num_images; i++){
-          //console.log(data[Math.floor(Math.random() * data.length)])
           images[i] = data[Math.floor(Math.random() * data.length)].link
         }
         return fbDatabase.ref("/lobbies/"+lobbyCode+"/images/").set(images) //update the database.
@@ -292,6 +306,11 @@ export function update_images(subreddit, num_images, lobbyCode=""){
 //Function that get images and do something with them.
 //Inspired from this thread: Problem is asynchronousicity
 //https://stackoverflow.com/questions/34905600/best-way-to-retrieve-firebase-data-and-return-it-or-an-alternative-way
+/**
+ * 
+ * @param {str} lobbyCode 
+ * @param {function} callback 
+ */
 export function get_images(lobbyCode="", callback){
   const ref = fbDatabase.ref("/lobbies/" + lobbyCode)
 
