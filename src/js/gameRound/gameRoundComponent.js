@@ -3,7 +3,7 @@ import React from 'react'
 const GameRoundComponent = ({
     results: [resultsLabel, resultsCallback],
     gameInfo,
-    players,
+    answers,
     answerCallback
     /*
         Exact shape/specification of roundInfo TBD
@@ -28,11 +28,6 @@ if (true) gameInfo = {
             "https://i.ytimg.com/vi/UobKColhhtU/maxresdefault.jpg",
             0.7, true
         ]
-    ],
-    answers: [  // null before the answers start coming in
-        ["Alice", "Bob"],
-        ["Carla", "Duncan", "Erika"],
-        ["Fandango"]
     ]
 }
 // END
@@ -76,13 +71,13 @@ return (<div>
                 {showResults ?
                 (<figcaption>
                     {value}
-                    {gameInfo.answers[index].map(
+                    {answers[index].map(
                         (player, index2) => correct ?
                         (<p key = {index2}>
-                            <b>{player} + 1</b>
+                            <b>{player.name} + 1</b>
                         </p>) :
                         (<p key = {index2}>
-                            {player}
+                            {player.name}
                         </p>))}
                 </figcaption>) : null}
             </figure>
