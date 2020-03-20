@@ -274,6 +274,7 @@ export function destroyLobby(lobbyName){
 * run: npm install clarifai
 */
 
+//Client and app.
 const Clarifai = require('clarifai'); //require the client
 const clarifai_app = new Clarifai.App({
   apiKey: clarifai_client_key
@@ -293,42 +294,35 @@ const clarifai_app = new Clarifai.App({
 
 //Call clarifai api
 //Documentation https://docs.clarifai.com/api-guide/predict
-function compute_score(images, model=Clarifai.GENERAL_MODEL){
-  // Initialize with the client key.
-
-  //for elements the elements in links compute the score.
-  var score = 0
+function compute_image_value(images, model=Clarifai.GENERAL_MODEL, score_type=random_val){
   
-  clarifai_app.models.predict(model, images)
-    .then(response => console.log(response))
+  //Return a promise containing the scores.
+  return clarifai_app.models.predict(model, images)
+    .then(response => response['outputs'])
     .then(result => {
-      console.log("Success!");
+      const scores = result.map(r => score_type(r.data.concepts));
+      return scores 
     })
     .catch(error => console.log(error.message));
-  
+  //return scores;
 }
 
 
-
+//Score functions:
 /**
- * 
- * @param {array[Object]} data ??? 
- * @param {function} score_type ???
- */
-function general_score(data, score_type){
-
-}
-
-/**
- * 
+ * @param {object} data This contains the concepts from clarifai.
  * @returns {number} score-value
  */
-function nsfw_score(){
+export function random_val(data){
+  return Math.random();
 }
 
-//Get scores and values.
+export function general_val(data){
 
+}
 
+export function nsfw_val(data){
+}
 
 //======================================
 /**
@@ -347,8 +341,9 @@ function nsfw_score(){
                                   ANIMALS: "r/aww",
                                   EARTHPORN: "r/earthporn",
                                   CARS: "r/carporn",
-                                  BEARS: "r/bears"}
+                                  BEARS: "r/bears"
                                   /*FEEL FREE TO ADD MORE*/
+  }
 
 //Call the imgur api
 //Documentation: https://apidocs.imgur.com/?version=latest
@@ -398,7 +393,7 @@ function imgur_subreddit(subreddit="FoodPorn"){
  * @return {Promise} 
  */
 export function update_images(subreddit, num_images, lobbyCode=""){
-  if(subreddit="") {
+  if(subreddit==="") {
     var keys = Object.keys(imgur_galleries);
     subreddit = imgur_galleries[keys[ keys.length * Math.random() << 0]];
   }
@@ -414,11 +409,12 @@ export function update_images(subreddit, num_images, lobbyCode=""){
             url: data[Math.floor(Math.random() * data.length)].link, 
             id: i  + ''
           };
-          //compute_score(images[i]);
         }
-        compute_score(images);
-        return fbDatabase.ref("/lobbies/"+lobbyCode+"/images/").set(images) //update the database.
-        //console.log(data)
+        return ref.child("/images/").set(images)  //Update images.
+                .then(() => compute_image_value(images))  //Compute image values.
+                .then(values => ref.child("/imagesValues/").set(values)) //Update image values.
+                .catch(error => console.log(error.message));
+        
       });
     }else {
       //lobby does not exist
@@ -435,23 +431,6 @@ export function update_images(subreddit, num_images, lobbyCode=""){
  * @param {str} lobbyCode 
  * @param {function} callback 
  */
-export function get_images(lobbyCode="", callback){
-  const ref = fbDatabase.ref("/lobbies/" + lobbyCode)
-
-  ref.once("value").then(snapshot => {
-    if(snapshot.exists()) { //Check if lobby exists
-      //console.log("images exxist!");
-      //console.log(snapshot.val());
-      //console.log(snapshot.val()[0]);
-      var images = snapshot.child("images").val();
-      callback(images);
-      //return snapshot.val();
-    }
-    else {
-      throw new Error("Lobby " + lobbyCode + " does not exist!");
-    }
-  })
-}
 /*
 Example usage:
 
@@ -462,3 +441,17 @@ print_images(){
   })
 }
 */
+export function get_images(lobbyCode="", callback){
+  const ref = fbDatabase.ref("/lobbies/" + lobbyCode)
+
+  ref.once("value").then(snapshot => {
+    if(snapshot.exists()) { //Check if lobby exists
+      var images = snapshot.child("images").val();
+      callback(images);
+      //return snapshot.val();
+    }
+    else {
+      throw new Error("Lobby " + lobbyCode + " does not exist!");
+    }
+  })
+}
