@@ -4,6 +4,7 @@ import React from 'react'
 const GameResultsComponent = ({
     home: [homeLabel, homeCallback],
     game: [gameLabel, gameCallback],
+    canContinue,
     scores
 }) =>
 // TODO
@@ -20,7 +21,7 @@ const GameResultsComponent = ({
         }
     </ol>
     <button onClick={homeCallback}>{homeLabel}</button>
-    <button onClick={gameCallback}>{gameLabel}</button>
+    <button onClick={gameCallback} disabled={!canContinue}>{gameLabel}</button>
 </div>)
 
 export default GameResultsComponent

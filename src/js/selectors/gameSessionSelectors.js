@@ -32,6 +32,13 @@ export const getPlayerID = createSelector(
   id => id
 )
 
+// Check if the player is the host of the current game
+export const isHost = createSelector(
+  [playerID],
+  id => id === "host"
+)
+
+// Get the score of the player in the current game
 export const getScore = createSelector(
   [score],
   score => score
@@ -56,12 +63,13 @@ export const getPlayerList = createSelector(
   [players],
   playersObj => {
     return playersObj ?
-    Object.keys(playersObj)
-      .map(pID => ({
-        playerID: pID,
-        name: playersObj[pID].name,
-        score: playersObj[pID].score
-      })) : []
+      Object.keys(playersObj)
+        .map(pID => ({
+          playerID: pID,
+          name: playersObj[pID].name,
+          score: playersObj[pID].score,
+          status: playersObj[pID].status
+        })) : []
   }
 )
 
@@ -72,6 +80,16 @@ export const getPlayerListSorted = createSelector(
   players => {
     return players.sort((p1, p2) => p2.score - p1.score)
   }
+)
+
+// Check if all players in the lobby has status "READY"
+// If 0 players in lobby, this returns false
+export const allPlayersReady = createSelector(
+  [getPlayerList],
+  players => players.reduce(
+    (allReady, player) => (allReady && player.status === "READY"),
+    players.length > 0 // We want to return false if length = 0
+  )
 )
 
 // Get the unsubscribe-function which will unsubscribe to changes

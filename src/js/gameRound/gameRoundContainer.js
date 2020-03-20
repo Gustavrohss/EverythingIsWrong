@@ -1,6 +1,6 @@
 import {connect} from 'react-redux'
 import GameRoundComponent from './gameRoundComponent'
-import {increaseScore} from '../actions/gameSessionActions'
+import {increaseScore, setStatus, STATUS} from '../actions/gameSessionActions'
 
 const mapStateToProps = (state, ownProps) => ({
   gameInfo: state.gameSession.gameInfo,
@@ -17,6 +17,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         // Place holder
         resultsCallback()
         dispatch(increaseScore(1))
+        dispatch(setStatus(STATUS.ready))
       }
     ]
   }
