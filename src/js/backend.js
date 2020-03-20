@@ -279,21 +279,51 @@ const clarifai_app = new Clarifai.App({
   apiKey: clarifai_client_key
 });
 
+//List public models to use:
+/*
+  Celebrities -> Clarifai.CELEBRITY_MODEL
+  Food - Clarifai.FOOD_MODEL
+  NSFW - Clarifai.NSFW_MODEL
+  Demographics - Clarifai.DEMOGRAPHICS_MODEL
+  Travel - Clarifai.TRAVEL_MODEL
+  General - Clarifai.General model
+
+*/
+
 
 //Call clarifai api
-function compute_score(link){
+//Documentation https://docs.clarifai.com/api-guide/predict
+function compute_score(images, model=Clarifai.GENERAL_MODEL){
   // Initialize with the client key.
 
   //for elements the elements in links compute the score.
   var score = 0
-
-  //Do the prediction here 
-  clarifai_app.models.predict("e466caa0619f444ab97497640cefc4dc" , link)
-    .then(response => response.outputs[0])
+  
+  clarifai_app.models.predict(model, images)
+    .then(response => console.log(response))
     .then(result => {
-      console.log(result.data);
+      console.log("Success!");
     })
     .catch(error => console.log(error.message));
+  
+}
+
+
+
+/**
+ * 
+ * @param {array[Object]} data ??? 
+ * @param {function} score_type ???
+ */
+function general_score(data, score_type){
+
+}
+
+/**
+ * 
+ * @returns {number} score-value
+ */
+function nsfw_score(){
 }
 
 //Get scores and values.
@@ -305,6 +335,20 @@ function compute_score(link){
  * IMGUR API
  * 
  */
+
+ /**
+  * GALLERIES TO USE: 
+  */
+  export const imgur_galleries = {
+                                  FOOD: "FoodPorn",
+                                  BURGERS:  "burgers",
+                                  PIZZA:  "pizza",
+                                  DESSERT: "DessertPorn",
+                                  ANIMALS: "r/aww",
+                                  EARTHPORN: "r/earthporn",
+                                  CARS: "r/carporn",
+                                  BEARS: "r/bears"}
+                                  /*FEEL FREE TO ADD MORE*/
 
 //Call the imgur api
 //Documentation: https://apidocs.imgur.com/?version=latest
@@ -328,7 +372,7 @@ function imgur_call_api(uri){
 
   return fetch(url, requestOptions)
       .then(response => response.json())
-      .then(result => result.data)
+      .then(result => result.data.filter(d => d.type === "image/jpeg")) //only get images, ignore anything else.
       .catch(error => console.log('error', error));
 }
 
@@ -354,16 +398,25 @@ function imgur_subreddit(subreddit="FoodPorn"){
  * @return {Promise} 
  */
 export function update_images(subreddit, num_images, lobbyCode=""){
+  if(subreddit="") {
+    var keys = Object.keys(imgur_galleries);
+    subreddit = imgur_galleries[keys[ keys.length * Math.random() << 0]];
+  }
+
   //if lobby-code is not valid
   const ref = fbDatabase.ref("/lobbies/" + lobbyCode)
   return ref.once("value").then(snapshot => {
     if(snapshot.exists()){  //If lobby code exists
       imgur_subreddit().then(data => {
-        var images = {}
+        var images = []
         for(let i = 0; i < num_images; i++){
-          images[i] = data[Math.floor(Math.random() * data.length)].link
-          compute_score(images[i]);
+          images[i] = {
+            url: data[Math.floor(Math.random() * data.length)].link, 
+            id: i  + ''
+          };
+          //compute_score(images[i]);
         }
+        compute_score(images);
         return fbDatabase.ref("/lobbies/"+lobbyCode+"/images/").set(images) //update the database.
         //console.log(data)
       });
