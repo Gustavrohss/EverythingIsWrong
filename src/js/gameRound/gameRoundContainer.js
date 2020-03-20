@@ -8,18 +8,11 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  const [resultsLabel, resultsCallback] = ownProps.results
   return {
-    results: [
-      resultsLabel,
-      () => {
-        // Composed function to use callback and (placeholder) increase player score on database
-        // Place holder
-        resultsCallback()
-        dispatch(increaseScore(1))
-        dispatch(setStatus(STATUS.ready))
-      }
-    ]
+    answerCallback: (rightAnswer) => {
+      if (rightAnswer) dispatch(increaseScore(1))
+      dispatch(setStatus(STATUS.ready))
+    }
   }
 }
 

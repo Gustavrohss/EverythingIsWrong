@@ -4,6 +4,7 @@ const GameRoundComponent = ({
     results: [resultsLabel, resultsCallback],
     gameInfo,
     players,
+    answerCallback
     /*
         Exact shape/specification of roundInfo TBD
         See default argument for testing example
@@ -60,16 +61,19 @@ return (<div>
     </p>
     <div>
         {gameInfo.options.map(
-            ([image, value, correct], index) => 
+            ([image, value, correct], index) =>
             <figure key = {index}>
-                <img 
+                <img
                     src = {image}
-                    width = {"400px"} 
+                    width = {"400px"}
                     height = {"200px"}
                     alt = {"Placeholder"}
-                    onClick = {() => setShowResults(true) /* Will likely be some sort of listener for database, passed with roundInfo */}>
-                </img> 
-                {showResults ? 
+                    onClick = {showResults ? ()=> {} : () => {
+                      setShowResults(true);
+                      answerCallback(correct)
+                    } /* Will likely be some sort of listener for database, passed with roundInfo */}>
+                </img>
+                {showResults ?
                 (<figcaption>
                     {value}
                     {gameInfo.answers[index].map(
@@ -87,7 +91,7 @@ return (<div>
     <button onClick={resultsCallback}>{resultsLabel}</button>
 </div>)}
 
-// Prototype. 
+// Prototype.
 // The switch cases might be imported constants.
 const makePrompt = function(imageType, modelType) {
 
@@ -101,17 +105,17 @@ const makePrompt = function(imageType, modelType) {
     switch (imageType) {
         case "Food":
             options = [
-                "dish", 
-                "meal", 
-                "snack", 
+                "dish",
+                "meal",
+                "snack",
                 "healthy source of nutrition"
             ]
             break
         case "Dog":
             options = [
-                "furry lil' bastard", 
-                "bundle of joy", 
-                "friend", 
+                "furry lil' bastard",
+                "bundle of joy",
+                "friend",
                 "doge" /* Dead meme, I know */
             ]
             break
@@ -136,9 +140,9 @@ const makePrompt = function(imageType, modelType) {
         "has a secret identity as a",
         "doesn't look the part, but is a",
         "upon closer inspection hides a"
-    ]) 
+    ])
     promptString += " "
-    
+
     // Could take input from the model output.
     // Example: image of coffee matches John Cena 90%,
     //  Bring "top matching celebrity" (John) as input
