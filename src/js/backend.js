@@ -1,5 +1,5 @@
 import {fbDatabase} from "./firebaseConfig"
-import {imgur_client_ID} from "./configAPI_imgur"
+import {imgur_client_key, clarifai_client_key} from "./configAPI"
 
 /**
  * Here we have functions to read and write from the Realtime Database
@@ -9,22 +9,36 @@ import {imgur_client_ID} from "./configAPI_imgur"
  * The structure of the database is:
  * lobbise: {
  *   <lobbyID>: {
+ *     gameInfo: {
+ *       round: (int)
+ *       question: (string)
+ *     },
+ *     images: {
+ *       0: (url)
+ *       1: (url)
+ *       2: (url)
+ *     }
+ *     imageScores: {
+ *       0: (double)
+ *       1: (double)
+ *       2: (double)
+ *     }
  *     players: {
- *       gameInfo: {
- *         round: (int)
- *       },
  *       <playerID>: {
  *         score: (int),
  *         name: (str),
  *         status: LOBBY/FETCHING/READY/ANSWERING
- *       },
- *       settings: {
- *         gameType: 0
  *       }
+ *     },
+ *     settings: {
+ *       gameType: 0
  *     }
  *   }
  * }
+ * 
  */
+
+
 
 /**
  * Create a lobby in the database
@@ -233,22 +247,60 @@ export function destroyLobby(lobbyName){
 }
 
 
+//General call_api call?
+
 
 //=====================================
-/*
-CLARIFAI BACKEND
+/**
+* CLARIFAI BACKEND
+*
+*
+* run: npm install clarifai
 */
 
+const Clarifai = require('clarifai'); //require the client
+const clarifai_app = new Clarifai.App({
+  apiKey: clarifai_client_key
+});
+
+
+//Call clarifai api
+function compute_score(link){
+  // Initialize with the client key.
+
+  //for elements the elements in links compute the score.
+  var score = 0
+
+  //Do the prediction here 
+  clarifai_app.models.predict("e466caa0619f444ab97497640cefc4dc" , link)
+    .then(response => response.outputs[0])
+    .then(result => {
+      console.log(result.data);
+    })
+    .catch(error => console.log(error.message));
+}
+
+//Get scores and values.
+
+
+
+//======================================
+/**
+ * IMGUR API
+ * 
+ */
 
 //Call the imgur api
 //Documentation: https://apidocs.imgur.com/?version=latest
 /**
  * 
  * @param {str} uri 
+ * 
+ * @return {Promise}
  */
 function imgur_call_api(uri){
   var myHeaders = new Headers();
-  myHeaders.append("Authorization", imgur_client_ID);
+  myHeaders.append("Authorization", imgur_client_key);
 
   var requestOptions = {
     method: 'GET',
@@ -267,6 +319,8 @@ function imgur_call_api(uri){
 /**
  * 
  * @param {str} subreddit 
+ * 
+ * @return {Promise} from call_api
  */
 function imgur_subreddit(subreddit="FoodPorn"){
   var uri = "gallery/r/"+subreddit+"/top/all";
@@ -292,6 +346,7 @@ export function update_images(subreddit, num_images, lobbyCode=""){
         var images = {}
         for(let i = 0; i < num_images; i++){
           images[i] = data[Math.floor(Math.random() * data.length)].link
+          compute_score(images[i]);
         }
         return fbDatabase.ref("/lobbies/"+lobbyCode+"/images/").set(images) //update the database.
         //console.log(data)
@@ -303,8 +358,8 @@ export function update_images(subreddit, num_images, lobbyCode=""){
   })
 }
 
-//Function that get images and do something with them.
-//Inspired from this thread: Problem is asynchronousicity
+//Function that allows users to get images and do something with them.
+//Inspired from this thread: Problem is asynchronousicity, solved by encapsulating it with callback function.
 //https://stackoverflow.com/questions/34905600/best-way-to-retrieve-firebase-data-and-return-it-or-an-alternative-way
 /**
  * 
