@@ -4,7 +4,8 @@ import {
   setListener,
   deletePlayer as deletePlayerBackend,
   updateScore as updateScoreBackend,
-  updateStatus as updateStatusBackend} from '../backend'
+  updateStatus as updateStatusBackend,
+  answerQuestion as answerQuestionBackend} from '../backend'
 import {
   getUsername,
   getSettings,
@@ -218,6 +219,26 @@ export const increaseScore = dx => {
     return updateScoreBackend(getLobbyID(state), getPlayerID(state), newScore)
       .catch( error => {
         console.log("Error when updating score:")
+        console.log(error)
+      })
+      .finally(() => dispatch(hideLoader()))
+  }
+}
+
+
+// Register that the player answers a question. Updates the score if answer
+// was correct and register the answer in the database.
+export const answerQuestion = (answerOption, correct) => {
+  // TODO: should probably be able to check if answer is correct by
+  //       only getting the `answerOption` and looking in `gameInfo`
+  return (dispatch, getState) => {
+    const state = getState()
+    const newScore = correct ? getScore(state) + 1 : getScore(state)
+    if (correct) dispatch(setScore(newScore))
+    dispatch(showLoader())
+    return answerQuestionBackend(getLobbyID(state), getPlayerID(state), answerOption, newScore)
+      .catch( error => {
+        console.log("Error when answering question:")
         console.log(error)
       })
       .finally(() => dispatch(hideLoader()))

@@ -70,7 +70,7 @@ return (<div>
                     alt = {"Placeholder"}
                     onClick = {showResults ? ()=> {} : () => {
                       setShowResults(true);
-                      answerCallback(correct)
+                      answerCallback(index, correct)
                     } /* Will likely be some sort of listener for database, passed with roundInfo */}>
                 </img>
                 {showResults ?

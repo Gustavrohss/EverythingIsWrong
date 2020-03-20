@@ -1,6 +1,6 @@
 import {connect} from 'react-redux'
 import GameRoundComponent from './gameRoundComponent'
-import {increaseScore, setStatus, STATUS} from '../actions/gameSessionActions'
+import {answerQuestion} from '../actions/gameSessionActions'
 
 const mapStateToProps = (state, ownProps) => ({
   gameInfo: state.gameSession.gameInfo,
@@ -9,9 +9,8 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    answerCallback: (rightAnswer) => {
-      if (rightAnswer) dispatch(increaseScore(1))
-      dispatch(setStatus(STATUS.ready))
+    answerCallback: (answerOption, correct) => {
+      dispatch(answerQuestion(answerOption, correct))
     }
   }
 }
