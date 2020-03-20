@@ -15,6 +15,7 @@ import {
 } from "react-router-dom"
 
 function App() {
+
   const history = useHistory()
 
   // Navigation labels and custom events
