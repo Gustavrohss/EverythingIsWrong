@@ -13,7 +13,7 @@ import {
   getUnsubscribe,
   getPlayerID,
   getScore} from '../selectors/gameSessionSelectors'
-import {showLoader, hideLoader} from './loaderActions'
+import {asyncAction, performAsync} from './utilActions'
 
 /**
  * All possible actions regarding the gameSession part of the state
@@ -139,40 +139,38 @@ export const setScore = newScore => {
 
 /* ------------------ async actions ------------------ */
 
-// Will create and join a new lobby in the database and add listeners to it
-// in order to keep the state up to date with the database
+/**
+ * Will create and join a new lobby in the database and add listeners to it
+ * in order to keep the state up to date with the database
+ */
 export const createLobby = () => {
-  return (dispatch, getState) => {
-    dispatch(showLoader())
-    createLobbyBackend(getUsername(getState()), getSettings(getState()))
-        .then(({playerID, lobby}) => {
-            dispatch(initGameSession(playerID, lobby))
-            setBackendListeners(dispatch, getState)
-        })
-        .catch(error => {
-          console.log("Error when creating lobby:")
-          console.log(error)
-        })
-        .finally(() => dispatch(hideLoader()))
-  }
+  return asyncAction(
+      (dispatch, getState) => {
+        return createLobbyBackend(getUsername(getState()), getSettings(getState()))
+            .then(({playerID, lobby}) => {
+                dispatch(initGameSession(playerID, lobby))
+                setBackendListeners(dispatch, getState)
+            })
+      },
+      "Error when creating lobby:"
+  )
 }
 
-// Join an already existing lobby in the database and add listeners to it
-// in order to keep the state up to date with the database
+/**
+ * Join an already existing lobby in the database and add listeners to it
+ * in order to keep the state up to date with the database
+ */
 export const joinLobby = (lobbyID) => {
-  return (dispatch, getState) => {
-    dispatch(showLoader())
-    joinLobbyBackend(lobbyID, getUsername(getState()))
+  return asyncAction(
+    (dispatch, getState) => {
+      return joinLobbyBackend(lobbyID, getUsername(getState()))
         .then(({playerID, lobby}) => {
             dispatch(initGameSession(playerID, lobby))
             setBackendListeners(dispatch, getState)
         })
-        .catch(error => {
-          console.log("Error when joining lobby:")
-          console.log(error)
-        })
-        .finally(() => dispatch(hideLoader()))
-  }
+    },
+    "Error when joining lobby:"
+  )
 }
 
 // *helpfunction* - adds listeners to the lobby in the database
@@ -189,45 +187,52 @@ const setBackendListeners = (dispatch, getState) => {
   dispatch(setUnsubscribe(unsubscribe))
 }
 
-// Makes the player leave a lobby and unsubscribe to future changes to it
+/**
+ * Makes the player leave a lobby and unsubscribe to future changes to it
+ */
 export const leaveLobby = () => {
   return (dispatch, getState) => {
-    const state = getState()
-    if (getLobbyID(state)) {
-      dispatch(showLoader())
-      const unsubscribe = getUnsubscribe(state)
-      unsubscribe()
-      return deletePlayerBackend(getLobbyID(state), getPlayerID(state))
-        .then(() => dispatch(resetGameSession()))
-        .catch(error => {
-          console.log("Error when leaving lobby")
-          console.log(error)
-        })
-        .finally(() => dispatch(hideLoader()))
+    if (getLobbyID(getState())) {
+      performAsync(
+        dispatch,
+        getState,
+        (dispatch, getState) => {
+          const state = getState()
+          const unsubscribe = getUnsubscribe(state)
+          unsubscribe()
+          return deletePlayerBackend(getLobbyID(state), getPlayerID(state))
+            .then(() => dispatch(resetGameSession()))
+        },
+        "Error when leaving lobby"
+      )
     }
   }
 }
 
-// Increase the points of the current player in state and database
-// The score will be increased with `dx` points
+/**
+ * Increase the points of the current player in state and database
+ * The score will be increased with `dx` points
+ */
 export const increaseScore = dx => {
   return (dispatch, getState) => {
-    const state = getState()
-    const newScore = getScore(state) + dx
-    dispatch(setScore(newScore))
-    dispatch(showLoader())
-    return updateScoreBackend(getLobbyID(state), getPlayerID(state), newScore)
-      .catch( error => {
-        console.log("Error when updating score:")
-        console.log(error)
-      })
-      .finally(() => dispatch(hideLoader()))
+    const newScore = getScore(getState()) + dx
+    performAsync(
+      dispatch,
+      getState,
+      (dispatch, getState) => updateScoreBackend(
+        getLobbyID(getState()),
+        getPlayerID(getState()),
+        newScore
+      ),
+      "Error when updating score:"
+    )
   }
 }
 
-
-// Register that the player answers a question. Updates the score if answer
-// was correct and register the answer in the database.
+/**
+ * Register that the player answers a question. Updates the score if answer
+ * was correct and register the answer in the database.
+ */
 export const answerQuestion = (answerOption, correct) => {
   // TODO: should probably be able to check if answer is correct by
   //       only getting the `answerOption` and looking in `gameInfo`
@@ -235,13 +240,16 @@ export const answerQuestion = (answerOption, correct) => {
     const state = getState()
     const newScore = correct ? getScore(state) + 1 : getScore(state)
     if (correct) dispatch(setScore(newScore))
-    dispatch(showLoader())
-    return answerQuestionBackend(getLobbyID(state), getPlayerID(state), answerOption, newScore)
-      .catch( error => {
-        console.log("Error when answering question:")
-        console.log(error)
-      })
-      .finally(() => dispatch(hideLoader()))
+    performAsync(
+      dispatch,
+      getState,
+      (dispatch, getState) => answerQuestionBackend(
+        getLobbyID(getState()),
+        getPlayerID(getState()),
+        answerOption,
+        newScore),
+      "Error when answering question:"
+    )
   }
 }
 
@@ -253,16 +261,15 @@ export const STATUS = {
   answering: "ANSWERING"
 }
 
-// Update the status of the player
+/**
+ * Update the status of the player in the database
+ */
 export const setStatus = newStatus => {
-  return (dispatch, getState) => {
-    const state = getState()
-    dispatch(showLoader())
-    return updateStatusBackend(getLobbyID(state), getPlayerID(state), newStatus)
-      .catch( error => {
-        console.log("Error when updating status:")
-        console.log(error)
-      })
-      .finally(() => dispatch(hideLoader()))
-  }
+  return asyncAction(
+    (dispatch, getState) => {
+      const state = getState()
+      return updateStatusBackend(getLobbyID(state), getPlayerID(state), newStatus)
+    },
+    "Error when updating status:"
+  )
 }
