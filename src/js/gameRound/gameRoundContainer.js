@@ -1,6 +1,6 @@
 import {connect} from 'react-redux'
 import GameRoundComponent from './gameRoundComponent'
-import {increaseScore} from '../actions/gameSessionActions'
+import {increaseScore, setStatus, STATUS} from '../actions/gameSessionActions'
 
 const mapStateToProps = (state, ownProps) => ({
   
@@ -15,6 +15,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         // Composed function to use callback and (placeholder) increase player score on database
         resultsCallback()
         dispatch(increaseScore(1))
+        dispatch(setStatus(STATUS.ready))
       }
     ]
   }

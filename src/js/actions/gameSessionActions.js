@@ -3,7 +3,8 @@ import {
   joinLobby as joinLobbyBackend,
   setListener,
   deletePlayer as deletePlayerBackend,
-  updateScore as updateScoreBackend} from '../backend'
+  updateScore as updateScoreBackend,
+  updateStatus as updateStatusBackend} from '../backend'
 import {
   getUsername,
   getSettings,
@@ -216,7 +217,29 @@ export const increaseScore = dx => {
     dispatch(showLoader())
     return updateScoreBackend(getLobbyID(state), getPlayerID(state), newScore)
       .catch( error => {
-        console.log("Error when updating score")
+        console.log("Error when updating score:")
+        console.log(error)
+      })
+      .finally(() => dispatch(hideLoader()))
+  }
+}
+
+// All possible player statuses
+export const STATUS = {
+  ready: "READY",
+  lobby: "LOBBY",
+  fetching: "FETCHING",
+  answering: "ANSWERING"
+}
+
+// Update the status of the player
+export const setStatus = newStatus => {
+  return (dispatch, getState) => {
+    const state = getState()
+    dispatch(showLoader())
+    return updateStatusBackend(getLobbyID(state), getPlayerID(state), newStatus)
+      .catch( error => {
+        console.log("Error when updating status:")
         console.log(error)
       })
       .finally(() => dispatch(hideLoader()))
