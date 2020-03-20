@@ -19,7 +19,8 @@ const gameSessionReducer = function(state = {
     lobbyID: null,
     players: null,
     settings: {
-        gameType: 0
+        gameType: 0,
+        questions: 2, // The number of questions in the session
     },
     self: {
       playerID: null,

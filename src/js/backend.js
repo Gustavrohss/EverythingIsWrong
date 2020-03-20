@@ -19,7 +19,8 @@ import {fbDatabase} from "./firebaseConfig"
  *         answerOption: -1-2 (0-2 = answered picture 0,1 or 2, -1= not answered )
  *       },
  *       settings: {
- *         gameType: 0
+ *         gameType: (int),
+ *         questions: (int) // number of questions in the game
  *       }
  *     }
  *   }
@@ -245,6 +246,35 @@ export function answerQuestion(lobbyCode, playerID, answerOption, newScore) {
       }
     }) :
     Promise.reject(new Error("Invalid answer option"))
+}
+
+/**
+ * Makes all players ready for the next question. Increments the round count
+ * and sets the status of all players to "ANSWERING"
+ *
+ * @param {str} lobbyCode - the ID of the lobby
+ */
+export function nextQuestion(lobbyCode) {
+  return fbDatabase.ref(`lobbies/${lobbyCode}/gameInfo/round`).once("value")
+    .then(snapshot => {
+      if (snapshot.exists()) { // check if lobby exists
+        const nextRound = snapshot.val() + 1
+        fbDatabase.ref(`lobbies/${lobbyCode}/gameInfo/round`)
+          .set(nextRound)
+          .then(
+            fbDatabase.ref(`lobbies/${lobbyCode}/players`).once("value").then(snapshot => {
+              let allUpdates = {}
+              snapshot.forEach((childSnapshot) => {
+                allUpdates[`${childSnapshot.key}/status`] = "ANSWERING"
+              })
+              return fbDatabase.ref(`lobbies/${lobbyCode}/players`)
+                .update(allUpdates)
+            })
+          )
+      } else {
+        throw new Error(`Lobby ${lobbyCode} does not exist, or has no gameInfo!`) //Failure!
+      }
+  })
 }
 
 /**
