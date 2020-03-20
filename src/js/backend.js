@@ -18,7 +18,7 @@ import {imgur_client_key, clarifai_client_key} from "./configAPI"
  *       1: (url)
  *       2: (url)
  *     }
- *     imageScores: {
+ *     imagesValues: {
  *       0: (double)
  *       1: (double)
  *       2: (double)
