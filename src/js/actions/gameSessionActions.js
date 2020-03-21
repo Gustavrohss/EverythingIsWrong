@@ -19,6 +19,16 @@ import {asyncAction, performAsync} from './utilActions'
  * All possible actions regarding the gameSession part of the state
  */
 
+/* ------------------ good constants ------------------ */
+
+ // All possible player statuses
+ export const STATUS = {
+   ready: "READY",
+   lobby: "LOBBY",
+   fetching: "FETCHING",
+   answering: "ANSWERING"
+ }
+
 /* ------------------ normal actions ------------------ */
 
 // Update the username of this player
@@ -137,6 +147,18 @@ export const setScore = newScore => {
   }
 }
 
+// Update the showAnswers value for the player
+// true - gamoComponent should show answers
+// false - gameComponent should not show the answers
+export const SET_SHOW_ANSWERS = "SET_SHOW_ANSWERS"
+
+export const setShowAnswers = show => {
+  return {
+    type: SET_SHOW_ANSWERS,
+    show
+  }
+}
+
 /* ------------------ async actions ------------------ */
 
 /**
@@ -240,6 +262,7 @@ export const answerQuestion = (answerOption, correct) => {
     const state = getState()
     const newScore = correct ? getScore(state) + 1 : getScore(state)
     if (correct) dispatch(setScore(newScore))
+    dispatch(setShowAnswers(true))
     performAsync(
       dispatch,
       getState,
@@ -251,14 +274,6 @@ export const answerQuestion = (answerOption, correct) => {
       "Error when answering question:"
     )
   }
-}
-
-// All possible player statuses
-export const STATUS = {
-  ready: "READY",
-  lobby: "LOBBY",
-  fetching: "FETCHING",
-  answering: "ANSWERING"
 }
 
 /**

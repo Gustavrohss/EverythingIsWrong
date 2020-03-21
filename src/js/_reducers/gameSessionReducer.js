@@ -9,7 +9,8 @@ import {
   DELETE_PLAYER,
   SET_UNSUBSCRIBE,
   RESET_GAME_SESSION,
-  SET_SCORE
+  SET_SCORE,
+  SET_SHOW_ANSWERS
 } from '../actions/gameSessionActions'
 
 /**
@@ -25,9 +26,11 @@ const gameSessionReducer = function(state = {
     self: {
       playerID: null,
       username: null,
-      score: 0
+      score: 0,
+      status: null
     },
     gameInfo: null,
+    showAnswers: false,
     unsubscribe: () => {}
 }, action) {
     switch(action.type) {
@@ -43,15 +46,19 @@ const gameSessionReducer = function(state = {
               self: Object.assign({}, state.self, {
                 score: action.newScore
               })})
+        case SET_SHOW_ANSWERS:
+            return Object.assign({}, state, {showAnswers: action.show})
         case INIT_GAME_SESSION:
+            const player = action.lobby.players[action.playerID]
             return Object.assign({}, state, {
               players: action.lobby.players,
               lobbyID: action.lobby.lobbyID,
               gameInfo: action.lobby.gameInfo,
               self: Object.assign({}, state.self, {
                 playerID: action.playerID,
-                score: 0
-              })
+                score: player.score
+              }),
+              settings: action.lobby.settings
             })
         case RESET_GAME_SESSION:
             return Object.assign({}, state, {
@@ -60,9 +67,11 @@ const gameSessionReducer = function(state = {
               self: {
                 playerID: null,
                 username: state.self.username,
-                score: 0
+                score: 0,
+                status: null
               },
               gameInfo: null,
+              showAnswers: false,
               unsubscribe: () => {}
             })
         case SET_PLAYERS:
@@ -72,7 +81,10 @@ const gameSessionReducer = function(state = {
               self: Object.assign({}, state.self, {playerID: action.newID})
             })
         case SET_GAME_INFO:
-            return Object.assign({}, state, {gameInfo: action.newGameInfo})
+            const updateObj = action.newGameInfo.round !== state.gameInfo.round ?
+              {gameInfo: action.newGameInfo, showAnswers: false} :
+              {gameInfo: action.newGameInfo}
+            return Object.assign({}, state, updateObj)
         case SET_LOBBY_ID:
             return Object.assign({}, state, {lobbyID: action.newID})
         case MODIFY_PLAYER:

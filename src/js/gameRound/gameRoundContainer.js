@@ -1,11 +1,16 @@
 import {connect} from 'react-redux'
 import GameRoundComponent from './gameRoundComponent'
 import {answerQuestion} from '../actions/gameSessionActions'
-import {getPlayerAnswers, getGameInfo} from '../selectors/gameSessionSelectors'
+import {
+  getPlayerAnswers,
+  getGameInfo,
+  getShowAnswers
+} from '../selectors/gameSessionSelectors'
 
 const mapStateToProps = (state, ownProps) => ({
   gameInfo: getGameInfo(state),
-  answers: getPlayerAnswers(state)
+  answers: getPlayerAnswers(state),
+  showResults: getShowAnswers(state)
 
 })
 

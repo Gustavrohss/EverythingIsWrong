@@ -20,6 +20,7 @@ const lobbyID = state => state.gameSession.lobbyID
 const players = state => state.gameSession.players
 const unsubscribe = state => state.gameSession.unsubscribe
 const gameInfo = state => state.gameSession.gameInfo
+const showAnswers = state => state.gameSession.showAnswers
 
 
 // Get the username to the player
@@ -38,6 +39,18 @@ export const getPlayerID = createSelector(
 export const isHost = createSelector(
   [playerID],
   id => id === "host"
+)
+
+// Check if the player have the status "answering" or not.
+export const isAnswering = createSelector(
+  [players, playerID],
+  (playersObj, id) => playersObj[id].status === STATUS.answering
+)
+
+// Chech if the answers should be showed in the game component or not
+export const getShowAnswers = createSelector(
+  [showAnswers],
+  show => show
 )
 
 // Get the score of the player in the current game

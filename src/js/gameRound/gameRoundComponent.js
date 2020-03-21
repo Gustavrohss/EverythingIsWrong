@@ -4,7 +4,8 @@ const GameRoundComponent = ({
     results: [resultsLabel, resultsCallback],
     gameInfo,
     answers,
-    answerCallback
+    answerCallback,
+    showResults
     /*
         Exact shape/specification of roundInfo TBD
         See default argument for testing example
@@ -39,7 +40,7 @@ if (true) gameInfo = {
 // -- All players have answered
 // -- Some single field is set (which, in turn, is set when all players have answered)
 // https://reactjs.org/docs/hooks-state.html
-const [showResults, setShowResults] = React.useState(false)
+//const [showResults, setShowResults] = React.useState(false)
 
 
 /*
@@ -63,10 +64,8 @@ return (<div>
                     width = {"400px"}
                     height = {"200px"}
                     alt = {"Placeholder"}
-                    onClick = {showResults ? ()=> {} : () => {
-                      setShowResults(true);
-                      answerCallback(index, correct)
-                    } /* Will likely be some sort of listener for database, passed with roundInfo */}>
+                    onClick = {showResults ? ()=> {} :
+                      () => answerCallback(index, correct)}>
                 </img>
                 {showResults ?
                 (<figcaption>
