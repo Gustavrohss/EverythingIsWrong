@@ -2,6 +2,8 @@ import React from 'react'
 
 const GameRoundComponent = ({
     results: [resultsLabel, resultsCallback],
+    next: [nextLable, nextCallback],
+    nextDisabled,
     round,          // which round is it?
     answerOptions,  // the answer options (images, correct, etc.)
     question,       // the question to be displayed
@@ -62,6 +64,7 @@ return (<div>
             </figure>
         )}
     </div>
+    <button onClick={nextCallback} disabled={nextDisabled}>{nextLable}</button>
     <button onClick={resultsCallback}>{resultsLabel}</button>
 </div>)}
 

@@ -10,7 +10,8 @@ import {fbDatabase} from "./firebaseConfig"
  *   <lobbyID>: {
  *     players: {
  *       gameInfo: {
- *         round: (int)
+ *         round: (int),
+ *         question: (str)
  *       },
  *       <playerID>: {
  *         score: (int),
@@ -46,7 +47,8 @@ export function createLobby(hostName, settings) {
         lobbyID: lobbyID,
         settings: settings,
         gameInfo: {
-            round: 0
+            round: 0,
+            question: ""
         },
         players: {
             host: getInitialPlayerObject(hostName)
@@ -251,16 +253,20 @@ export function answerQuestion(lobbyCode, playerID, answerOption, newScore) {
 /**
  * Makes all players ready for the next question. Increments the round count
  * and sets the status of all players to "ANSWERING"
- *
  * @param {str} lobbyCode - the ID of the lobby
+ * @param {str} question - the question for the next round
+ *
+ * @return {Promise} Returns a promise that will fail if the lobby does
+ *    not exist, or if lobby has no gameInfo.
  */
-export function nextQuestion(lobbyCode) {
+export function nextQuestion(lobbyCode, question) {
+  // TODO: Question should probably be moved elsewhere?
   return fbDatabase.ref(`lobbies/${lobbyCode}/gameInfo/round`).once("value")
     .then(snapshot => {
       if (snapshot.exists()) { // check if lobby exists
         const nextRound = snapshot.val() + 1
-        fbDatabase.ref(`lobbies/${lobbyCode}/gameInfo/round`)
-          .set(nextRound)
+        fbDatabase.ref(`lobbies/${lobbyCode}/gameInfo`)
+          .update({round: nextRound, question})
           .then(
             fbDatabase.ref(`lobbies/${lobbyCode}/players`).once("value").then(snapshot => {
               let allUpdates = {}

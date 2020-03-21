@@ -5,15 +5,20 @@ import {
   deletePlayer as deletePlayerBackend,
   updateScore as updateScoreBackend,
   updateStatus as updateStatusBackend,
-  answerQuestion as answerQuestionBackend} from '../backend'
+  answerQuestion as answerQuestionBackend,
+  nextQuestion as nextQuestionBackend} from '../backend'
 import {
   getUsername,
   getSettings,
   getLobbyID,
   getUnsubscribe,
   getPlayerID,
-  getScore} from '../selectors/gameSessionSelectors'
+  getScore,
+  getModelType, // debug data
+  getImageType  // debug data
+} from '../selectors/gameSessionSelectors'
 import {asyncAction, performAsync} from './utilActions'
+import makePrompt from '../questionGenerationMessaround' // DEBUG DATA!!
 
 /**
  * All possible actions regarding the gameSession part of the state
@@ -274,6 +279,19 @@ export const answerQuestion = (answerOption, correct) => {
       "Error when answering question:"
     )
   }
+}
+
+export const startNextRound = () => {
+  return asyncAction(
+    (dispatch, getState) => {
+      const state = getState()
+      return nextQuestionBackend(
+        getLobbyID(state),
+        makePrompt(getModelType(state), getImageType(state))
+      )
+    },
+    "Error in startNextRound:"
+  )
 }
 
 /**

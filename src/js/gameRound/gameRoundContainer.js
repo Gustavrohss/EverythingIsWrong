@@ -1,13 +1,14 @@
 import {connect} from 'react-redux'
 import GameRoundComponent from './gameRoundComponent'
-import {answerQuestion} from '../actions/gameSessionActions'
+import {answerQuestion, startNextRound} from '../actions/gameSessionActions'
 import {
   getPlayerAnswers,
   getGameInfo,
   getShowAnswers,
   getRoundCount,
   getOptions,
-  getQuestion
+  getQuestion,
+  allPlayersReady
 } from '../selectors/gameSessionSelectors'
 
 const mapStateToProps = (state, ownProps) => ({
@@ -16,15 +17,19 @@ const mapStateToProps = (state, ownProps) => ({
   showResults: getShowAnswers(state),
   round: getRoundCount(state),
   answerOptions: getOptions(state), // currently using debug data
-  question: getQuestion(state)      // currently using debug data
-
+  question: getQuestion(state),
+  nextDisabled: !allPlayersReady(state)
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     answerCallback: (answerOption, correct) => {
       dispatch(answerQuestion(answerOption, correct))
-    }
+    },
+    next: [
+      "Next Question",
+      () => dispatch(startNextRound())
+    ]
   }
 }
 
