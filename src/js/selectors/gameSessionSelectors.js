@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect'
 import {STATUS} from '../actions/gameSessionActions'
+import makePrompt from '../questionGenerationMessaround'
 
 /**
  * All getters that should be used when reading the gameSession state in
@@ -78,6 +79,12 @@ export const getGameInfo = createSelector(
   info => info
 )
 
+// Get the number of the current game round
+export const getRoundCount = createSelector(
+  [gameInfo],
+  infoObj => infoObj ? infoObj.round : undefined
+)
+
 // Get a list of all the players. Each player is represented as an
 // objet on the format: {playerID, name, score, status, answerOption}
 export const getPlayerList = createSelector(
@@ -140,3 +147,27 @@ export const getUnsubscribe = createSelector(
   [unsubscribe],
   func => func
 )
+
+
+/* --------------- testData --------------- */
+
+// Info about a game round
+export const getModelType = state => "Food"
+export const getImageType = state => "Celebrity"
+export const getQuestion = state => makePrompt(getModelType(state), getImageType(state))
+export const getOptions = state => {
+  return [
+    [
+        "https://i.ytimg.com/vi/Tdac7EAyL80/maxresdefault.jpg",
+        0.3, false
+    ],
+    [
+        "https://i.ytimg.com/vi/WRsPwaDT8Ao/maxresdefault.jpg",
+        0.4, false
+    ],
+    [
+        "https://i.ytimg.com/vi/UobKColhhtU/maxresdefault.jpg",
+        0.7, true
+    ]
+  ]
+}
