@@ -24,6 +24,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       () => {
           gameCallback()
           dispatch(setStatus(STATUS.answering))
+          
       }]
   }
 }

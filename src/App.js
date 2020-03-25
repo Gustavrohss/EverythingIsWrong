@@ -23,7 +23,7 @@ function App() {
   const lobbyNav  = ["Lobby",       () => history.push("/lobby")]
   const joinNav   = ["Join game",   () => history.push("/join")]
   const hostNav   = ["Host game",   () => history.push("/host")]
-  const gameNav   = ["Game round",  () => {history.push("/game"); update_images("", 5, "ET1O")}]
+  const gameNav   = ["Game round",  () => {history.push("/game"); /*update_images("", 5, "ET1O")*/}]
   const resultsNav= ["Results",     () => history.push("/results")]
   const hsNav     = ["High Scores", () => history.push("/high_scores")]
   
