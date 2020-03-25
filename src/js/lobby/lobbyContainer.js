@@ -3,6 +3,8 @@ import LobbyComponent from './lobbyComponent'
 import {getPlayerList, getLobbyID} from '../selectors/gameSessionSelectors'
 import {get_images} from '../backend'
 import {setStatus, STATUS} from '../actions/gameSessionActions'
+import {startNextRound} from '../actions/gameSessionActions'
+
 
 const mapStateToProps = (state, ownProps) => ({
   players: getPlayerList(state),
@@ -16,11 +18,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       gameLabel,
       () => {
           gameCallback()
-          dispatch(setStatus(STATUS.answering))
-      }],
-    get_images: (subreddit, num_images) => {
-        get_images(subreddit, num_images)
-      }
+          dispatch(startNextRound()) // TODO: only the host should start the quiz and generate quesion...
+      }]
   }
 }
 

@@ -18,18 +18,20 @@ import {imgur_client_key, clarifai_client_key} from "./configAPI"
  *         score: (int),
  *         name: (str),
  *         status: LOBBY/FETCHING/READY/ANSWERING
+ *         answerOption: -1-2 (0-2 = answered picture 0,1 or 2, -1= not answered )
  *       }
  *     },
  *     settings: {
- *       gameType: 0
+ *       gameType: (int),
+ *       questions: (int) // number of questions in the game
  *     }
  *   }
- * }
- * 
+ *} 
  */
 
-// Create an initial player object with a specific username
-const getInitialPlayerObject = (name) => ({name, score: 0, status: "READY"})
+
+ // Create an initial player object with a specific username
+ const getInitialPlayerObject = (name) => ({name, score: 0, status: "READY", answerOption: -1})
 
 
 /**
@@ -48,7 +50,8 @@ export function createLobby(hostName, settings) {
         lobbyID: lobbyID,
         settings: settings,
         gameInfo: {
-            round: 0
+            round: 0,
+            question: ""
         },
         players: {
             host: getInitialPlayerObject(hostName)
@@ -217,6 +220,70 @@ export function updateStatus(lobbyCode, playerID, newStatus) {
         }
       }) :
       Promise.reject(new Error("Invalid status")) // Returns a failing promise
+}
+
+/**
+ * Register an answer from a player. The status of the player will be set to
+ * "READY" and the new scores and status will be uploaded to the database.
+ * @param {str} lobbyCode - the ID of the lobby
+ * @param {str} playerID - the ID of the player
+ * @param {number} answerOption - a number indicating the chosen answer
+ *                -1 means nothing chosen (timelimit exeded)
+ *                 0,1 or 2 means corresponding answer.
+ * @param {number} newScore - the new score of the player
+ *
+ * @return {Promise} Returns a promise that will fail if the player or
+ *    lobby does not exist, or if the answer option is invalid.
+ */
+export function answerQuestion(lobbyCode, playerID, answerOption, newScore) {
+  const playerPath = `lobbies/${lobbyCode}/players/${playerID}`
+  return answerOption >= -1 && answerOption < 3 ?
+    fbDatabase.ref(playerPath).once("value").then(snapshot => {
+      if (snapshot.exists()) { // check if player exists
+        return fbDatabase.ref(playerPath)
+          .update({
+            status: "READY",
+            score: newScore,
+            answerOption
+          })
+      } else {
+        throw new Error(`Player ${playerID} does not exist in ${lobbyCode}!`) //Failure!
+      }
+    }) :
+    Promise.reject(new Error("Invalid answer option"))
+}
+
+/**
+ * Makes all players ready for the next question. Increments the round count
+ * and sets the status of all players to "ANSWERING"
+ * @param {str} lobbyCode - the ID of the lobby
+ * @param {str} question - the question for the next round
+ *
+ * @return {Promise} Returns a promise that will fail if the lobby does
+ *    not exist, or if lobby has no gameInfo.
+ */
+export function nextQuestion(lobbyCode, question) {
+  // TODO: Question should probably be moved elsewhere?
+  return fbDatabase.ref(`lobbies/${lobbyCode}/gameInfo/round`).once("value")
+    .then(snapshot => {
+      if (snapshot.exists()) { // check if lobby exists
+        const nextRound = snapshot.val() + 1
+        fbDatabase.ref(`lobbies/${lobbyCode}/gameInfo`)
+          .update({round: nextRound, question})
+          .then(
+            fbDatabase.ref(`lobbies/${lobbyCode}/players`).once("value").then(snapshot => {
+              let allUpdates = {}
+              snapshot.forEach((childSnapshot) => {
+                allUpdates[`${childSnapshot.key}/status`] = "ANSWERING"
+              })
+              return fbDatabase.ref(`lobbies/${lobbyCode}/players`)
+                .update(allUpdates)
+            })
+          )
+      } else {
+        throw new Error(`Lobby ${lobbyCode} does not exist, or has no gameInfo!`) //Failure!
+      }
+  })
 }
 
 /**

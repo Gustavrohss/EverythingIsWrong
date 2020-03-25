@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect'
+import {STATUS} from '../actions/gameSessionActions'
 
 /**
  * All getters that should be used when reading the gameSession state in
@@ -18,6 +19,8 @@ const settings = state => state.gameSession.settings
 const lobbyID = state => state.gameSession.lobbyID
 const players = state => state.gameSession.players
 const unsubscribe = state => state.gameSession.unsubscribe
+const gameInfo = state => state.gameSession.gameInfo
+const showAnswers = state => state.gameSession.showAnswers
 
 
 // Get the username to the player
@@ -36,6 +39,18 @@ export const getPlayerID = createSelector(
 export const isHost = createSelector(
   [playerID],
   id => id === "host"
+)
+
+// Check if the player have the status "answering" or not.
+export const isAnswering = createSelector(
+  [players, playerID],
+  (playersObj, id) => playersObj[id].status === STATUS.answering
+)
+
+// Chech if the answers should be showed in the game component or not
+export const getShowAnswers = createSelector(
+  [showAnswers],
+  show => show
 )
 
 // Get the score of the player in the current game
@@ -57,8 +72,25 @@ export const getLobbyID = createSelector(
   id => id
 )
 
+// Get the gameInfo object
+export const getGameInfo = createSelector(
+  [gameInfo],
+  info => info
+)
+
+// Get the number of the current game round
+export const getRoundCount = createSelector(
+  [gameInfo],
+  infoObj => infoObj ? infoObj.round : undefined
+)
+
+export const getQuestion = createSelector(
+  [gameInfo],
+  infoObj => infoObj ? infoObj.question : ""
+)
+
 // Get a list of all the players. Each player is represented as an
-// objet on the format: {playerID, name, score}
+// objet on the format: {playerID, name, score, status, answerOption}
 export const getPlayerList = createSelector(
   [players],
   playersObj => {
@@ -68,13 +100,15 @@ export const getPlayerList = createSelector(
           playerID: pID,
           name: playersObj[pID].name,
           score: playersObj[pID].score,
-          status: playersObj[pID].status
+          status: playersObj[pID].status,
+          answerOption: playersObj[pID].answerOption
         })) : []
   }
 )
 
 // Get a list of all the players sorted with highest score first.
-// Each player is represented as an objet on the format: {playerID, name, score}
+// Each player is represented as an objet on the format:
+// {playerID, name, score, status, answerOption}
 export const getPlayerListSorted = createSelector(
   [getPlayerList],
   players => {
@@ -87,9 +121,28 @@ export const getPlayerListSorted = createSelector(
 export const allPlayersReady = createSelector(
   [getPlayerList],
   players => players.reduce(
-    (allReady, player) => (allReady && player.status === "READY"),
+    (allReady, player) => (allReady && player.status === STATUS.ready),
     players.length > 0 // We want to return false if length = 0
   )
+)
+
+/**
+ * Get a list on the form [answered0, answered1, answered2] where answeredX is a
+ * list containing all players that have chosen the answer option X during
+ * this game round. The players are represented as objects on the form:
+ * {playerID, name, score, status, answerOption}
+ */
+export const getPlayerAnswers = createSelector(
+  [getPlayerList],
+  players => players
+    .filter(player => player.status === STATUS.ready && player.answerOption > -1)
+    .reduce(
+      (answers, player) => {
+        answers[player.answerOption].push(player)
+        return answers
+      },
+      [[],[],[]]
+    )
 )
 
 // Get the unsubscribe-function which will unsubscribe to changes
@@ -98,3 +151,26 @@ export const getUnsubscribe = createSelector(
   [unsubscribe],
   func => func
 )
+
+
+/* --------------- testData --------------- */
+
+// Info about a game round
+export const getModelType = state => "Food"
+export const getImageType = state => "Celebrity"
+export const getOptions = state => {
+  return [
+    [
+        "https://i.ytimg.com/vi/Tdac7EAyL80/maxresdefault.jpg",
+        0.3, false
+    ],
+    [
+        "https://i.ytimg.com/vi/WRsPwaDT8Ao/maxresdefault.jpg",
+        0.4, false
+    ],
+    [
+        "https://i.ytimg.com/vi/UobKColhhtU/maxresdefault.jpg",
+        0.7, true
+    ]
+  ]
+}

@@ -16,6 +16,7 @@ import {
 } from "react-router-dom"
 
 function App() {
+
   const history = useHistory()
 
   const aboutNav  = ["About",       () => history.push("/about")]
@@ -59,7 +60,7 @@ function App() {
         </Route>
         <Route path="/results">
           <GameResultsContainer
-            home={homeNav} game={gameNav}
+            home={homeNav}
           />
         </Route>
         <Route path="/high_scores">

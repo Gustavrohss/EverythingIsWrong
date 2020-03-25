@@ -1,16 +1,14 @@
 import {connect} from 'react-redux'
 import GameResultsComponent from './gameResultsComponent'
-import {leaveLobby, setStatus, STATUS} from '../actions/gameSessionActions'
-import {getPlayerListSorted, allPlayersReady} from '../selectors/gameSessionSelectors'
+import {leaveLobby} from '../actions/gameSessionActions'
+import {getPlayerListSorted} from '../selectors/gameSessionSelectors'
 
 const mapStateToProps = (state, ownProps) => ({
-  scores: getPlayerListSorted(state),
-  canContinue: allPlayersReady(state)
+  scores: getPlayerListSorted(state)
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   const [homeLabel, homeCallback] = ownProps.home
-  const [gameLabel, gameCallback] = ownProps.game
   return {
     home: [
       homeLabel,
@@ -18,14 +16,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
           // Composed function to use callback and also stop listening to database events
           homeCallback()
           dispatch(leaveLobby())
-    }],
-    game: [
-      gameLabel,
-      () => {
-          gameCallback()
-          dispatch(setStatus(STATUS.answering))
-          
-      }]
+    }]
   }
 }
 
