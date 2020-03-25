@@ -10,7 +10,8 @@ import {
   SET_UNSUBSCRIBE,
   RESET_GAME_SESSION,
   SET_SCORE,
-  SET_SHOW_ANSWERS
+  SET_SHOW_ANSWERS,
+  SET_SETTINGS
 } from '../actions/gameSessionActions'
 
 /**
@@ -74,6 +75,8 @@ const gameSessionReducer = function(state = {
               showAnswers: false,
               unsubscribe: () => {}
             })
+        case SET_SETTINGS:
+            return Object.assign({}, state, {settings: action.settings})
         case SET_PLAYERS:
             return Object.assign({}, state, {players: action.newPlayers})
         case SET_PLAYER_ID:

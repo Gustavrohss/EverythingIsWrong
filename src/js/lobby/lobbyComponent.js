@@ -30,7 +30,6 @@ const LobbyComponent = ({
     players,
     lobbyID,
     game: [gameLabel, gameCallbac],
-    get_images /*MOVE THIS TO gameRoundComponent????*/
 }) =>
 (<div>
     <button onClick =  {gameCallbac}>{gameLabel}</button>

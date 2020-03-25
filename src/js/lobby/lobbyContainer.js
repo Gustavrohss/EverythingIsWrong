@@ -1,8 +1,6 @@
 import {connect} from 'react-redux'
 import LobbyComponent from './lobbyComponent'
 import {getPlayerList, getLobbyID} from '../selectors/gameSessionSelectors'
-import {get_images} from '../backend'
-import {setStatus, STATUS} from '../actions/gameSessionActions'
 import {startNextRound} from '../actions/gameSessionActions'
 
 

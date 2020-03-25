@@ -67,6 +67,18 @@ export const resetGameSession = () => {
   }
 }
 
+
+// Set the settings of the game. such as game-mode or image galleries.
+export const SET_SETTINGS = "SET_SETTINGS"
+
+export const setSettings = (settings) => {
+  return {
+    type: SET_SETTINGS,
+    settings
+  }
+}
+
+
 // Assign a new value to the `players` value in the state
 export const SET_PLAYERS = "SET_PLAYERS"
 

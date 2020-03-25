@@ -348,6 +348,14 @@ const clarifai_app = new Clarifai.App({
 
 */
 
+export const clarifai_models = {
+                        CELEBRITIES: Clarifai.CELEBRITY_MODEL,
+                        FOOD: Clarifai.FOOD_MODEL,
+                        NSFW: Clarifai.NSFW_MODEL,
+                        DEMOGRAPHICS: Clarifai.DEMOGRAPHICS_MODEL,
+                        GENERAL: Clarifai.GENERAL_MODEL
+}
+
 
 //Call clarifai api
 //Documentation https://docs.clarifai.com/api-guide/predict
@@ -395,10 +403,10 @@ export function nsfw_val(data){
                                   BURGERS:  "burgers",
                                   PIZZA:  "pizza",
                                   DESSERT: "DessertPorn",
-                                  ANIMALS: "r/aww",
-                                  EARTHPORN: "r/earthporn",
-                                  CARS: "r/carporn",
-                                  BEARS: "r/bears"
+                                  ANIMALS: "aww",
+                                  EARTHPORN: "earthporn",
+                                  CARS: "carporn",
+                                  BEARS: "bears"
                                   /*FEEL FREE TO ADD MORE*/
   }
 
