@@ -142,13 +142,11 @@ const maxSumHelper = function(conceptsArr, excludeKey = null) {
 
 // For minimum sum of concepts
 const minSumHelper = function(conceptsArr, excludeKey = null) {
-    console.log(conceptsArr)
     const scoresArr = conceptsArr
         // Sum all concepts
         .map(concepts => Object.keys(concepts)
             // Option to exclude a key
             .reduce((acc, key) => key === excludeKey ? acc : acc + concepts[key], 0))
-    console.log(scoresArr)
     const minScore = Math.min(...scoresArr)
     const minIndex = scoresArr.findIndex(score => score === minScore)
 
