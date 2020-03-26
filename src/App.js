@@ -13,10 +13,52 @@ import {
   Route,
   useHistory
 } from "react-router-dom"
+// import {generatePromptAndScores} from './js/gameRoundGen'
 
 function App() {
 
   const history = useHistory()
+  // const TEST = generatePromptAndScores(
+  //   "MODEL_FOOD",
+  //   "r/bears",
+  //   [
+  //     {
+  //       outputs: [{
+  //         data: {
+  //           concepts: [
+  //             {name: "lemon", value: 0.5},
+  //             {name: "coffee", value: 0.2},
+  //             {name: "pie", value: 0.7}
+  //           ]
+  //         }
+  //       }]
+  //     },
+  //     {
+  //       outputs: [{
+  //         data: {
+  //           concepts: [
+  //             {name: "steak", value: 0.2},
+  //             {name: "apple", value: 0.9},
+  //             {name: "candy", value: 0.02}
+  //           ]
+  //         }
+  //       }]
+  //     },
+  //     {
+  //       outputs: [{
+  //         data: {
+  //           concepts: [
+  //             {name: "mint", value: 0.1}
+  //           ]
+  //         }
+  //       }]
+  //     }
+  //   ],
+  //   [
+  //     "IMAGE1", "IMAGE2", "IMAGE3"
+  //   ]
+  // )
+  // console.log(TEST)
 
   // Navigation labels and custom events
   const aboutNav  = ["About",       () => history.push("/about")]
