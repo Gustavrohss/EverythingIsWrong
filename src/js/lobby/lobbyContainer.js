@@ -1,6 +1,6 @@
 import {connect} from 'react-redux'
 import LobbyComponent from './lobbyComponent'
-import {setStatus, STATUS} from '../actions/gameSessionActions'
+import {startNextRound} from '../actions/gameSessionActions'
 import {getPlayerList} from '../selectors/gameSessionSelectors'
 
 const mapStateToProps = (state, ownProps) => ({
@@ -14,7 +14,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       gameLabel,
       () => {
           gameCallback()
-          dispatch(setStatus(STATUS.answering))
+          dispatch(startNextRound()) // TODO: only the host should start the quiz and generate quesion...
       }]
   }
 }

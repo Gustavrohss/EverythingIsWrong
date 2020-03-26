@@ -100,7 +100,7 @@ function App() {
         </Route>
         <Route path="/results">
           <GameResultsContainer
-            home={homeNav} game={gameNav}
+            home={homeNav}
           />
         </Route>
         <Route path="/high_scores">
