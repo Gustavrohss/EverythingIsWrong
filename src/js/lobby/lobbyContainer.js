@@ -1,10 +1,11 @@
 import {connect} from 'react-redux'
 import LobbyComponent from './lobbyComponent'
+import {getPlayerList, getLobbyID} from '../selectors/gameSessionSelectors'
 import {startNextRound} from '../actions/gameSessionActions'
-import {getPlayerList} from '../selectors/gameSessionSelectors'
 
 const mapStateToProps = (state, ownProps) => ({
-  players: getPlayerList(state)
+  players: getPlayerList(state),
+  lobbyID: getLobbyID(state)
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => {
