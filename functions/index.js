@@ -1,10 +1,20 @@
+//import {imgur_client_key, clarifai_client_key} from "./configAPI"
+
+
+//run in "npm install --save request" & "npm install --save request-promise" in this folder.
+//More documentation here: https://github.com/request/request-promise
 const functions = require('firebase-functions');
-const rp = require('request-promise')   //run in "npm install --save request" & "npm install --save request-promise" in this folder.
-                                        //More documentation here: https://github.com/request/request-promise
+const rp = require('request-promise')   
+
+
+//Run "npm install clarifai" in this folder
+const Clarifai = require('clarifai'); //require the client
+
+const gameRoundGen = require('./gameRoundGen');
+
+
 
 //Run "firebase deploy --only functions" in root folder to deploy functions
-
-
 
 // Functions here are not available in the program necessarily
 // They are just written here and the exported to Firebase
@@ -45,8 +55,8 @@ exports.UPDATE_IMAGES = functions.database.ref('/lobbies/{lobbyID}/gameInfo/')
                     CARS:       'carporn'
         };
         const MODELS = {
-                MODERATION:     'MODEL_MODERATION',
-                FOOD:           'MODEL_FOOD'
+                MODERATION:     Clarifai.MODERATION_MODEL,
+                FOOD:           Clarifai.FOOD_MODEL
         };
         
         //Randomly select one:
@@ -59,6 +69,8 @@ exports.UPDATE_IMAGES = functions.database.ref('/lobbies/{lobbyID}/gameInfo/')
         const num_images = 3;           // -||-
         //const lobbyID = context.params.lobbyID;
 
+        //var roundInfo = {};
+
         var requestOptions = {
             uri: 'https://api.imgur.com/3/' + extension,
             method: 'GET',
@@ -68,28 +80,42 @@ exports.UPDATE_IMAGES = functions.database.ref('/lobbies/{lobbyID}/gameInfo/')
             json: true // Automatically parses the JSON string in the response
         };
 
-       testFunction(context.params.lobbyID);
+        //Clarifai app
+        const clarifai_app = new Clarifai.App({
+            apiKey: "286e204639264eae96e7a2c20c781c13"
+            });
+
+       
         
         return rp(requestOptions)
-                .then(result => result.data)
+                .then(result => result.data.filter(d => d.type === "image/jpeg")) //filter out images
                 .then(data => {
-                    var images = {}
+                    var images = [] //array for clarifai app
                     for (let i = 0; i < num_images; i++) {
                         //console.log(data[Math.floor(Math.random() * data.length)])
                         images[i] = data[Math.floor(Math.random() * data.length)].link
                     }
-
+                    testFunction(context.params.lobbyID);
                     //Call to clarifai
-                    return clarifai_app
+                    return clarifai_app.models.predict(model, images)
+                        .then(response => response)
+                        .then(result => {
+                            const data = result.outputs;
+                            console.log(data);
 
-
-
-                    //Call to generate prompts and scores
-
-
-                    return change.after.ref.parent.child("images").set(images) //update the database.
+                            //Call to generate prompts and scores
+                            console.log(gameRoundGen.generatePromptAndScores({
+                                model,
+                                subreddit,
+                                data,
+                                images
+                            }))
+                            return change.after.ref.parent.child("images").set(images); //update the database.
+                        }
+                        ).catch(error => console.log(error.message));
                     //console.log(data)
-                });
+                })
+                .catch(error => console.log(error.message));
         
     });
 
@@ -112,33 +138,14 @@ function testFunction(lobbyID){
     console.log(lobbyID + " has had their round changed!");
 }
 
-
+//Cleanup. Delete a lobby if it has no players left.
 exports.CLEANUP = functions.database.ref("/lobbies/{lobbyID}/players/")
     .onDelete(snapshot => {
-        if (Object.keys(snapshot.ref.parent.toJSON()).length < 1) {
-            return snapshot.ref.parent.remove()
-        } 
-    })
-
-//=================================
-
-// THIS DOES NOT WORK EITHER
-// Tried several workarounds
-// No success
-/*
-exports.redditRequest = functions.https.onCall(async data => {
-    const imgur_client_id = "Client ID 5ca180817daefb2"
-    const myHeaders = new Headers();
-    myHeaders.append("Authorization", imgur_client_id);
-    const ftch = await fetch(
-        `https://api.imgur.com/3/gallery/r/${data.text}/top/all`,
-        {
-            method: 'GET',
-            headers: myHeaders,
-            redirect: 'follow'
+        //console.log(snapshot.ref.parent.toJSON());
+        //console.log(snapshot.ref.parent.parent.toJSON());
+        if (Object.keys(snapshot.val).length < 1) {
+            return snapshot.ref.parent.remove();
+        }else{
+            return null;
         }
-    )
-    const out = await ftch.json()
-    return out
-})
-*/
+    })
