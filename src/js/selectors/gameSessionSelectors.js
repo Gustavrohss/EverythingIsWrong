@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect'
 import {STATUS} from '../actions/gameSessionActions'
+import {generatePromptAndScores} from "../gameRoundGen"
 
 /**
  * All getters that should be used when reading the gameSession state in
@@ -159,18 +160,51 @@ export const getUnsubscribe = createSelector(
 export const getModelType = state => "Food"
 export const getImageType = state => "Celebrity"
 export const getOptions = state => {
-  return [
-    [
-        "https://i.ytimg.com/vi/Tdac7EAyL80/maxresdefault.jpg",
-        0.3, false
+  return generatePromptAndScores({
+    modelType: "MODEL_FOOD",
+    imageType: "r/bears",
+    modelOutputs: [
+      {
+        outputs: [{
+          data: {
+            concepts: [
+              {name: "lemon", value: 0},
+              {name: "coffee", value: 0},
+              {name: "candies", value: 0},
+              {name: "olive oil", value: 0},
+            ]
+          }
+        }]
+      },
+      {
+        outputs: [{
+          data: {
+            concepts: [
+              {name: "salmon", value: 0},
+              {name: "wheat", value: 0},
+              {name: "yeet", value: 0},
+              {name: "banana", value: 0},
+            ]
+          }
+        }]
+      },
+      {
+        outputs: [{
+          data: {
+            concepts: [
+              {name: "meat", value: 0},
+              {name: "cheese", value: 0},
+              {name: "fruit basket", value: 0},
+              {name: "milk", value: 0},
+            ]
+          }
+        }]
+      },
     ],
-    [
-        "https://i.ytimg.com/vi/WRsPwaDT8Ao/maxresdefault.jpg",
-        0.4, false
-    ],
-    [
-        "https://i.ytimg.com/vi/UobKColhhtU/maxresdefault.jpg",
-        0.7, true
+    images: [
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Orso_bruno_marsicano.jpg/1200px-Orso_bruno_marsicano.jpg",
+      "https://www.nps.gov/glba/learn/nature/images/2Bear_2.jpg",
+      "https://3c1703fe8d.site.internapcdn.net/newman/gfx/news/hires/2017/yosemitetrac.jpg"
     ]
-  ]
+  })
 }

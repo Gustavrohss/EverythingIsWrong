@@ -29,12 +29,12 @@ const MODEL_FOOD = "MODEL_FOOD"
 //  A Question for a game round based on the Model and Image types
 //  Scores for all of the images
 //
-export const generatePromptAndScores = function (
+export const generatePromptAndScores = function ({
     modelType,
     imageType,
     modelOutputs,
     images
-) {
+}) {
 
     const conceptsArr = modelOutputs.map(output => toConcepts(output, modelType))
 
