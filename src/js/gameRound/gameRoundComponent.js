@@ -7,7 +7,7 @@ const GameRoundComponent = ({
     round,          // which round is it?
     answerOptions,  // the answer options (images, correct, etc.)
     question,       // the question to be displayed
-    answers,        // the answers form all the other players
+    answers,        // the answers from all the other players
     answerCallback, // what should happen when a player clicks on an answer?
     showResults     // should the results for the round be shown?
     /*
@@ -32,6 +32,7 @@ const GameRoundComponent = ({
 
     What works right now should give an idea of how to implement further functionality.
 */
+console.log(answerOptions)
 return (<div>
     <p align = {"center"}>
     <b>Round {round}: </b>
@@ -39,7 +40,7 @@ return (<div>
     </p>
     <div>
         {answerOptions.map(
-            ([image, value, correct], index) =>
+            ({image, score, correctAnswer}, index) =>
             <figure key = {index}>
                 <img
                     src = {image}
@@ -47,13 +48,13 @@ return (<div>
                     height = {"200px"}
                     alt = {"Placeholder"}
                     onClick = {showResults ? ()=> {} :
-                      () => answerCallback(index, correct)}>
+                      () => answerCallback(index, correctAnswer)}>
                 </img>
                 {showResults ?
                 (<figcaption>
-                    {value}
+                    {score}
                     {answers[index].map(
-                        (player, index2) => correct ?
+                        (player, index2) => correctAnswer ?
                         (<p key = {index2}>
                             <b>{player.name} + 1</b>
                         </p>) :

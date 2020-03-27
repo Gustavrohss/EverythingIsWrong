@@ -15,8 +15,11 @@ import {
   getPlayerID,
   getScore,
   getModelType, // debug data
-  getImageType  // debug data
+  getImageType,  // debug data
+  getModelOutputs,
+  getImages
 } from '../selectors/gameSessionSelectors'
+import {generatePromptAndScores} from '../gameRoundGen'
 import {asyncAction, performAsync} from './utilActions'
 import makePrompt from '../questionGenerationMessaround' // DEBUG DATA!!
 
@@ -299,7 +302,12 @@ export const startNextRound = () => {
       const state = getState()
       return nextQuestionBackend(
         getLobbyID(state),
-        makePrompt(getModelType(state), getImageType(state))
+        generatePromptAndScores({
+          modelType: getModelType(state),
+          imageType: getImageType(state),
+          modelOutputs: getModelOutputs(state),
+          images: getImages(state)
+        })
       )
     },
     "Error in startNextRound:"

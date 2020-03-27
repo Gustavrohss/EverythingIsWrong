@@ -30,7 +30,7 @@ import {imgur_client_key, clarifai_client_key} from "./configAPI"
  *       questions: (int) // number of questions in the game
  *     }
  *   }
- *} 
+ *}
  */
 
 
@@ -260,19 +260,19 @@ export function answerQuestion(lobbyCode, playerID, answerOption, newScore) {
  * Makes all players ready for the next question. Increments the round count
  * and sets the status of all players to "ANSWERING"
  * @param {str} lobbyCode - the ID of the lobby
- * @param {str} question - the question for the next round
+ * @param {str}  - the question for the next round // TODO: UPDATE THIS LINE!!!
  *
  * @return {Promise} Returns a promise that will fail if the lobby does
  *    not exist, or if lobby has no gameInfo.
  */
-export function nextQuestion(lobbyCode, question) {
+export function nextQuestion(lobbyCode, roundInfo) {
   // TODO: Question should probably be moved elsewhere?
   return fbDatabase.ref(`lobbies/${lobbyCode}/gameInfo/round`).once("value")
     .then(snapshot => {
       if (snapshot.exists()) { // check if lobby exists
         const nextRound = snapshot.val() + 1
         fbDatabase.ref(`lobbies/${lobbyCode}/gameInfo`)
-          .update({round: nextRound, question})
+          .update({round: nextRound, roundInfo})
           .then(
             fbDatabase.ref(`lobbies/${lobbyCode}/players`).once("value").then(snapshot => {
               let allUpdates = {}
@@ -363,13 +363,13 @@ export const clarifai_models = {
 //Call clarifai api
 //Documentation https://docs.clarifai.com/api-guide/predict
 function compute_image_value(images, model=Clarifai.GENERAL_MODEL, score_type=random_val){
-  
+
   //Return a promise containing the scores.
   return clarifai_app.models.predict(model, images)
     .then(response => response['outputs'])
     .then(result => {
       const scores = result.map(r => score_type(r.data.concepts));
-      return scores 
+      return scores
     })
     .catch(error => console.log(error.message));
   //return scores;
@@ -395,11 +395,11 @@ export function nsfw_val(data){
 //======================================
 /**
  * IMGUR API
- * 
+ *
  */
 
  /**
-  * GALLERIES TO USE: 
+  * GALLERIES TO USE:
   */
   export const imgur_galleries = {
                                   FOOD: "FoodPorn",
@@ -416,9 +416,9 @@ export function nsfw_val(data){
 //Call the imgur api
 //Documentation: https://apidocs.imgur.com/?version=latest
 /**
- * 
- * @param {str} uri 
- * 
+ *
+ * @param {str} uri
+ *
  * @return {Promise}
  */
 function imgur_call_api(uri){
@@ -440,25 +440,25 @@ function imgur_call_api(uri){
 }
 
 /**
- * 
- * @param {str} subreddit 
- * 
+ *
+ * @param {str} subreddit
+ *
  * @return {Promise} from call_api
  */
 function imgur_subreddit(subreddit="FoodPorn"){
   var uri = "gallery/r/"+subreddit+"/top/all";
-  return imgur_call_api(uri); 
+  return imgur_call_api(uri);
 }
 
 //retrieve and add images to a specific lobby-code. ONLY THE HOST OF THE GAME CAN USE THIS!!!
 //Documentation: https://apidocs.imgur.com/?version=latest#98f68034-15a0-4044-a9ac-5ff3dc75c6b0
 /**
- * 
- * @param {str} subreddit 
- * @param {number} num_images 
- * @param {str} lobbyCode 
- * 
- * @return {Promise} 
+ *
+ * @param {str} subreddit
+ * @param {number} num_images
+ * @param {str} lobbyCode
+ *
+ * @return {Promise}
  */
 export function update_images(subreddit, num_images, lobbyCode=""){
   if(subreddit==="") {
@@ -474,7 +474,7 @@ export function update_images(subreddit, num_images, lobbyCode=""){
         var images = []
         for(let i = 0; i < num_images; i++){
           images[i] = {
-            url: data[Math.floor(Math.random() * data.length)].link, 
+            url: data[Math.floor(Math.random() * data.length)].link,
             id: i  + ''
           };
         }
@@ -482,7 +482,7 @@ export function update_images(subreddit, num_images, lobbyCode=""){
                 .then(() => compute_image_value(images))  //Compute image values.
                 .then(values => ref.child("/imagesValues/").set(values)) //Update image values.
                 .catch(error => console.log(error.message));
-        
+
       });
     }else {
       //lobby does not exist
@@ -495,9 +495,9 @@ export function update_images(subreddit, num_images, lobbyCode=""){
 //Inspired from this thread: Problem is asynchronousicity, solved by encapsulating it with callback function.
 //https://stackoverflow.com/questions/34905600/best-way-to-retrieve-firebase-data-and-return-it-or-an-alternative-way
 /**
- * 
- * @param {str} lobbyCode 
- * @param {function} callback 
+ *
+ * @param {str} lobbyCode
+ * @param {function} callback
  */
 /*
 Example usage:
