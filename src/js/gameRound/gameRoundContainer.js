@@ -16,7 +16,7 @@ const mapStateToProps = (state, ownProps) => ({
   answers: getPlayerAnswers(state),
   showResults: getShowAnswers(state),
   round: getRoundCount(state),
-  answerOptions: getAnswerOptions(state), // currently using debug data
+  answerOptions: getAnswerOptions(state),
   question: getQuestion(state),
   nextDisabled: !allPlayersReady(state)
 })

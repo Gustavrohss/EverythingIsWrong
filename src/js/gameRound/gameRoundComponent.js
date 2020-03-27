@@ -16,15 +16,6 @@ const GameRoundComponent = ({
     */
 }) => {
 
-// State hook
-// Placeholder
-// This will be based on whether or not, some variation of:
-// -- All players have answered
-// -- Some single field is set (which, in turn, is set when all players have answered)
-// https://reactjs.org/docs/hooks-state.html
-//const [showResults, setShowResults] = React.useState(false)
-
-
 /*
     Images are currently a column, not a row, in the view.
     This might be preferable for mobile use.
