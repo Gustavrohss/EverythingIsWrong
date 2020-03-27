@@ -37,7 +37,7 @@ exports.BIGSCORE = functions.database.ref("/highscores/")
 //When a new game round starts, "when game-round changes", make a call to imgur API and choose.abs
 //This would've worked if we pay-to-win
 //https://firebase.google.com/docs/functions/database-events#handle_event_data
-exports.UPDATE_IMAGES = functions.database.ref('/lobbies/{lobbyID}/gameInfo/')
+exports.UPDATE_IMAGES = functions.database.ref('/lobbies/{lobbyID}/gameInfo/round')
     .onUpdate((change, context) => {
         //TODO: add images to this lobby.
         // Only edit data AFTER it is created
@@ -61,7 +61,7 @@ exports.UPDATE_IMAGES = functions.database.ref('/lobbies/{lobbyID}/gameInfo/')
         
         //Randomly select one:
         const subreddit   = IMAGES.FOOD;
-        const model       = MODELS.MODERATION;
+        const model       = MODELS.MODEL_MODERATION;
         
         
         const imgur_client_id = 'Client-ID 5ca180817daefb2'
@@ -104,15 +104,15 @@ exports.UPDATE_IMAGES = functions.database.ref('/lobbies/{lobbyID}/gameInfo/')
                             console.log(data);
 
                             //Call to generate prompts and scores
-                            //roundInfo
-                            console.log(gameRoundGen.generatePromptAndScores({
+                            roundInfo = gameRoundGen.generatePromptAndScores({
                                 modelType: "MODEL_MODERATION",
                                 imageType: subreddit,
                                 modelOutputs: data,
                                 images: images
-                            }))
-                            return change.after.ref.parent.child("images").set(images); //update the database.
-                            //return change.after.ref.parent.child("gameInfo").set(roundInfo)
+                            })
+                            console.log(roundInfo);
+                            //return change.after.ref.parent.child("images").set(images); //update the database.
+                            return change.after.ref.parent.child("roundInfo").set(roundInfo)
                         }
                         ).catch(error => console.log(error.message));
                     //console.log(data)
