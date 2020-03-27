@@ -1,4 +1,9 @@
 import React from 'react'
+import styled from 'styled-components';
+import JoinGameButton from '/home/kostas/Courses2020/DH2642_Dynamic_Web/EverythingIsWrong/src/stylingBootstrap/JoinGameButton.js';
+import HostGameButton from '/home/kostas/Courses2020/DH2642_Dynamic_Web/EverythingIsWrong/src/stylingBootstrap/HostGameButton.js'
+import HighScoresButton from '../../stylingBootstrap/HighScoresButton.js';
+import AboutButton from '/home/kostas/Courses2020/DH2642_Dynamic_Web/EverythingIsWrong/src/stylingBootstrap/AboutButton.js'
 
 // The welcome screen component
 const WelcomeComponent = ({
@@ -7,26 +12,26 @@ const WelcomeComponent = ({
     about: [aboutLabel, aboutCallback],
     highScores: [highScoresLabel, highScoresCallback]
 }) =>
-(<div>
+(<React.Fragment>
     <p>Welcome to Everything is Wrong!</p>
     <table><tbody>
         <tr>
             <td>
-                <button onClick = {joinCallback}>{joinLabel}</button>
+                <JoinGameButton onClick = {joinCallback}>{joinLabel}</JoinGameButton>
             </td>
             <td>
-                <button onClick = {hostCallback}>{hostLabel}</button>
+                <HostGameButton onClick = {hostCallback}>{hostLabel}</HostGameButton>
             </td>
         </tr>
         <tr>
             <td>
-                <button onClick = {highScoresCallback}>{highScoresLabel}</button>
+                <HighScoresButton onClick = {highScoresCallback}>{highScoresLabel}</HighScoresButton>
             </td>
             <td>
-                <button onClick = {aboutCallback}>{aboutLabel}</button>
+                <AboutButton onClick = {aboutCallback}>{aboutLabel}</AboutButton>
             </td>
         </tr>
     </tbody></table>
-</div>)
+</React.Fragment>)
 
 export default WelcomeComponent
