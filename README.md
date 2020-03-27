@@ -34,6 +34,8 @@ For the backend development we're using:
 - Finish implementing the "Full Game" system.
 - Additional image and model categories.
 - Styling.
+- Implementing better feedback to users when the app is loading or error occurs.
+- Handling clients disconnecting during a game session
 - <b>TODO</b>
 
 ## File Structure
