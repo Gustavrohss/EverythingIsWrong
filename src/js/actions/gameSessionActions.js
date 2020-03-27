@@ -308,7 +308,6 @@ export const startNextRound = () => {
       const state = getState()
       return nextQuestionBackend(
         getLobbyID(state))
-      )
     },
     "Error in startNextRound:"
   )
