@@ -106,8 +106,8 @@ exports.UPDATE_IMAGES = functions.database.ref('/lobbies/{lobbyID}/gameInfo/')
                             //Call to generate prompts and scores
                             //roundInfo
                             console.log(gameRoundGen.generatePromptAndScores({
-                                modelType: model.ge,
-                                imageType: Object.keys(MODELS).find(key => MODELS[key] === val),
+                                modelType: "MODEL_MODERATION",
+                                imageType: subreddit,
                                 modelOutputs: data,
                                 images: images
                             }))
