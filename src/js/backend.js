@@ -270,14 +270,14 @@ export function answerQuestion(lobbyCode, playerID, answerOption, newScore) {
  * @return {Promise} Returns a promise that will fail if the lobby does
  *    not exist, or if lobby has no gameInfo.
  */
-export function nextQuestion(lobbyCode, roundInfo) {
+export function nextQuestion(lobbyCode) {
   // TODO: Roundinfo should be created by cloud functions
   return fbDatabase.ref(`lobbies/${lobbyCode}/gameInfo/round`).once("value")
     .then(snapshot => {
       if (snapshot.exists()) { // check if lobby exists
         const nextRound = snapshot.val() + 1
         fbDatabase.ref(`lobbies/${lobbyCode}/gameInfo`)
-          .update({round: nextRound, roundInfo})
+          .update({round: nextRound})
           .then(
             fbDatabase.ref(`lobbies/${lobbyCode}/players`).once("value").then(snapshot => {
               let allUpdates = {}

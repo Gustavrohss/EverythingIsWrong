@@ -307,13 +307,7 @@ export const startNextRound = () => {
     (dispatch, getState) => {
       const state = getState()
       return nextQuestionBackend(
-        getLobbyID(state),
-        generatePromptAndScores({
-          modelType: getModelType(state),
-          imageType: getImageType(state),
-          modelOutputs: getModelOutputs(state),
-          images: getImages(state)
-        })
+        getLobbyID(state))
       )
     },
     "Error in startNextRound:"

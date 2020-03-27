@@ -173,7 +173,7 @@ export const getUnsubscribe = createSelector(
 
 
 /* --------------- testData --------------- */
-
+/*
 // Info about a game round that should be input to the generatePromptAndScores function
 export const getModelType = state => "MODEL_FOOD"
 export const getImageType = state => "r/bears"
@@ -223,3 +223,4 @@ export const getModelOutputs = state => {
     },
   ]
 }
+*/
