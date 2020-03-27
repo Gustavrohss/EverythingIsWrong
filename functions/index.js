@@ -80,6 +80,7 @@ exports.UPDATE_IMAGES = functions.database.ref('/lobbies/{lobbyID}/gameInfo/')
                     }
 
                     //Call to clarifai
+                    return clarifai_app
 
 
 
@@ -106,9 +107,18 @@ function compute_image_value(images, model=Clarifai.GENERAL_MODEL){
 }
 */
 
+
 function testFunction(lobbyID){
     console.log(lobbyID + " has had their round changed!");
 }
+
+
+exports.CLEANUP = functions.database.ref("/lobbies/{lobbyID}/players")
+    .onDelete((snapshot, context) => {
+        if (Object.keys(context.params).length < 1) {
+            return snapshot.ref.parent.parent.remove()
+        } 
+    })
 
 //=================================
 
