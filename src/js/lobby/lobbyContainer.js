@@ -3,7 +3,6 @@ import LobbyComponent from './lobbyComponent'
 import {getPlayerList, getLobbyID} from '../selectors/gameSessionSelectors'
 import {startNextRound} from '../actions/gameSessionActions'
 
-
 const mapStateToProps = (state, ownProps) => ({
   players: getPlayerList(state),
   lobbyID: getLobbyID(state)

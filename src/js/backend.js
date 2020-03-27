@@ -7,7 +7,7 @@ import {imgur_client_key, clarifai_client_key} from "./configAPI"
  * Docs: https://firebase.google.com/docs/reference/js/firebase.database
  *
  * The structure of the database is:
- * lobbise: {
+ * lobbies: {
  *   <lobbyID>: {
  *     gameInfo: {
  *       round: (int)
@@ -19,6 +19,10 @@ import {imgur_client_key, clarifai_client_key} from "./configAPI"
  *         name: (str),
  *         status: LOBBY/FETCHING/READY/ANSWERING
  *         answerOption: -1-2 (0-2 = answered picture 0,1 or 2, -1= not answered )
+ *       },
+ *       settings: {
+ *         gameType: (int),
+ *         questions: (int) // number of questions in the game
  *       }
  *     },
  *     settings: {
@@ -32,7 +36,6 @@ import {imgur_client_key, clarifai_client_key} from "./configAPI"
 
  // Create an initial player object with a specific username
  const getInitialPlayerObject = (name) => ({name, score: 0, status: "READY", answerOption: -1})
-
 
 /**
  * Create a lobby in the database
