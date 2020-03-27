@@ -114,9 +114,9 @@ function testFunction(lobbyID){
 
 
 exports.CLEANUP = functions.database.ref("/lobbies/{lobbyID}/players/")
-    .onDelete((snapshot, context) => {
-        if (Object.keys(context.params.lobbyID).length < 1) {
-            return snapshot.ref.parent.parent.remove()
+    .onDelete(snapshot => {
+        if (Object.keys(snapshot.ref.parent.toJSON()).length < 1) {
+            return snapshot.ref.parent.remove()
         } 
     })
 
