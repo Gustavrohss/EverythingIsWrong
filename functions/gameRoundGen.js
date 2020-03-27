@@ -33,8 +33,8 @@ const toConcepts = function(modelOutput, modelType) {
 // SHOULD POTENTIALLY BE DEFINED ELSEWHERE AND IMPORTED HERE
 // FOR TESTING PURPOSES
 const IMAGES_FOOD = "FoodPorn"
-const IMAGES_BEARS = "r/bears"
-const IMAGES_CARS = "r/carporn"
+const IMAGES_BEARS = "bears"
+const IMAGES_CARS = "carporn"
 
 // MODEL TYPE CONSTANTS
 // SHOULD POTENTIALLY BE DEFINED ELSEWHERE AND IMPORTED HERE
@@ -55,7 +55,10 @@ module.exports.generatePromptAndScores = function ({
     modelOutputs,
     images
 }) {
-    
+    console.log(modelType);
+    console.log(imageType);
+    console.log(modelOutputs);
+    console.log(images);
     const conceptsArr = modelOutputs.map(output => toConcepts(output, modelType))
 
     let promptString = "Which "

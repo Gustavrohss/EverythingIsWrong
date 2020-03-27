@@ -55,8 +55,8 @@ exports.UPDATE_IMAGES = functions.database.ref('/lobbies/{lobbyID}/gameInfo/')
                     CARS:       'carporn'
         };
         const MODELS = {
-                MODERATION:     Clarifai.MODERATION_MODEL,
-                FOOD:           Clarifai.FOOD_MODEL
+                "MODEL_MODERATION":     Clarifai.MODERATION_MODEL,
+                "MODEL_FOOD":           Clarifai.FOOD_MODEL
         };
         
         //Randomly select one:
@@ -104,13 +104,15 @@ exports.UPDATE_IMAGES = functions.database.ref('/lobbies/{lobbyID}/gameInfo/')
                             console.log(data);
 
                             //Call to generate prompts and scores
+                            //roundInfo
                             console.log(gameRoundGen.generatePromptAndScores({
-                                model,
-                                subreddit,
-                                data,
-                                images
+                                modelType: model.ge,
+                                imageType: Object.keys(MODELS).find(key => MODELS[key] === val),
+                                modelOutputs: data,
+                                images: images
                             }))
                             return change.after.ref.parent.child("images").set(images); //update the database.
+                            //return change.after.ref.parent.child("gameInfo").set(roundInfo)
                         }
                         ).catch(error => console.log(error.message));
                     //console.log(data)
@@ -149,3 +151,5 @@ exports.CLEANUP = functions.database.ref("/lobbies/{lobbyID}/players/")
             return null;
         }
     })
+
+
