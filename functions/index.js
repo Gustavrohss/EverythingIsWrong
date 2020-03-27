@@ -36,12 +36,28 @@ exports.UPDATE_IMAGES = functions.database.ref('/lobbies/{lobbyID}/gameInfo/')
         }
 
         //Test variables only
-        const subreddit = 'FoodPorn'
+        //const subreddit = 'FoodPorn'
 
+        /*HARDCODED. TODO: CHANGE TO MORE DYNAMIC */
+        const IMAGES = {
+                    FOOD:       'FoodPorn',
+                    BEARS:      'bears',
+                    CARS:       'carporn'
+        };
+        const MODELS = {
+                MODERATION:     'MODEL_MODERATION',
+                FOOD:           'MODEL_FOOD'
+        };
+        
+        //Randomly select one:
+        const subreddit   = IMAGES.FOOD;
+        const model       = MODELS.MODERATION;
+        
+        
         const imgur_client_id = 'Client-ID 5ca180817daefb2'
         const extension = 'gallery/r/' + subreddit + '/top/all' ;   //change to get it from game-settings
         const num_images = 3;           // -||-
-        const lobbyID = context.params.lobbyID;
+        //const lobbyID = context.params.lobbyID;
 
         var requestOptions = {
             uri: 'https://api.imgur.com/3/' + extension,
@@ -52,7 +68,7 @@ exports.UPDATE_IMAGES = functions.database.ref('/lobbies/{lobbyID}/gameInfo/')
             json: true // Automatically parses the JSON string in the response
         };
 
-        console.log(context.params.lobbyID + " has had their round changed!");
+       testFunction(context.params.lobbyID);
         
         return rp(requestOptions)
                 .then(result => result.data)
@@ -62,14 +78,37 @@ exports.UPDATE_IMAGES = functions.database.ref('/lobbies/{lobbyID}/gameInfo/')
                         //console.log(data[Math.floor(Math.random() * data.length)])
                         images[i] = data[Math.floor(Math.random() * data.length)].link
                     }
+
+                    //Call to clarifai
+
+
+
+                    //Call to generate prompts and scores
+
+
                     return change.after.ref.parent.child("images").set(images) //update the database.
                     //console.log(data)
                 });
         
-        //return change.after.ref.parent.child("testMessage").set("hej"); 
-        //return update_images("FoodPorn", 4, context.params.lobbyID);
-
     });
+
+    /*
+function compute_image_value(images, model=Clarifai.GENERAL_MODEL){
+
+    //Return a promise containing the scores.
+    return clarifai_app.models.predict(model, images)
+        .then(response => response['outputs'])
+        .then(result => {
+        
+        })
+        .catch(error => console.log(error.message));
+    //return scores;
+}
+*/
+
+function testFunction(lobbyID){
+    console.log(lobbyID + " has had their round changed!");
+}
 
 //=================================
 
