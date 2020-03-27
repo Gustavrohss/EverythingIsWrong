@@ -6,7 +6,7 @@ import {
   getGameInfo,
   getShowAnswers,
   getRoundCount,
-  getOptions,
+  getAnswerOptions,
   getQuestion,
   allPlayersReady
 } from '../selectors/gameSessionSelectors'
@@ -16,7 +16,7 @@ const mapStateToProps = (state, ownProps) => ({
   answers: getPlayerAnswers(state),
   showResults: getShowAnswers(state),
   round: getRoundCount(state),
-  answerOptions: getOptions(state), // currently using debug data
+  answerOptions: getAnswerOptions(state), // currently using debug data
   question: getQuestion(state),
   nextDisabled: !allPlayersReady(state)
 })

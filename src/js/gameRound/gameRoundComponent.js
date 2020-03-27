@@ -32,13 +32,14 @@ const GameRoundComponent = ({
 
     What works right now should give an idea of how to implement further functionality.
 */
+console.log(answerOptions)
 return (<div>
     <p align = {"center"}>
     <b>Round {round}: </b>
-        {answerOptions.promptString}
+        {question}
     </p>
     <div>
-        {answerOptions.outputs.map(
+        {answerOptions.map(
             ({image, score, correctAnswer}, index) =>
             <figure key = {index}>
                 <img

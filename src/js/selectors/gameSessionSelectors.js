@@ -79,6 +79,12 @@ export const getGameInfo = createSelector(
   info => info
 )
 
+export const getRoundInfo = createSelector(
+  [gameInfo],
+  infoObj => infoObj ? infoObj.roundInfo : {}
+)
+
+
 // Get the number of the current game round
 export const getRoundCount = createSelector(
   [gameInfo],
@@ -86,8 +92,13 @@ export const getRoundCount = createSelector(
 )
 
 export const getQuestion = createSelector(
-  [gameInfo],
-  infoObj => infoObj ? infoObj.question : ""
+  [getRoundInfo],
+  infoObj => infoObj ? infoObj.promptString : ""
+)
+
+export const getAnswerOptions = createSelector(
+  [getRoundInfo],
+  infoObj => infoObj ? infoObj.outputs??[] : []
 )
 
 // Get a list of all the players. Each player is represented as an
@@ -157,8 +168,56 @@ export const getUnsubscribe = createSelector(
 /* --------------- testData --------------- */
 
 // Info about a game round
-export const getModelType = state => "Food"
-export const getImageType = state => "Celebrity"
+export const getModelType = state => "MODEL_FOOD"
+export const getImageType = state => "r/bears"
+export const getImages = state =>  [
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Orso_bruno_marsicano.jpg/1200px-Orso_bruno_marsicano.jpg",
+  "https://www.nps.gov/glba/learn/nature/images/2Bear_2.jpg",
+  "https://3c1703fe8d.site.internapcdn.net/newman/gfx/news/hires/2017/yosemitetrac.jpg"
+]
+
+export const getModelOutputs = state => {
+  return [
+    {
+      outputs: [{
+        data: {
+          concepts: [
+            {name: "lemon", value: 1},
+            {name: "coffee", value: 0},
+            {name: "candies", value: 0},
+            {name: "olive oil", value: 0},
+          ]
+        }
+      }]
+    },
+    {
+      outputs: [{
+        data: {
+          concepts: [
+            {name: "salmon", value: -1},
+            {name: "wheat", value: 0},
+            {name: "yeet", value: 0},
+            {name: "banana", value: 0},
+          ]
+        }
+      }]
+    },
+    {
+      outputs: [{
+        data: {
+          concepts: [
+            {name: "meat", value: 0},
+            {name: "cheese", value: 0},
+            {name: "fruit basket", value: 0},
+            {name: "milk", value: 0},
+          ]
+        }
+      }]
+    },
+  ]
+}
+
+/*
 export const getOptions = state => {
   return generatePromptAndScores({
     modelType: "MODEL_FOOD",
@@ -208,3 +267,4 @@ export const getOptions = state => {
     ]
   })
 }
+*/
