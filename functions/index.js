@@ -1,6 +1,10 @@
 const functions = require('firebase-functions');
-const rp = require('request-promise')   //run in "npm install --save request" & "npm install --save request" in this folder.
+const rp = require('request-promise')   //run in "npm install --save request" & "npm install --save request-promise" in this folder.
                                         //More documentation here: https://github.com/request/request-promise
+
+//Run "firebase deploy --only functions" in root folder to deploy functions
+
+
 
 // Functions here are not available in the program necessarily
 // They are just written here and the exported to Firebase
@@ -32,17 +36,17 @@ exports.UPDATE_IMAGES = functions.database.ref('/lobbies/{lobbyID}/gameInfo/')
         }
 
         //Test variables only
-        const subreddit = "FoodPorn"
+        const subreddit = 'FoodPorn'
 
-        const imgur_client_id = "Client ID 5ca180817daefb2"
-        const extension = "gallery/r/" + subreddit + "/top/all" ;   //change to get it from game-settings
+        const imgur_client_id = 'Client-ID 5ca180817daefb2'
+        const extension = 'gallery/r/' + subreddit + '/top/all' ;   //change to get it from game-settings
         const num_images = 3;           // -||-
         const lobbyID = context.params.lobbyID;
 
         var requestOptions = {
-            uri: "https://api.imgur.com/3/" + extension,
+            uri: 'https://api.imgur.com/3/' + extension,
             method: 'GET',
-            headers: {"Authorization": imgur_client_id},
+            headers: {'Authorization': imgur_client_id},
             //body: formdata,
             redirect: 'follow',
             json: true // Automatically parses the JSON string in the response
@@ -58,7 +62,7 @@ exports.UPDATE_IMAGES = functions.database.ref('/lobbies/{lobbyID}/gameInfo/')
                         //console.log(data[Math.floor(Math.random() * data.length)])
                         images[i] = data[Math.floor(Math.random() * data.length)].link
                     }
-                    return functions.after.ref.parent.child("images").set(images) //update the database.
+                    return change.after.ref.parent.child("images").set(images) //update the database.
                     //console.log(data)
                 });
         
@@ -72,6 +76,7 @@ exports.UPDATE_IMAGES = functions.database.ref('/lobbies/{lobbyID}/gameInfo/')
 // THIS DOES NOT WORK EITHER
 // Tried several workarounds
 // No success
+/*
 exports.redditRequest = functions.https.onCall(async data => {
     const imgur_client_id = "Client ID 5ca180817daefb2"
     const myHeaders = new Headers();
@@ -87,3 +92,4 @@ exports.redditRequest = functions.https.onCall(async data => {
     const out = await ftch.json()
     return out
 })
+*/
