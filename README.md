@@ -1,68 +1,41 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Everything is Wrong
 
-## Available Scripts
+Everything is Wrong is a multiplayer game. Anyone can host a game, and then anyone can join the game.
 
-In the project directory, you can run:
+Once the game starts, the players will be presented with a set of images and a question ("prompt") to go with them. The players will choose an image as their answer to the prompt. If the player is correct, they get a point. The game goes on for some amount of rounds, and then has one (or several) winners.
 
-### `npm start`
+The images are fetched from the <b>Imgur</b> API. This is where the title "Everything is Wrong" comes into play.
+The images fetched are of a certain category, such as images of <i>food</i>, <i>bears</i> or <i>cars</i>. These images are then fed into a <b>Clarifai</b> image recognition model API that is intentionally chosen to not match the image category. If the category of the images is <i>bears</i>, they might be sent to an image recognition model for <i>food</i>. This model might find some partial matches; it could detect some <i>lemon</i> or some <i>coffee</i> in the image of the bear. From these results the question is generated.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The questions might seem arbitrary and somewhat impossible to answer with any sort of accuracy. This is the point of the game. It's not supposed to be a serious multiplayer experience, but rather a fun party-game type of experience. 
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+### Technologies
 
-### `npm test`
+For the frontend development we're using:
+- <b>React</b>
+- <b>Redux</b> with <b>Redux-Thunk</b>
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+For the backend development we're using:
+- <b>Firebase</b>
 
-### `npm run build`
+### What we've done
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Implemented the basic layout and navigation of the website
+- Implemented some of the views to various stages of completion
+- Implemented a hosting/joining game sessions system.
+- Implemented some of the multiplayer synchronization aspects.
+- Implemented communication between backend and frontend.
+- Implemented the system to generate prompts and correct answers based on image category and model category for some categories.
+- <b>TODO</b>
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+### What we plan to do
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Implement High Scores.
+- Finish implementing the "Full Game" system.
+- Additional image and model categories.
+- Styling.
+- <b>TODO</b>
 
-### `npm run eject`
+### File Structure
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+<b>TODO</b>

@@ -14,14 +14,13 @@ import {
   getUnsubscribe,
   getPlayerID,
   getScore,
-  getModelType, // debug data
-  getImageType,  // debug data
-  getModelOutputs,
-  getImages
+  getModelType,     // debug data
+  getImageType,     // debug data
+  getModelOutputs,  // debug data
+  getImages         // debug data
 } from '../selectors/gameSessionSelectors'
 import {generatePromptAndScores} from '../gameRoundGen'
 import {asyncAction, performAsync} from './utilActions'
-import makePrompt from '../questionGenerationMessaround' // DEBUG DATA!!
 
 /**
  * All possible actions regarding the gameSession part of the state
@@ -296,18 +295,19 @@ export const answerQuestion = (answerOption, correct) => {
   }
 }
 
+/**
+ * Indicate to the backend that you want to start a new round
+ * Will increment the round counter, generate a new question and set the status
+ * of all the players to "ANSWERING"
+ *
+ * TODO: The question generation should be moved to the backend.
+ */
 export const startNextRound = () => {
   return asyncAction(
     (dispatch, getState) => {
       const state = getState()
       return nextQuestionBackend(
-        getLobbyID(state),
-        generatePromptAndScores({
-          modelType: getModelType(state),
-          imageType: getImageType(state),
-          modelOutputs: getModelOutputs(state),
-          images: getImages(state)
-        })
+        getLobbyID(state))
       )
     },
     "Error in startNextRound:"

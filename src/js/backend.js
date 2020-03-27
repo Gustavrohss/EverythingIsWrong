@@ -10,8 +10,13 @@ import {imgur_client_key, clarifai_client_key} from "./configAPI"
  * lobbies: {
  *   <lobbyID>: {
  *     gameInfo: {
- *       round: (int)
- *       question: (string)
+ *       round: (int),
+ *       roundInfo: {
+ *          promptString: (str), // the question
+ *          outputs: [ // one object per answer option
+ *            {concepts, correctAnswer, image, score}
+ *          ]
+ *        }
  *     },
  *     players: {
  *       <playerID>: {
@@ -53,8 +58,7 @@ export function createLobby(hostName, settings) {
         lobbyID: lobbyID,
         settings: settings,
         gameInfo: {
-            round: 0,
-            question: ""
+            round: 0
         },
         players: {
             host: getInitialPlayerObject(hostName)
@@ -260,19 +264,20 @@ export function answerQuestion(lobbyCode, playerID, answerOption, newScore) {
  * Makes all players ready for the next question. Increments the round count
  * and sets the status of all players to "ANSWERING"
  * @param {str} lobbyCode - the ID of the lobby
- * @param {str}  - the question for the next round // TODO: UPDATE THIS LINE!!!
+ * @param {Object} roundInfo - the roundInfo for the next round (including
+ *    questions and answer options)
  *
  * @return {Promise} Returns a promise that will fail if the lobby does
  *    not exist, or if lobby has no gameInfo.
  */
-export function nextQuestion(lobbyCode, roundInfo) {
-  // TODO: Question should probably be moved elsewhere?
+export function nextQuestion(lobbyCode) {
+  // TODO: Roundinfo should be created by cloud functions
   return fbDatabase.ref(`lobbies/${lobbyCode}/gameInfo/round`).once("value")
     .then(snapshot => {
       if (snapshot.exists()) { // check if lobby exists
         const nextRound = snapshot.val() + 1
         fbDatabase.ref(`lobbies/${lobbyCode}/gameInfo`)
-          .update({round: nextRound, roundInfo})
+          .update({round: nextRound})
           .then(
             fbDatabase.ref(`lobbies/${lobbyCode}/players`).once("value").then(snapshot => {
               let allUpdates = {}

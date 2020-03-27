@@ -1,6 +1,5 @@
 import { createSelector } from 'reselect'
 import {STATUS} from '../actions/gameSessionActions'
-import {generatePromptAndScores} from "../gameRoundGen"
 
 /**
  * All getters that should be used when reading the gameSession state in
@@ -79,26 +78,34 @@ export const getGameInfo = createSelector(
   info => info
 )
 
+// Get the current roundInfo object (including the question, answer options, etc.)
+// 'undefined' if player hasn't joined a lobby or no round has been started
 export const getRoundInfo = createSelector(
   [gameInfo],
-  infoObj => infoObj ? infoObj.roundInfo : {}
+  infoObj => infoObj ? infoObj.roundInfo : undefined
 )
 
 
 // Get the number of the current game round
+// 'undefined' if player hasn't joined a lobby
+// is 0 if no round has been started yet
 export const getRoundCount = createSelector(
   [gameInfo],
   infoObj => infoObj ? infoObj.round : undefined
 )
 
+// Get the question for the current game round
+// "" if player hasn't joined a lobby or no round has been started
 export const getQuestion = createSelector(
   [getRoundInfo],
   infoObj => infoObj ? infoObj.promptString : ""
 )
 
+// Get a list with the answer options for the current game round
+// [] if player hasn't joined a lobby or no round has been started
 export const getAnswerOptions = createSelector(
   [getRoundInfo],
-  infoObj => infoObj ? infoObj.outputs??[] : []
+  infoObj => infoObj ? infoObj.outputs : []
 )
 
 // Get a list of all the players. Each player is represented as an
@@ -166,8 +173,8 @@ export const getUnsubscribe = createSelector(
 
 
 /* --------------- testData --------------- */
-
-// Info about a game round
+/*
+// Info about a game round that should be input to the generatePromptAndScores function
 export const getModelType = state => "MODEL_FOOD"
 export const getImageType = state => "r/bears"
 export const getImages = state =>  [
@@ -215,56 +222,5 @@ export const getModelOutputs = state => {
       }]
     },
   ]
-}
-
-/*
-export const getOptions = state => {
-  return generatePromptAndScores({
-    modelType: "MODEL_FOOD",
-    imageType: "r/bears",
-    modelOutputs: [
-      {
-        outputs: [{
-          data: {
-            concepts: [
-              {name: "lemon", value: 0},
-              {name: "coffee", value: 0},
-              {name: "candies", value: 0},
-              {name: "olive oil", value: 0},
-            ]
-          }
-        }]
-      },
-      {
-        outputs: [{
-          data: {
-            concepts: [
-              {name: "salmon", value: 0},
-              {name: "wheat", value: 0},
-              {name: "yeet", value: 0},
-              {name: "banana", value: 0},
-            ]
-          }
-        }]
-      },
-      {
-        outputs: [{
-          data: {
-            concepts: [
-              {name: "meat", value: 0},
-              {name: "cheese", value: 0},
-              {name: "fruit basket", value: 0},
-              {name: "milk", value: 0},
-            ]
-          }
-        }]
-      },
-    ],
-    images: [
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Orso_bruno_marsicano.jpg/1200px-Orso_bruno_marsicano.jpg",
-      "https://www.nps.gov/glba/learn/nature/images/2Bear_2.jpg",
-      "https://3c1703fe8d.site.internapcdn.net/newman/gfx/news/hires/2017/yosemitetrac.jpg"
-    ]
-  })
 }
 */
