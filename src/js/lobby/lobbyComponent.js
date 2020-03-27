@@ -28,10 +28,12 @@ const playersToRows = players => {
 // What the player, and host, sees when waiting to start a game
 const LobbyComponent = ({
     players,
-    game: [gameLabel, gameCallbac]
+    lobbyID,
+    game: [gameLabel, gameCallbac],
 }) =>
 (<div>
-    <button onClick = {gameCallbac}>{gameLabel}</button>
+    <button onClick =  {gameCallbac}>{gameLabel}</button>
+    <p>Session code: {lobbyID}</p>
     <p>Game mode/title</p>
     <b>Host</b>
     <table><tbody>

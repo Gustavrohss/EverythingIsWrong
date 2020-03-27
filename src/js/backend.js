@@ -1,4 +1,5 @@
 import {fbDatabase} from "./firebaseConfig"
+import {imgur_client_key, clarifai_client_key} from "./configAPI"
 
 /**
  * Here we have functions to read and write from the Realtime Database
@@ -8,25 +9,30 @@ import {fbDatabase} from "./firebaseConfig"
  * The structure of the database is:
  * lobbise: {
  *   <lobbyID>: {
+ *     gameInfo: {
+ *       round: (int)
+ *       question: (string)
+ *     },
  *     players: {
- *       gameInfo: {
- *         round: (int)
- *       },
  *       <playerID>: {
  *         score: (int),
  *         name: (str),
  *         status: LOBBY/FETCHING/READY/ANSWERING
- *       },
- *       settings: {
- *         gameType: 0
+ *         answerOption: -1-2 (0-2 = answered picture 0,1 or 2, -1= not answered )
  *       }
+ *     },
+ *     settings: {
+ *       gameType: (int),
+ *       questions: (int) // number of questions in the game
  *     }
  *   }
- * }
+ *} 
  */
 
+
  // Create an initial player object with a specific username
- const getInitialPlayerObject = (name) => ({name, score: 0, status: "READY"})
+ const getInitialPlayerObject = (name) => ({name, score: 0, status: "READY", answerOption: -1})
+
 
 /**
  * Create a lobby in the database
@@ -44,7 +50,8 @@ export function createLobby(hostName, settings) {
         lobbyID: lobbyID,
         settings: settings,
         gameInfo: {
-            round: 0
+            round: 0,
+            question: ""
         },
         players: {
             host: getInitialPlayerObject(hostName)
@@ -216,6 +223,70 @@ export function updateStatus(lobbyCode, playerID, newStatus) {
 }
 
 /**
+ * Register an answer from a player. The status of the player will be set to
+ * "READY" and the new scores and status will be uploaded to the database.
+ * @param {str} lobbyCode - the ID of the lobby
+ * @param {str} playerID - the ID of the player
+ * @param {number} answerOption - a number indicating the chosen answer
+ *                -1 means nothing chosen (timelimit exeded)
+ *                 0,1 or 2 means corresponding answer.
+ * @param {number} newScore - the new score of the player
+ *
+ * @return {Promise} Returns a promise that will fail if the player or
+ *    lobby does not exist, or if the answer option is invalid.
+ */
+export function answerQuestion(lobbyCode, playerID, answerOption, newScore) {
+  const playerPath = `lobbies/${lobbyCode}/players/${playerID}`
+  return answerOption >= -1 && answerOption < 3 ?
+    fbDatabase.ref(playerPath).once("value").then(snapshot => {
+      if (snapshot.exists()) { // check if player exists
+        return fbDatabase.ref(playerPath)
+          .update({
+            status: "READY",
+            score: newScore,
+            answerOption
+          })
+      } else {
+        throw new Error(`Player ${playerID} does not exist in ${lobbyCode}!`) //Failure!
+      }
+    }) :
+    Promise.reject(new Error("Invalid answer option"))
+}
+
+/**
+ * Makes all players ready for the next question. Increments the round count
+ * and sets the status of all players to "ANSWERING"
+ * @param {str} lobbyCode - the ID of the lobby
+ * @param {str} question - the question for the next round
+ *
+ * @return {Promise} Returns a promise that will fail if the lobby does
+ *    not exist, or if lobby has no gameInfo.
+ */
+export function nextQuestion(lobbyCode, question) {
+  // TODO: Question should probably be moved elsewhere?
+  return fbDatabase.ref(`lobbies/${lobbyCode}/gameInfo/round`).once("value")
+    .then(snapshot => {
+      if (snapshot.exists()) { // check if lobby exists
+        const nextRound = snapshot.val() + 1
+        fbDatabase.ref(`lobbies/${lobbyCode}/gameInfo`)
+          .update({round: nextRound, question})
+          .then(
+            fbDatabase.ref(`lobbies/${lobbyCode}/players`).once("value").then(snapshot => {
+              let allUpdates = {}
+              snapshot.forEach((childSnapshot) => {
+                allUpdates[`${childSnapshot.key}/status`] = "ANSWERING"
+              })
+              return fbDatabase.ref(`lobbies/${lobbyCode}/players`)
+                .update(allUpdates)
+            })
+          )
+      } else {
+        throw new Error(`Lobby ${lobbyCode} does not exist, or has no gameInfo!`) //Failure!
+      }
+  })
+}
+
+/**
  * Delete a specific player in a specific lobby.
  * NOTE: make sure to unsubscribe listeners before removal
  * @param {str} lobbyCode - the ID of the lobby
@@ -246,4 +317,206 @@ export function destroyLobby(lobbyName){
         .catch(error => console.log("Remove failed: " + error.message));
 
     //ref.off() <-- stop listening to this.
+}
+
+
+//General call_api call?
+
+
+//=====================================
+/**
+* CLARIFAI BACKEND
+*
+*
+* run: npm install clarifai
+*/
+
+//Client and app.
+const Clarifai = require('clarifai'); //require the client
+const clarifai_app = new Clarifai.App({
+  apiKey: clarifai_client_key
+});
+
+//List public models to use:
+/*
+  Celebrities -> Clarifai.CELEBRITY_MODEL
+  Food - Clarifai.FOOD_MODEL
+  NSFW - Clarifai.NSFW_MODEL
+  Demographics - Clarifai.DEMOGRAPHICS_MODEL
+  Travel - Clarifai.TRAVEL_MODEL
+  General - Clarifai.General model
+
+*/
+
+export const clarifai_models = {
+                        CELEBRITIES: Clarifai.CELEBRITY_MODEL,
+                        FOOD: Clarifai.FOOD_MODEL,
+                        NSFW: Clarifai.NSFW_MODEL,
+                        DEMOGRAPHICS: Clarifai.DEMOGRAPHICS_MODEL,
+                        GENERAL: Clarifai.GENERAL_MODEL
+}
+
+
+//Call clarifai api
+//Documentation https://docs.clarifai.com/api-guide/predict
+function compute_image_value(images, model=Clarifai.GENERAL_MODEL, score_type=random_val){
+  
+  //Return a promise containing the scores.
+  return clarifai_app.models.predict(model, images)
+    .then(response => response['outputs'])
+    .then(result => {
+      const scores = result.map(r => score_type(r.data.concepts));
+      return scores 
+    })
+    .catch(error => console.log(error.message));
+  //return scores;
+}
+
+
+//Score functions:
+/**
+ * @param {object} data This contains the concepts from clarifai.
+ * @returns {number} score-value
+ */
+export function random_val(data){
+  return Math.random();
+}
+
+export function general_val(data){
+
+}
+
+export function nsfw_val(data){
+}
+
+//======================================
+/**
+ * IMGUR API
+ * 
+ */
+
+ /**
+  * GALLERIES TO USE: 
+  */
+  export const imgur_galleries = {
+                                  FOOD: "FoodPorn",
+                                  BURGERS:  "burgers",
+                                  PIZZA:  "pizza",
+                                  DESSERT: "DessertPorn",
+                                  ANIMALS: "aww",
+                                  EARTHPORN: "earthporn",
+                                  CARS: "carporn",
+                                  BEARS: "bears"
+                                  /*FEEL FREE TO ADD MORE*/
+  }
+
+//Call the imgur api
+//Documentation: https://apidocs.imgur.com/?version=latest
+/**
+ * 
+ * @param {str} uri 
+ * 
+ * @return {Promise}
+ */
+function imgur_call_api(uri){
+  var myHeaders = new Headers();
+  myHeaders.append("Authorization", imgur_client_key);
+
+  var requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow'
+  };
+
+  var url = "https://api.imgur.com/3/" + uri;
+
+  return fetch(url, requestOptions)
+      .then(response => response.json())
+      .then(result => result.data.filter(d => d.type === "image/jpeg")) //only get images, ignore anything else.
+      .catch(error => console.log('error', error));
+}
+
+/**
+ * 
+ * @param {str} subreddit 
+ * 
+ * @return {Promise} from call_api
+ */
+function imgur_subreddit(subreddit="FoodPorn"){
+  var uri = "gallery/r/"+subreddit+"/top/all";
+  return imgur_call_api(uri); 
+}
+
+//retrieve and add images to a specific lobby-code. ONLY THE HOST OF THE GAME CAN USE THIS!!!
+//Documentation: https://apidocs.imgur.com/?version=latest#98f68034-15a0-4044-a9ac-5ff3dc75c6b0
+/**
+ * 
+ * @param {str} subreddit 
+ * @param {number} num_images 
+ * @param {str} lobbyCode 
+ * 
+ * @return {Promise} 
+ */
+export function update_images(subreddit, num_images, lobbyCode=""){
+  if(subreddit==="") {
+    var keys = Object.keys(imgur_galleries);
+    subreddit = imgur_galleries[keys[ keys.length * Math.random() << 0]];
+  }
+
+  //if lobby-code is not valid
+  const ref = fbDatabase.ref("/lobbies/" + lobbyCode)
+  return ref.once("value").then(snapshot => {
+    if(snapshot.exists()){  //If lobby code exists
+      imgur_subreddit().then(data => {
+        var images = []
+        for(let i = 0; i < num_images; i++){
+          images[i] = {
+            url: data[Math.floor(Math.random() * data.length)].link, 
+            id: i  + ''
+          };
+        }
+        return ref.child("/images/").set(images)  //Update images.
+                .then(() => compute_image_value(images))  //Compute image values.
+                .then(values => ref.child("/imagesValues/").set(values)) //Update image values.
+                .catch(error => console.log(error.message));
+        
+      });
+    }else {
+      //lobby does not exist
+      throw new Error("Lobby " + lobbyCode + " does not exist!"); //Failure!
+    }
+  })
+}
+
+//Function that allows users to get images and do something with them.
+//Inspired from this thread: Problem is asynchronousicity, solved by encapsulating it with callback function.
+//https://stackoverflow.com/questions/34905600/best-way-to-retrieve-firebase-data-and-return-it-or-an-alternative-way
+/**
+ * 
+ * @param {str} lobbyCode 
+ * @param {function} callback 
+ */
+/*
+Example usage:
+
+print_images(){
+  get_images(lobbyCode, images => {
+    //Do your stuff with the images here.
+    link_0 = images[0] //eg
+  })
+}
+*/
+export function get_images(lobbyCode="", callback){
+  const ref = fbDatabase.ref("/lobbies/" + lobbyCode)
+
+  ref.once("value").then(snapshot => {
+    if(snapshot.exists()) { //Check if lobby exists
+      var images = snapshot.child("images").val();
+      callback(images);
+      //return snapshot.val();
+    }
+    else {
+      throw new Error("Lobby " + lobbyCode + " does not exist!");
+    }
+  })
 }
