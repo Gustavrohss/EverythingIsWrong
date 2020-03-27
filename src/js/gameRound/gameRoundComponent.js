@@ -39,7 +39,7 @@ return (<div>
     </p>
     <div>
         {answerOptions.outputs.map(
-            ([image, score, correctAnswer], index) =>
+            ({image, score, correctAnswer}, index) =>
             <figure key = {index}>
                 <img
                     src = {image}
