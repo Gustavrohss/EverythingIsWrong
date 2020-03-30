@@ -19,9 +19,9 @@ import Header from '/home/kostas/Courses2020/DH2642_Dynamic_Web/EverythingIsWron
 import DivBox from './stylingComponents/InitialBoard'
 import { NavigationBar } from './stylingComponents/NavigationBar';
 function App() {
+
   const history = useHistory()
 
-  // Navigation labels and custom events
   const aboutNav  = ["About",       () => history.push("/about")]
   const homeNav   = ["Home",        () => history.push("/")]
   const lobbyNav  = ["Lobby",       () => history.push("/lobby")]
@@ -30,7 +30,7 @@ function App() {
   const gameNav   = ["Game round",  () => history.push("/game")]
   const resultsNav= ["Results",     () => history.push("/results")]
   const hsNav     = ["High Scores", () => history.push("/high_scores")]
-
+  
   return (
     <DivBox>
     <NavigationBar>
@@ -64,7 +64,7 @@ function App() {
         </Route>
         <Route path="/results">
           <GameResultsContainer
-            home={homeNav} game={gameNav}
+            home={homeNav}
           />
         </Route>
         <Route path="/high_scores">

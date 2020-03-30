@@ -3,7 +3,6 @@ import React from 'react'
 // Game results component
 const GameResultsComponent = ({
     home: [homeLabel, homeCallback],
-    game: [gameLabel, gameCallback],
     scores
 }) =>
 // TODO
@@ -20,7 +19,6 @@ const GameResultsComponent = ({
         }
     </ol>
     <button onClick={homeCallback}>{homeLabel}</button>
-    <button onClick={gameCallback}>{gameLabel}</button>
 </div>)
 
 export default GameResultsComponent

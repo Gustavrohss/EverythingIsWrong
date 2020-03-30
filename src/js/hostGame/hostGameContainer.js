@@ -1,7 +1,6 @@
 import {connect} from 'react-redux'
 import HostGameComponent from './hostGameComponent'
-import {createLobby, setUsername, leaveLobby} from '../actions/gameSessionActions'
-import {destroyLobby} from '../backend'
+import {createLobby, setUsername, leaveLobby, setSettings} from '../actions/gameSessionActions'
 
 const mapStateToProps = (state, ownProps) => ({
 
@@ -10,13 +9,10 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch, ownProps) => {
   const [homeLabel, homeCallback] = ownProps.home
   return {
-    createLobby: name => {
+    createLobby: (name, settings) => {
       dispatch(setUsername(name))
+      dispatch(setSettings(settings))
       dispatch(createLobby())
-    },
-    destroyLobby: lobbyID => {
-      destroyLobby(lobbyID)
-      dispatch(leaveLobby())
     },
     home: [
       homeLabel,

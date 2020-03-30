@@ -6,24 +6,39 @@ import {fbDatabase} from "./firebaseConfig"
  * Docs: https://firebase.google.com/docs/reference/js/firebase.database
  *
  * The structure of the database is:
- * lobbise: {
+ * lobbies: {
  *   <lobbyID>: {
+ *     gameInfo: {
+ *       round: (int),
+ *       roundInfo: {
+ *          promptString: (str), // the question
+ *          outputs: [ // one object per answer option
+ *            {concepts, correctAnswer, image, score}
+ *          ]
+ *        }
+ *     },
  *     players: {
- *       gameInfo: {
- *         round: (int)
- *       },
  *       <playerID>: {
  *         score: (int),
  *         name: (str),
  *         status: LOBBY/FETCHING/READY/ANSWERING
+ *         answerOption: -1-2 (0-2 = answered picture 0,1 or 2, -1= not answered )
  *       },
  *       settings: {
- *         gameType: 0
+ *         gameType: (int),
+ *         questions: (int) // number of questions in the game
  *       }
+ *     },
+ *     settings: {
+ *       gameType: (int),
+ *       questions: (int) // number of questions in the game
  *     }
  *   }
- * }
+ *}
  */
+
+ // Create an initial player object with a specific username
+ const getInitialPlayerObject = (name) => ({name, score: 0, status: "READY", answerOption: -1})
 
 /**
  * Create a lobby in the database
@@ -44,10 +59,7 @@ export function createLobby(hostName, settings) {
             round: 0
         },
         players: {
-            host: {
-                name: hostName,
-                score: 0
-            }
+            host: getInitialPlayerObject(hostName)
         }
     }
     return fbDatabase.ref("/lobbies/" + lobbyID).set(lobby).then(() => ({playerID: "host", lobby}));
@@ -68,10 +80,8 @@ export function joinLobby(lobbyCode, user) {
 
     return ref.once("value").then(snapshot => {
         if(snapshot.exists()) { //Check if lobby exists
-            let pushReturn = fbDatabase.ref("/lobbies/" + lobbyCode + "/players").push({ //push new player
-                name: user,
-                score: 0
-            });
+            let pushReturn = fbDatabase.ref("/lobbies/" + lobbyCode + "/players")
+                .push(getInitialPlayerObject(user)); //push new player
 
             // TODO: check that the players in the lobby haven't started playing yet.
             return pushReturn.then(() => {
@@ -173,11 +183,6 @@ export function stopListener(lobbyCode, {
     players.off("child_removed", playerRemovedListener)
 }
 
-export function readLobby(){
-
-}
-
-// Update the score of a specific player in a specific lobby
 /**
  * Updates the score of a specific player in a specific lobby.
  * @param {str} lobbyCode - the ID of the lobby
@@ -199,6 +204,95 @@ export function updateScore(lobbyCode, playerID, newScore){
 }
 
 /**
+ * Update the status of a player in a specific lobby. The status must be one
+ * of "LOBBY", "READY", "FETCHING" or "ANSWERING".
+ * @param {str} lobbyCode - the ID of the lobby
+ * @param {str} playerID - the ID of the player
+ * @param {str} newStatus - the new staus
+ *
+ * @return {Promise} Returns a promise that will fail if the player or
+ *    lobby does not exist, or if the status is not a valid status.
+ */
+export function updateStatus(lobbyCode, playerID, newStatus) {
+    const statuses = ["LOBBY", "READY", "FETCHING", "ANSWERING"]
+    const playerPath = `lobbies/${lobbyCode}/players/${playerID}`
+    return statuses.includes(newStatus) ?
+      fbDatabase.ref(playerPath).once("value").then(snapshot => {
+        if (snapshot.exists()) { // check if player exists
+          return fbDatabase.ref(playerPath + "/status").set(newStatus)
+        } else {
+          throw new Error(`Player ${playerID} does not exist in ${lobbyCode}!`); //Failure!
+        }
+      }) :
+      Promise.reject(new Error("Invalid status")) // Returns a failing promise
+}
+
+/**
+ * Register an answer from a player. The status of the player will be set to
+ * "READY" and the new scores and status will be uploaded to the database.
+ * @param {str} lobbyCode - the ID of the lobby
+ * @param {str} playerID - the ID of the player
+ * @param {number} answerOption - a number indicating the chosen answer
+ *                -1 means nothing chosen (timelimit exeded)
+ *                 0,1 or 2 means corresponding answer.
+ * @param {number} newScore - the new score of the player
+ *
+ * @return {Promise} Returns a promise that will fail if the player or
+ *    lobby does not exist, or if the answer option is invalid.
+ */
+export function answerQuestion(lobbyCode, playerID, answerOption, newScore) {
+  const playerPath = `lobbies/${lobbyCode}/players/${playerID}`
+  return answerOption >= -1 && answerOption < 3 ?
+    fbDatabase.ref(playerPath).once("value").then(snapshot => {
+      if (snapshot.exists()) { // check if player exists
+        return fbDatabase.ref(playerPath)
+          .update({
+            status: "READY",
+            score: newScore,
+            answerOption
+          })
+      } else {
+        throw new Error(`Player ${playerID} does not exist in ${lobbyCode}!`) //Failure!
+      }
+    }) :
+    Promise.reject(new Error("Invalid answer option"))
+}
+
+/**
+ * Makes all players ready for the next question. Increments the round count
+ * and sets the status of all players to "ANSWERING"
+ * @param {str} lobbyCode - the ID of the lobby
+ * @param {Object} roundInfo - the roundInfo for the next round (including
+ *    questions and answer options)
+ *
+ * @return {Promise} Returns a promise that will fail if the lobby does
+ *    not exist, or if lobby has no gameInfo.
+ */
+export function nextQuestion(lobbyCode) {
+  // TODO: Roundinfo should be created by cloud functions
+  return fbDatabase.ref(`lobbies/${lobbyCode}/gameInfo/round`).once("value")
+    .then(snapshot => {
+      if (snapshot.exists()) { // check if lobby exists
+        const nextRound = snapshot.val() + 1
+        fbDatabase.ref(`lobbies/${lobbyCode}/gameInfo`)
+          .update({round: nextRound})
+          .then(
+            fbDatabase.ref(`lobbies/${lobbyCode}/players`).once("value").then(snapshot => {
+              let allUpdates = {}
+              snapshot.forEach((childSnapshot) => {
+                allUpdates[`${childSnapshot.key}/status`] = "ANSWERING"
+              })
+              return fbDatabase.ref(`lobbies/${lobbyCode}/players`)
+                .update(allUpdates)
+            })
+          )
+      } else {
+        throw new Error(`Lobby ${lobbyCode} does not exist, or has no gameInfo!`) //Failure!
+      }
+  })
+}
+
+/**
  * Delete a specific player in a specific lobby.
  * NOTE: make sure to unsubscribe listeners before removal
  * @param {str} lobbyCode - the ID of the lobby
@@ -212,21 +306,4 @@ export function deletePlayer(lobbyCode, playerID){
         // Should maybe check if lobby and player exist
         .then(() => console.log(`Successfully removed player ${playerID} from ${lobbyCode}`))
         .catch(error => console.log(`Remove failed: ${error.message}`))
-}
-
-/**
- * Delete a specific lobby from the database
- * @param {str} lobbyName - the ID of the lobby
- *
- * @return {Promise}
- */
-export function destroyLobby(lobbyName){
-    /*TODO: Remove users in the lobby?*/
-    //const name = "AAAB"
-    return fbDatabase.ref('lobbies/' + lobbyName).remove()
-        // TODO: remove these console.logs... The client should handle failure instead
-        .then(()=> console.log("Removed "+ lobbyName + " successfully!"))
-        .catch(error => console.log("Remove failed: " + error.message));
-
-    //ref.off() <-- stop listening to this.
 }

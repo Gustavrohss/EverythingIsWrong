@@ -4,6 +4,7 @@ import 'firebase/firebase-functions'
 import 'firebase/firebase-database'
 
 const firebaseConfig = {
+    // API key is public and required to connect
     apiKey: "AIzaSyBwiuE2VZI9bM21dbpJ9MgJbs0A-5IJtaE",
     authDomain: "micro-harbor-239311.firebaseapp.com",
     databaseURL: "https://micro-harbor-239311.firebaseio.com",

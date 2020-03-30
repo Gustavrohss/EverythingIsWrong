@@ -22,6 +22,7 @@ return (
     <JOIN onClick = {() => console.log(joinLobby(code.toUpperCase(), text))}>JOIN</JOIN>
     <JOIN onClick = {homeCallback}>{homeLabel}</JOIN>
     <JOIN onClick = {lobbyCallback}>{lobbyLabel}</JOIN>
+
 </div>)}
 
 export default JoinGameComponent
