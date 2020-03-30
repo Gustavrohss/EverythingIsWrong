@@ -8,12 +8,16 @@ import HostGameContainer from './js/hostGame/hostGameContainer'
 import GameRoundContainer from './js/gameRound/gameRoundContainer'
 import GameResultsContainer from './js/gameResults/gameResultsContainer'
 import HighScoresContainer from './js/highScores/highScoresContainer'
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import {
   Switch,
   Route,
+  Router,
   useHistory
 } from "react-router-dom"
-
+import Header from '/home/kostas/Courses2020/DH2642_Dynamic_Web/EverythingIsWrong/src/stylingComponents/Layout';
+import DivBox from './stylingComponents/InitialBoard'
+import { NavigationBar } from './stylingComponents/NavigationBar';
 function App() {
   const history = useHistory()
 
@@ -28,7 +32,10 @@ function App() {
   const hsNav     = ["High Scores", () => history.push("/high_scores")]
 
   return (
-    <div>
+    <DivBox>
+    <NavigationBar>
+          </NavigationBar>
+
       <Switch>                {/* Parent node for routes */}
         <Route path="/about"> {/* Route usage */}
           <AboutContainer
@@ -72,7 +79,7 @@ function App() {
           />
         </Route>
       </Switch>
-    </div>
+    </DivBox>
   );
 }
 

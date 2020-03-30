@@ -1,4 +1,5 @@
 import React from 'react'
+import JOIN from '../../stylingComponents/JOIN'
 
 // Join Game component.
 // Shown when a player wants to join a game.
@@ -18,9 +19,9 @@ return (
         Name: <input onChange = {e => setText(e.target.value)} value = {text}></input>
         Link: <input style={{ textTransform: "uppercase"}} onChange = {e => setCode(e.target.value) } value = {code}></input>
     </div>
-    <button onClick = {() => console.log(joinLobby(code.toUpperCase(), text))}>JOIN</button>
-    <button onClick = {homeCallback}>{homeLabel}</button>
-    <button onClick = {lobbyCallback}>{lobbyLabel}</button>
+    <JOIN onClick = {() => console.log(joinLobby(code.toUpperCase(), text))}>JOIN</JOIN>
+    <JOIN onClick = {homeCallback}>{homeLabel}</JOIN>
+    <JOIN onClick = {lobbyCallback}>{lobbyLabel}</JOIN>
 </div>)}
 
 export default JoinGameComponent

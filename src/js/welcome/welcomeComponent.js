@@ -1,9 +1,10 @@
 import React from 'react'
 import styled from 'styled-components';
-import JoinGameButton from '/home/kostas/Courses2020/DH2642_Dynamic_Web/EverythingIsWrong/src/stylingBootstrap/JoinGameButton.js';
-import HostGameButton from '/home/kostas/Courses2020/DH2642_Dynamic_Web/EverythingIsWrong/src/stylingBootstrap/HostGameButton.js'
-import HighScoresButton from '../../stylingBootstrap/HighScoresButton.js';
-import AboutButton from '/home/kostas/Courses2020/DH2642_Dynamic_Web/EverythingIsWrong/src/stylingBootstrap/AboutButton.js'
+import JoinGameButton from '../../stylingComponents/JoinGameButton.js';
+import HostGameButton from '../../stylingComponents/HostGameButton.js'
+import HighScoresButton from '../../stylingComponents/HighScoresButton.js';
+import AboutButton from '../../stylingComponents/AboutButton.js'
+import DivBox from '../../stylingComponents/InitialBoard.js'
 
 // The welcome screen component
 const WelcomeComponent = ({
@@ -12,7 +13,7 @@ const WelcomeComponent = ({
     about: [aboutLabel, aboutCallback],
     highScores: [highScoresLabel, highScoresCallback]
 }) =>
-(<React.Fragment>
+(<DivBox>
     <p>Welcome to Everything is Wrong!</p>
     <table><tbody>
         <tr>
@@ -32,6 +33,6 @@ const WelcomeComponent = ({
             </td>
         </tr>
     </tbody></table>
-</React.Fragment>)
+</DivBox>)
 
 export default WelcomeComponent
