@@ -23,7 +23,6 @@ const GameRoundComponent = ({
 
     What works right now should give an idea of how to implement further functionality.
 */
-console.log(answerOptions)
 return (<div>
     <p align = {"center"}>
     <b>Round {round}: </b>
@@ -36,14 +35,12 @@ return (<div>
                 <img
                     src = {image}
                     width = {"400px"}
-                    height = {"200px"}
                     alt = {"Placeholder"}
                     onClick = {showResults ? ()=> {} :
                       () => answerCallback(index, correctAnswer)}>
                 </img>
                 {showResults ?
                 (<figcaption>
-                    {score}
                     {answers[index].map(
                         (player, index2) => correctAnswer ?
                         (<p key = {index2}>
