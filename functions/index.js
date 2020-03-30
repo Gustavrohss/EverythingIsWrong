@@ -1,5 +1,3 @@
-import {imgur_client_key, clarifai_client_key} from "./configAPI"
-
 //run in "npm install --save request" & "npm install --save request-promise" in this folder.
 //More documentation here: https://github.com/request/request-promise
 const functions = require('firebase-functions');
@@ -45,7 +43,7 @@ exports.UPDATE_IMAGES = functions.database.ref('/lobbies/{lobbyID}/gameInfo/roun
         const subreddit   = IMAGES.FOOD;
         const model       = MODELS.MODEL_MODERATION;
         
-        const imgur_client_id = imgur_client_key
+        const imgur_client_id = functions.config().imgur.id
         const extension = 'gallery/r/' + subreddit + '/top/all' ;   //change to get it from game-settings
         const num_images = 3;           // -||-
 
@@ -59,7 +57,7 @@ exports.UPDATE_IMAGES = functions.database.ref('/lobbies/{lobbyID}/gameInfo/roun
 
         //Clarifai app
         const clarifai_app = new Clarifai.App({
-            apiKey: clarifai_client_key
+            apiKey: functions.config().clarifai.key
         });
 
         return rp(requestOptions)
