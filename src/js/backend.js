@@ -76,8 +76,11 @@ export function createLobby(hostName, settings) {
  *          in the lobby),the returned promise will fail.
  */
 export function joinLobby(lobbyCode, user) {
-    const ref = fbDatabase.ref("/lobbies/" + lobbyCode)
+    if(!(new RegExp('[A-Z0-9]{4}')).test(lobbyCode) ||
+        lobbyCode.length != 4) //if does not contain valid characters:
+      return new Promise(() => {throw new Error("No such lobby!")});
 
+    const ref = fbDatabase.ref("/lobbies/" + lobbyCode)
     return ref.once("value").then(snapshot => {
         if(snapshot.exists()) { //Check if lobby exists
             let pushReturn = fbDatabase.ref("/lobbies/" + lobbyCode + "/players")
@@ -93,9 +96,9 @@ export function joinLobby(lobbyCode, user) {
             }); //Success!
         } else {
             //console.log("Lobby " + lobbyCode + " does not exist!");
-            throw new Error("Lobby " + lobbyCode + " does not exist!"); //Failure!
+            throw new Error("Lobby does not exist!"); //Failure!
         }
-    })
+    }).catch(error => {console.log(error)});
 }
 
 /**
