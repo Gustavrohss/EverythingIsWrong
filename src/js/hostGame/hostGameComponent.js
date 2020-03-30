@@ -15,11 +15,14 @@ const HostGameComponent = ({
     //Possible extension using react Semantic UI for nice stuff: https://react.semantic-ui.com/
     return (<div>
         Name: <input onChange = {e => setText(e.target.value)} value={text}></input>
-        <button onClick = {() => createLobby(text, {gameType: choice, 
-                                                    questions: num_questions
-                                                    })}> Create Lobby</button>
+        <button onClick = {() => {
+            createLobby(text, {
+                                gameType: choice, 
+                                questions: num_questions
+                            })
+            lobbyCallback()
+            }}> Create Lobby</button>
         <button onClick = {homeCallback}>{homeLabel}</button>
-        <button onClick = {lobbyCallback}>{lobbyLabel}</button>
     </div>)
 }
 

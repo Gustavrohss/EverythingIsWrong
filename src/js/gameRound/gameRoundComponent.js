@@ -23,12 +23,19 @@ const GameRoundComponent = ({
 
     What works right now should give an idea of how to implement further functionality.
 */
-console.log(answerOptions)
 return (<div>
-    <p align = {"center"}>
-    <b>Round {round}: </b>
-        {question}
-    </p>
+    {round ? // TODO: Maybe not have this check on `round`, but has a prop telling this component what should be displayed
+      (<p align = {"center"}>
+        <b>Round {round}: </b> {question}
+      </p>) :
+      round === 0 ?
+        (<p align = {"center"}>
+          Wait until the host starts the game
+        </p>) :
+        (<p align = {"center"}>
+          You need to join a game in order to play
+        </p>)
+    }
     <div>
         {answerOptions.map(
             ({image, score, correctAnswer}, index) =>
@@ -36,14 +43,12 @@ return (<div>
                 <img
                     src = {image}
                     width = {"400px"}
-                    height = {"200px"}
                     alt = {"Placeholder"}
                     onClick = {showResults ? ()=> {} :
                       () => answerCallback(index, correctAnswer)}>
                 </img>
                 {showResults ?
                 (<figcaption>
-                    {score}
                     {answers[index].map(
                         (player, index2) => correctAnswer ?
                         (<p key = {index2}>
