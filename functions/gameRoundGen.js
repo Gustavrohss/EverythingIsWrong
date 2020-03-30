@@ -1,23 +1,3 @@
-//Prepare function to go into firebase:
-/*
-module.exports.GeneratePromptAndScores = function({
-    modelType,
-    imageType,
-    modelOutputs,
-    images
-}){
-    return generatePromptAndScores({
-        modelType,
-        imageType,
-        modelOutputs,
-        images
-    });
-}
-*/
-
-
-
-
 // Takes the return Object of a Clarifai model
 // Outputs into a Object of <concept name> : <concept value> pairs
 // Currently only works with the "Food" and "Moderation" models
@@ -55,10 +35,6 @@ module.exports.generatePromptAndScores = function ({
     modelOutputs,
     images
 }) {
-    console.log(modelType);
-    console.log(imageType);
-    console.log(modelOutputs);
-    console.log(images);
     const conceptsArr = modelOutputs.map(output => toConcepts(output, modelType))
 
     let promptString = "Which "

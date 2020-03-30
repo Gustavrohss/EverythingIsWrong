@@ -13,13 +13,8 @@ import {
   getLobbyID,
   getUnsubscribe,
   getPlayerID,
-  getScore,
-  getModelType,     // debug data
-  getImageType,     // debug data
-  getModelOutputs,  // debug data
-  getImages         // debug data
+  getScore
 } from '../selectors/gameSessionSelectors'
-import {generatePromptAndScores} from '../gameRoundGen'
 import {asyncAction, performAsync} from './utilActions'
 
 /**
