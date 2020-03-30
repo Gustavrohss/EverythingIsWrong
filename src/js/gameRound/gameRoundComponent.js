@@ -23,8 +23,8 @@ const GameRoundComponent = ({
 
     What works right now should give an idea of how to implement further functionality.
 */
-return (<div> // TODO: Maybe not have this check on `round`, but has a prop telling this component what should be displayed
-    {round ?
+return (<div>
+    {round ? // TODO: Maybe not have this check on `round`, but has a prop telling this component what should be displayed
       (<p align = {"center"}>
         <b>Round {round}: </b> {question}
       </p>) :
