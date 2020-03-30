@@ -1,3 +1,5 @@
+const Clarifai = require('clarifai')
+
 // Takes the return Object of a Clarifai model
 // Outputs into a Object of <concept name> : <concept value> pairs
 // Currently only works with the "Food" and "Moderation" models
@@ -19,8 +21,8 @@ const IMAGES_CARS = "carporn"
 // MODEL TYPE CONSTANTS
 // SHOULD POTENTIALLY BE DEFINED ELSEWHERE AND IMPORTED HERE
 // FOR TESTING PURPOSES
-const MODEL_MODERATION = "MODEL_MODERATION"
-const MODEL_FOOD = "MODEL_FOOD"
+const MODEL_MODERATION = Clarifai.MODERATION_MODEL
+const MODEL_FOOD = Clarifai.FOOD_MODEL
 
 // Takes the Model Type and Image Type
 // Also takes outputs of Clarifai models and images

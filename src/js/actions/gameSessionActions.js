@@ -13,7 +13,8 @@ import {
   getLobbyID,
   getUnsubscribe,
   getPlayerID,
-  getScore
+  getScore,
+  isHost
 } from '../selectors/gameSessionSelectors'
 import {asyncAction, performAsync} from './utilActions'
 
@@ -203,7 +204,7 @@ export const joinLobby = (lobbyID) => {
         .then(({playerID, lobby}) => {
             dispatch(initGameSession(playerID, lobby))
             setBackendListeners(dispatch, getState)
-        })
+        }).catch(error => console.log(error));
     },
     "Error when joining lobby:"
   )
@@ -305,6 +306,29 @@ export const startNextRound = () => {
         getLobbyID(state))
     },
     "Error in startNextRound:"
+  )
+}
+
+/**
+ * Start the first round of a game session. If the player is the host, this will
+ * indicate to the backend that it should start a new round. If the player is not
+ * the host this will just set the player status to "ANSWERING".
+ */
+export const startGameSession = () => {
+  return asyncAction(
+    (dispatch, getState) => {
+      const state = getState()
+      if (isHost(state)) {
+        return nextQuestionBackend(
+          getLobbyID(state))
+      } else {
+        return updateStatusBackend(
+          getLobbyID(state),
+          getPlayerID(state),
+          STATUS.answering)
+      }
+    },
+    "Error in startGameSession:"
   )
 }
 

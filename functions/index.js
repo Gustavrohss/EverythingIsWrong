@@ -40,8 +40,11 @@ exports.UPDATE_IMAGES = functions.database.ref('/lobbies/{lobbyID}/gameInfo/roun
         
         // Randomly select one:
         // TODO
-        const subreddit   = IMAGES.FOOD;
-        const model       = MODELS.MODEL_MODERATION;
+        const choice = arr => arr[Math.floor(Math.random() * arr.length)]
+        const subreddit = IMAGES[choice(Object.keys(IMAGES))]
+        const model = MODELS[subreddit === IMAGES.FOOD ? 
+            choice(Object.keys(MODELS).filter(key => key !== "MODEL_FOOD")):choice(Object.keys(MODELS))
+        ]
         
         const imgur_client_id = functions.config().imgur.id
         const extension = 'gallery/r/' + subreddit + '/top/all' ;   //change to get it from game-settings
@@ -75,7 +78,7 @@ exports.UPDATE_IMAGES = functions.database.ref('/lobbies/{lobbyID}/gameInfo/roun
 
                             //Call to generate prompts and scores
                             roundInfo = gameRoundGen.generatePromptAndScores({
-                                modelType: "MODEL_MODERATION",
+                                modelType: model,
                                 imageType: subreddit,
                                 modelOutputs: data,
                                 images: images
