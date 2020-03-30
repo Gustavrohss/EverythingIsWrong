@@ -18,9 +18,11 @@ return (
         Name: <input onChange = {e => setText(e.target.value)} value = {text}></input>
         Link: <input style={{ textTransform: "uppercase"}} onChange = {e => setCode(e.target.value) } value = {code}></input>
     </div>
-    <button onClick = {() => console.log(joinLobby(code.toUpperCase(), text))}>Join</button>
+    <button onClick = {() => {
+            console.log(joinLobby(code.toUpperCase(), text))
+            lobbyCallback()
+        }}>Join</button>
     <button onClick = {homeCallback}>{homeLabel}</button>
-    <button onClick = {lobbyCallback}>{lobbyLabel}</button>
 </div>)}
 
 export default JoinGameComponent
