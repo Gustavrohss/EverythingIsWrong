@@ -15,7 +15,6 @@ import {
   Router,
   useHistory
 } from "react-router-dom"
-import Header from '/home/kostas/Courses2020/DH2642_Dynamic_Web/EverythingIsWrong/src/stylingComponents/Layout';
 import DivBox from './stylingComponents/InitialBoard'
 import { NavigationBar } from './stylingComponents/NavigationBar';
 function App() {
