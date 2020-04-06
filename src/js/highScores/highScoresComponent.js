@@ -1,4 +1,5 @@
 import React from 'react'
+import InitialPageButton from '../../stylingComponents/InitialPageButton'
 
 // High scores component
 const HighScoreComponent = ({
@@ -10,7 +11,7 @@ const HighScoreComponent = ({
         ["Erika", 7], ["Fandango", 3000]]
 }) => 
 (<div>
-    <button onClick = {homeCallback}>{homeLabel}</button>
+    <InitialPageButton onClick = {homeCallback}>{homeLabel}</InitialPageButton>
     <div>
         <p>If we have game modes, this nested component might contain some filtering options!</p>
     </div>

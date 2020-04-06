@@ -1,9 +1,11 @@
+
 import React from 'react';
 import {connect} from 'react-redux'
 import styled from 'styled-components';
 
-const AboutButton = styled.button`
-background: ${props => props.primary ? "lightblue" : "gold"};
+
+const InitialPageButton = styled.button`
+background: ${props => props.primary ? "lightblue" : "lightblue"};
 position: relative;
 	padding: 10px 40px;
   margin: 0px 10px 10px 0px;
@@ -19,5 +21,4 @@ position: relative;
 }
 `;
 
-export default AboutButton
-
+export default InitialPageButton

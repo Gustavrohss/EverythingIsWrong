@@ -1,4 +1,5 @@
 import React from 'react'
+import InitialPageButton from '../../stylingComponents/InitialPageButton'
 
 // Game results component
 const GameResultsComponent = ({
@@ -18,7 +19,7 @@ const GameResultsComponent = ({
             .map(player => <p key = {player.playerID}> {player.name}: <b>{player.score}</b></p>)
         }
     </ol>
-    <button onClick={homeCallback}>{homeLabel}</button>
+    <InitialPageButton onClick={homeCallback}>Go back to start page</InitialPageButton>
 </div>)
 
 export default GameResultsComponent

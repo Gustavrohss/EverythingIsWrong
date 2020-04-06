@@ -1,4 +1,5 @@
 import React from 'react'
+import GameRoundButton from '../../stylingComponents/GameRoundButton'
 
 const GameRoundComponent = ({
     results: [resultsLabel, resultsCallback],
@@ -61,8 +62,8 @@ return (<div>
             </figure>
         )}
     </div>
-    <button onClick={nextCallback} disabled={nextDisabled}>{nextLable}</button>
-    <button onClick={resultsCallback}>{resultsLabel}</button>
+    <GameRoundButton onClick={nextCallback} disabled={nextDisabled}>{nextLable}</GameRoundButton>
+    <GameRoundButton onClick={resultsCallback}>{resultsLabel}</GameRoundButton>
 </div>)}
 
 

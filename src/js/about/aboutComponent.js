@@ -1,4 +1,5 @@
 import React from 'react'
+import AboutButton from '../../stylingComponents/AboutButton'
 
 // Component for the About page.
 const AboutComponent = ({
@@ -6,7 +7,7 @@ const AboutComponent = ({
 }) => (
   <div>
     <h1>About</h1>
-    <button onClick={homeCallback}>{homeLabel}</button>
+    <AboutButton onClick={homeCallback}>{homeLabel}</AboutButton>
   </div>
 )
 
