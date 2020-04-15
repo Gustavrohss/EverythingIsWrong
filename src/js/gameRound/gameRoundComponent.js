@@ -52,7 +52,7 @@ return (<div>
                     {answers[index].map(
                         (player, index2) => correctAnswer ?
                         (<p key = {index2}>
-                            <b>{player.name} + 1</b>
+                            <b>{player.name} answered correctly!</b>
                         </p>) :
                         (<p key = {index2}>
                             {player.name}
