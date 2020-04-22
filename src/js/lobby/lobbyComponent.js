@@ -33,9 +33,7 @@ const LobbyComponent = ({
 }) =>
 (<div>
     <button onClick =  {gameCallbac}>{gameLabel}</button>
-    <p>Session code: {lobbyID}</p>
-    <p>Game mode/title</p>
-    <b>Host</b>
+    <p>Game code: {lobbyID}</p>
     <table><tbody>
         {playersToRows(players)}
     </tbody></table>

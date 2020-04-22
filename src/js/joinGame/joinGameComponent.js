@@ -15,8 +15,8 @@ const [code, setCode] = React.useState("");
 return (
 <div>
     <div>
-        Name: <input onChange = {e => setText(e.target.value)} value = {text}></input>
-        Link: <input style={{ textTransform: "uppercase"}} onChange = {e => setCode(e.target.value) } value = {code}></input>
+        Your name: <input onChange = {e => setText(e.target.value)} value = {text}></input>
+        Game link: <input style={{ textTransform: "uppercase"}} onChange = {e => setCode(e.target.value) } value = {code}></input>
     </div>
     <button onClick = {() => {
             console.log(joinLobby(code.toUpperCase(), text))
