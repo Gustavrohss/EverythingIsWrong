@@ -162,15 +162,15 @@ export const setScore = newScore => {
   }
 }
 
-// Update the showAnswers value for the player
-// true - gamoComponent should show answers
-// false - gameComponent should not show the answers
-export const SET_SHOW_ANSWERS = "SET_SHOW_ANSWERS"
+// Update the haveAnswered value for the player
+// true - the player has answered the last question
+// false - the player has not answered the last question
+export const SET_HAVE_ANSWERED = "SET_HAVE_ANSWERED"
 
-export const setShowAnswers = show => {
+export const setHaveAnswered = answered => {
   return {
-    type: SET_SHOW_ANSWERS,
-    show
+    type: SET_HAVE_ANSWERED,
+    answered
   }
 }
 
@@ -277,7 +277,7 @@ export const answerQuestion = (answerOption, correct) => {
     const state = getState()
     const newScore = correct ? getScore(state) + 1 : getScore(state)
     if (correct) dispatch(setScore(newScore))
-    dispatch(setShowAnswers(true))
+    dispatch(setHaveAnswered(true))
     performAsync(
       dispatch,
       getState,
