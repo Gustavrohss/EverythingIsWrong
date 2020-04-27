@@ -135,12 +135,22 @@ export const getPlayerListSorted = createSelector(
   }
 )
 
-// Check if all players in the lobby has status "READY"
+// Check if all players in the lobby have status "READY"
 // If 0 players in lobby, this returns false
 export const allPlayersReady = createSelector(
   [getPlayerList],
   players => players.reduce(
     (allReady, player) => (allReady && player.status === STATUS.ready),
+    players.length > 0 // We want to return false if length = 0
+  )
+)
+
+// Check if all players in the lobby have answered the last question
+// If 0 players in lobby, this returns false
+export const allPlayersHaveAnswered = createSelector(
+  [getPlayerList],
+  players => players.reduce(
+    (allAnswered, player) => (allAnswered && player.status === STATUS.ready && player.answerOption > -1),
     players.length > 0 // We want to return false if length = 0
   )
 )

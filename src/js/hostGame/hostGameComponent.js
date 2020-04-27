@@ -14,14 +14,14 @@ const HostGameComponent = ({
     //Add settings: galleries nad modes.
     //Possible extension using react Semantic UI for nice stuff: https://react.semantic-ui.com/
     return (<div>
-        Name: <input onChange = {e => setText(e.target.value)} value={text}></input>
+        Your name: <input onChange = {e => setText(e.target.value)} value={text}></input>
         <button onClick = {() => {
             createLobby(text, {
                                 gameType: choice, 
                                 questions: num_questions
                             })
             lobbyCallback()
-            }}> Create Lobby</button>
+            }}>Create game</button>
         <button onClick = {homeCallback}>{homeLabel}</button>
     </div>)
 }

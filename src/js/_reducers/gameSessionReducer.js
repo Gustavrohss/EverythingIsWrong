@@ -10,7 +10,7 @@ import {
   SET_UNSUBSCRIBE,
   RESET_GAME_SESSION,
   SET_SCORE,
-  SET_SHOW_ANSWERS,
+  SET_HAVE_ANSWERED,
   SET_SETTINGS
 } from '../actions/gameSessionActions'
 
@@ -31,7 +31,7 @@ const gameSessionReducer = function(state = {
       status: null
     },
     gameInfo: null,
-    showAnswers: false,
+    haveAnswered: false,
     unsubscribe: () => {}
 }, action) {
     switch(action.type) {
@@ -47,8 +47,8 @@ const gameSessionReducer = function(state = {
               self: Object.assign({}, state.self, {
                 score: action.newScore
               })})
-        case SET_SHOW_ANSWERS:
-            return Object.assign({}, state, {showAnswers: action.show})
+        case SET_HAVE_ANSWERED:
+            return Object.assign({}, state, {haveAnswered: action.answered})
         case INIT_GAME_SESSION:
             const player = action.lobby.players[action.playerID]
             return Object.assign({}, state, {
@@ -72,7 +72,7 @@ const gameSessionReducer = function(state = {
                 status: null
               },
               gameInfo: null,
-              showAnswers: false,
+              haveAnswered: false,
               unsubscribe: () => {}
             })
         case SET_SETTINGS:
@@ -85,7 +85,7 @@ const gameSessionReducer = function(state = {
             })
         case SET_GAME_INFO:
             const updateObj = action.newGameInfo.round !== state.gameInfo.round ?
-              {gameInfo: action.newGameInfo, showAnswers: false} :
+              {gameInfo: action.newGameInfo, haveAnswered: false} :
               {gameInfo: action.newGameInfo}
             return Object.assign({}, state, updateObj)
         case SET_LOBBY_ID:
