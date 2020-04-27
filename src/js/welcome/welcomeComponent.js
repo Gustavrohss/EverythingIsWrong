@@ -5,7 +5,7 @@ import HostGameButton from '../../stylingComponents/HostGameButton.js'
 import HighScoresButton from '../../stylingComponents/HighScoresButton.js';
 import AboutButton from '../../stylingComponents/AboutButton.js'
 import DivBox from '../../stylingComponents/InitialBoard.js'
-import { NavigationBar } from '/home/kostas/Courses2020/DH2642_Dynamic_Web/EverythingIsWrong/src/stylingComponents/NavigationBar'
+import { NavigationBar } from '../../stylingComponents/NavigationBar'
 // The welcome screen component
 const WelcomeComponent = ({
     host: [hostLabel, hostCallback],
