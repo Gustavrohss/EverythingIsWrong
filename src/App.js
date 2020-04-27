@@ -13,6 +13,13 @@ import {
   Route,
   useHistory
 } from "react-router-dom"
+import TopAppBar, {
+  //TopAppBarFixedAdjust, 
+  //TopAppBarIcon,
+  TopAppBarRow,
+  //TopAppBarSection,
+  //TopAppBarTitle,
+} from '@material/react-top-app-bar'
 
 function App() {
 
@@ -29,6 +36,16 @@ function App() {
   
   return (
     <div>
+
+      {/* Third party generic presentational component */}
+      <TopAppBar>
+        <TopAppBarRow>
+          <button onClick = {homeNav[1]}>
+            {homeNav[0]}
+          </button>
+        </TopAppBarRow>
+      </TopAppBar>
+
       <Switch>                {/* Parent node for routes */}
         <Route path="/about"> {/* Route usage */}
           <AboutContainer
