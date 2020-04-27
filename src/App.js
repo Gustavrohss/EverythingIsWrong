@@ -21,14 +21,14 @@ function App() {
 
   const history = useHistory()
 
-  const aboutNav  = ["About",       () => history.push("/about")]
-  const homeNav   = ["Home",        () => history.push("/")]
-  const lobbyNav  = ["Lobby",       () => history.push("/lobby")]
-  const joinNav   = ["Join game",   () => history.push("/join")]
-  const hostNav   = ["Host game",   () => history.push("/host")]
-  const gameNav   = ["Game round",  () => history.push("/game")]
-  const resultsNav= ["Results",     () => history.push("/results")]
-  const hsNav     = ["High Scores", () => history.push("/high_scores")]
+  const aboutNav  = ["About",             () => history.push("/about")]
+  const homeNav   = ["Home",              () => history.push("/")]
+  const lobbyNav  = ["Go to game session",() => history.push("/lobby")]
+  const joinNav   = ["Join game session", () => history.push("/join")]
+  const hostNav   = ["Host game session", () => history.push("/host")]
+  const gameNav   = ["Start game",        () => history.push("/game")]
+  const resultsNav= ["Results",           () => history.push("/results")]
+  const hsNav     = ["High Scores",       () => history.push("/high_scores")]
   
   return (
     <DivBox>
