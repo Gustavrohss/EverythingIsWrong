@@ -8,18 +8,12 @@ import HostGameContainer from './js/hostGame/hostGameContainer'
 import GameRoundContainer from './js/gameRound/gameRoundContainer'
 import GameResultsContainer from './js/gameResults/gameResultsContainer'
 import HighScoresContainer from './js/highScores/highScoresContainer'
+import TopBarContainer from './js/topBar/topBarContainer'
 import {
   Switch,
   Route,
   useHistory
 } from "react-router-dom"
-import TopAppBar, {
-  //TopAppBarFixedAdjust, 
-  //TopAppBarIcon,
-  TopAppBarRow,
-  //TopAppBarSection,
-  //TopAppBarTitle,
-} from '@material/react-top-app-bar'
 
 function App() {
 
@@ -38,13 +32,9 @@ function App() {
     <div>
 
       {/* Third party generic presentational component */}
-      <TopAppBar>
-        <TopAppBarRow>
-          <button onClick = {homeNav[1]}>
-            {homeNav[0]}
-          </button>
-        </TopAppBarRow>
-      </TopAppBar>
+      <TopBarContainer
+        home = {homeNav} about = {aboutNav} highScores = {hsNav}
+      />
 
       <Switch>                {/* Parent node for routes */}
         <Route path="/about"> {/* Route usage */}
