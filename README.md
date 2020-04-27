@@ -18,6 +18,9 @@ For the frontend development we're using:
 For the backend development we're using:
 - <b>Firebase</b>
 
+Uses a third-party generic presentational component:
+https://github.com/material-components/material-components-web-react/tree/master/packages/top-app-bar
+
 ## What we've done
 
 - Implemented the basic layout and navigation of the website.
