@@ -1,13 +1,14 @@
 import styled from 'styled-components';
-const temp = (size, width = 1440) => `${(size / width) * 100}vw`;
+const temp = (size, width) => `${(size / width) * 100}`;
 
 
 const DivBox = styled.div`
   background-attachment: fixed;
   position: absolute;
-  top: 50%;
+  top: 70%;
   left: 50%;
   transform: translate(-50%, -50%);
+  height: fixed;
   width: fixed;
   background: linear-gradient(grey, lightblue);
   /*background-image:  url(https://picsum.photos/200/300/);*/
@@ -17,9 +18,8 @@ const DivBox = styled.div`
   * {
     margin: 5px;
     padding: 5px;
-    box-sizing: border-box;
   }
-  :root {
+  /*:root {
       font-size: ${temp(24)};
 
       @media (min-width: 468) {
@@ -29,7 +29,7 @@ const DivBox = styled.div`
       @media (min-width: 1024px) {
         font-size: ${temp(16)};
       }
-    }
+    }*/
 `;
 
 
