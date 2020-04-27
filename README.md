@@ -19,7 +19,10 @@ For the backend development we're using:
 - <b>Firebase</b>
 
 Uses a third-party generic presentational component:
+
 https://github.com/material-components/material-components-web-react/tree/master/packages/top-app-bar
+
+npm install @material/react-top-app-bar
 
 ## What we've done
 
