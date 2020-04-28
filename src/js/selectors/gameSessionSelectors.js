@@ -85,6 +85,10 @@ export const getRoundInfo = createSelector(
   infoObj => infoObj ? infoObj.roundInfo : undefined
 )
 
+export const getRoundReason = createSelector(
+  [getRoundInfo],
+  infoObj => infoObj ? infoObj.reason : undefined
+)
 
 // Get the number of the current game round
 // 'undefined' if player hasn't joined a lobby

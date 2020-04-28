@@ -7,6 +7,7 @@ import {
   getRoundCount,
   getAnswerOptions,
   getQuestion,
+  getRoundReason,
   allPlayersReady,
   allPlayersHaveAnswered
 } from '../selectors/gameSessionSelectors'
@@ -18,7 +19,8 @@ const mapStateToProps = (state, ownProps) => ({
   round: getRoundCount(state),
   answerOptions: getAnswerOptions(state),
   question: getQuestion(state),
-  nextDisabled: !allPlayersReady(state)
+  nextDisabled: !allPlayersReady(state),
+  roundReason: getRoundReason(state)
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => {
