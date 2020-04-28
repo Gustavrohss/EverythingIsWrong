@@ -17,6 +17,9 @@ const toConcepts = function(modelOutput, modelType) {
 const IMAGES_FOOD = "FoodPorn"
 const IMAGES_BEARS = "bears"
 const IMAGES_CARS = "carporn"
+const IMAGES_DOGS = "dogpictures"
+const IMAGES_CATS = "cat"
+const IMAGES_PLANTS = "plants"
 
 // MODEL TYPE CONSTANTS
 // SHOULD POTENTIALLY BE DEFINED ELSEWHERE AND IMPORTED HERE
@@ -46,6 +49,12 @@ module.exports.generatePromptAndScores = function ({
         case IMAGES_BEARS: promptString += partialQuestion_image_bears()
             break
         case IMAGES_CARS: promptString += partialQuestion_image_cars()
+            break
+        case IMAGES_DOGS: promptString += partialQuestion_image_dogs()
+            break
+        case IMAGES_CATS: promptString += partialQuestion_image_cats()
+            break
+        case IMAGES_PLANTS: promptString += partialQuestion_image_plants()
             break
         default:
             throw new Error("Error: undefined image type in generatePromptAndScores")
@@ -108,6 +117,24 @@ const partialQuestion_image_cars = () => choice([
     "vroom vrOOM", "environmentalist nightmare", 
     "horse replacer", "petrolium addict", "goes-fast-box",
     "superduperdoublebike", "(if you're creative) mobile housing unit"
+])
+
+const partialQuestion_image_dogs = () => choice([
+    "dog", "friend", "BEST friend", "dogi", "wonderfull furball",
+    "woofer", "doge", "barkbox", "Fido", "tail chaser",
+    "tail wagger", "butt sniffer"
+])
+
+const partialQuestion_image_cats = () => choice([
+    "cat", "angry fur", "tiny apex predator", "purr factory",
+    "claw-and-teeth", "self-proclaimed God", "meow machine",
+    "cold-blooded murderer", "furniture scratcher", "mouse chaser"
+])
+
+const partialQuestion_image_plants = () => choice([
+    "plant", "vegan meal", "oxygen generator", "sunlight consumer",
+    "thirstyboi", "greenfriend", "shrubbery", "living decoration",
+    "firephobiac", "government spy", "relative of trees"
 ])
 
 /**
