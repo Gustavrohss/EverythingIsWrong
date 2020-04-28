@@ -14,11 +14,9 @@ import {
   getUnsubscribe,
   getPlayerID,
   getScore,
-  getModelType, // debug data
-  getImageType  // debug data
+  isHost
 } from '../selectors/gameSessionSelectors'
 import {asyncAction, performAsync} from './utilActions'
-import makePrompt from '../questionGenerationMessaround' // DEBUG DATA!!
 
 /**
  * All possible actions regarding the gameSession part of the state
@@ -164,15 +162,15 @@ export const setScore = newScore => {
   }
 }
 
-// Update the showAnswers value for the player
-// true - gamoComponent should show answers
-// false - gameComponent should not show the answers
-export const SET_SHOW_ANSWERS = "SET_SHOW_ANSWERS"
+// Update the haveAnswered value for the player
+// true - the player has answered the last question
+// false - the player has not answered the last question
+export const SET_HAVE_ANSWERED = "SET_HAVE_ANSWERED"
 
-export const setShowAnswers = show => {
+export const setHaveAnswered = answered => {
   return {
-    type: SET_SHOW_ANSWERS,
-    show
+    type: SET_HAVE_ANSWERED,
+    answered
   }
 }
 
@@ -206,7 +204,7 @@ export const joinLobby = (lobbyID) => {
         .then(({playerID, lobby}) => {
             dispatch(initGameSession(playerID, lobby))
             setBackendListeners(dispatch, getState)
-        })
+        }).catch(error => console.log(error));
     },
     "Error when joining lobby:"
   )
@@ -279,7 +277,7 @@ export const answerQuestion = (answerOption, correct) => {
     const state = getState()
     const newScore = correct ? getScore(state) + 1 : getScore(state)
     if (correct) dispatch(setScore(newScore))
-    dispatch(setShowAnswers(true))
+    dispatch(setHaveAnswered(true))
     performAsync(
       dispatch,
       getState,
@@ -293,16 +291,44 @@ export const answerQuestion = (answerOption, correct) => {
   }
 }
 
+/**
+ * Indicate to the backend that you want to start a new round
+ * Will increment the round counter, generate a new question and set the status
+ * of all the players to "ANSWERING"
+ *
+ * TODO: The question generation should be moved to the backend.
+ */
 export const startNextRound = () => {
   return asyncAction(
     (dispatch, getState) => {
       const state = getState()
       return nextQuestionBackend(
-        getLobbyID(state),
-        makePrompt(getModelType(state), getImageType(state))
-      )
+        getLobbyID(state))
     },
     "Error in startNextRound:"
+  )
+}
+
+/**
+ * Start the first round of a game session. If the player is the host, this will
+ * indicate to the backend that it should start a new round. If the player is not
+ * the host this will just set the player status to "ANSWERING".
+ */
+export const startGameSession = () => {
+  return asyncAction(
+    (dispatch, getState) => {
+      const state = getState()
+      if (isHost(state)) {
+        return nextQuestionBackend(
+          getLobbyID(state))
+      } else {
+        return updateStatusBackend(
+          getLobbyID(state),
+          getPlayerID(state),
+          STATUS.answering)
+      }
+    },
+    "Error in startGameSession:"
   )
 }
 

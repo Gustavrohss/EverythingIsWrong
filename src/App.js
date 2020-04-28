@@ -8,6 +8,7 @@ import HostGameContainer from './js/hostGame/hostGameContainer'
 import GameRoundContainer from './js/gameRound/gameRoundContainer'
 import GameResultsContainer from './js/gameResults/gameResultsContainer'
 import HighScoresContainer from './js/highScores/highScoresContainer'
+import TopBarContainer from './js/topBar/topBarContainer'
 import {
   Switch,
   Route,
@@ -18,19 +19,23 @@ function App() {
 
   const history = useHistory()
 
-  const aboutNav  = ["About",       () => history.push("/about")]
-  const homeNav   = ["Home",        () => history.push("/")]
-  const lobbyNav  = ["Lobby",       () => history.push("/lobby")]
-  const joinNav   = ["Join game",   () => history.push("/join")]
-  const hostNav   = ["Host game",   () => history.push("/host")]
-  const gameNav   = ["Game round",  () => {history.push("/game"); /*update_images("", 5, "ET1O")*/}]
-  const resultsNav= ["Results",     () => history.push("/results")]
-  const hsNav     = ["High Scores", () => history.push("/high_scores")]
+  const aboutNav  = ["About",             () => history.push("/about")]
+  const homeNav   = ["Home",              () => history.push("/")]
+  const lobbyNav  = ["Go to game session",() => history.push("/lobby")]
+  const joinNav   = ["Join game session", () => history.push("/join")]
+  const hostNav   = ["Host game session", () => history.push("/host")]
+  const gameNav   = ["Start game",        () => history.push("/game")]
+  const resultsNav= ["Results",           () => history.push("/results")]
+  const hsNav     = ["High Scores",       () => history.push("/high_scores")]
   
-
-
   return (
     <div>
+
+      {/* Third party generic presentational component */}
+      <TopBarContainer
+        home = {homeNav} about = {aboutNav} highScores = {hsNav}
+      />
+
       <Switch>                {/* Parent node for routes */}
         <Route path="/about"> {/* Route usage */}
           <AboutContainer

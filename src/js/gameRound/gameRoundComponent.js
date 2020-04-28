@@ -7,7 +7,7 @@ const GameRoundComponent = ({
     round,          // which round is it?
     answerOptions,  // the answer options (images, correct, etc.)
     question,       // the question to be displayed
-    answers,        // the answers form all the other players
+    answers,        // the answers from all the other players
     answerCallback, // what should happen when a player clicks on an answer?
     showResults     // should the results for the round be shown?
     /*
@@ -15,15 +15,6 @@ const GameRoundComponent = ({
         See default argument for testing example
     */
 }) => {
-
-// State hook
-// Placeholder
-// This will be based on whether or not, some variation of:
-// -- All players have answered
-// -- Some single field is set (which, in turn, is set when all players have answered)
-// https://reactjs.org/docs/hooks-state.html
-//const [showResults, setShowResults] = React.useState(false)
-
 
 /*
     Images are currently a column, not a row, in the view.
@@ -33,36 +24,39 @@ const GameRoundComponent = ({
     What works right now should give an idea of how to implement further functionality.
 */
 return (<div>
-    <p align = {"center"}>
-    <b>Round {round}: </b>
-        {question}
-    </p>
+    {round ? // TODO: Maybe not have this check on `round`, but has a prop telling this component what should be displayed
+      (<p align = {"center"}>
+        <b>Round {round}: </b> {question}
+      </p>) :
+      round === 0 ?
+        (<p align = {"center"}>
+          Wait until the host starts the game
+        </p>) :
+        (<p align = {"center"}>
+          You need to join a game in order to play
+        </p>)
+    }
     <div>
-        {answerOptions.map(
-            ([image, value, correct], index) =>
-            <figure key = {index}>
-                <img
-                    src = {image}
-                    width = {"400px"}
-                    height = {"200px"}
-                    alt = {"Placeholder"}
-                    onClick = {showResults ? ()=> {} :
-                      () => answerCallback(index, correct)}>
-                </img>
-                {showResults ?
-                (<figcaption>
-                    {value}
-                    {answers[index].map(
-                        (player, index2) => correct ?
-                        (<p key = {index2}>
-                            <b>{player.name} + 1</b>
-                        </p>) :
-                        (<p key = {index2}>
-                            {player.name}
-                        </p>))}
-                </figcaption>) : null}
-            </figure>
-        )}
+        {showResults ? 
+            // Show results
+            (<div>
+                Placeholder
+            </div>)
+            :
+            // Game round
+            answerOptions.map(
+                ({image, score, correctAnswer}, index) =>
+                <figure key = {index}>
+                    <img
+                        src = {image}
+                        width = {"400px"}
+                        alt = {"Placeholder"}
+                        onClick = {showResults ? ()=> {} :
+                          () => answerCallback(index, correctAnswer)}>
+                    </img>
+                </figure>
+            )
+        }
     </div>
     <button onClick={nextCallback} disabled={nextDisabled}>{nextLable}</button>
     <button onClick={resultsCallback}>{resultsLabel}</button>

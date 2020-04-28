@@ -4,19 +4,19 @@ import {answerQuestion, startNextRound} from '../actions/gameSessionActions'
 import {
   getPlayerAnswers,
   getGameInfo,
-  getShowAnswers,
   getRoundCount,
-  getOptions,
+  getAnswerOptions,
   getQuestion,
-  allPlayersReady
+  allPlayersReady,
+  allPlayersHaveAnswered
 } from '../selectors/gameSessionSelectors'
 
 const mapStateToProps = (state, ownProps) => ({
   gameInfo: getGameInfo(state),
   answers: getPlayerAnswers(state),
-  showResults: getShowAnswers(state),
+  showResults: allPlayersHaveAnswered(state),
   round: getRoundCount(state),
-  answerOptions: getOptions(state), // currently using debug data
+  answerOptions: getAnswerOptions(state),
   question: getQuestion(state),
   nextDisabled: !allPlayersReady(state)
 })

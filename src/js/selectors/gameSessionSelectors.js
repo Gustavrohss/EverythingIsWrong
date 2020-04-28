@@ -78,15 +78,34 @@ export const getGameInfo = createSelector(
   info => info
 )
 
+// Get the current roundInfo object (including the question, answer options, etc.)
+// 'undefined' if player hasn't joined a lobby or no round has been started
+export const getRoundInfo = createSelector(
+  [gameInfo],
+  infoObj => infoObj ? infoObj.roundInfo : undefined
+)
+
+
 // Get the number of the current game round
+// 'undefined' if player hasn't joined a lobby
+// is 0 if no round has been started yet
 export const getRoundCount = createSelector(
   [gameInfo],
   infoObj => infoObj ? infoObj.round : undefined
 )
 
+// Get the question for the current game round
+// "" if player hasn't joined a lobby or no round has been started
 export const getQuestion = createSelector(
-  [gameInfo],
-  infoObj => infoObj ? infoObj.question : ""
+  [getRoundInfo],
+  infoObj => infoObj ? infoObj.promptString : ""
+)
+
+// Get a list with the answer options for the current game round
+// [] if player hasn't joined a lobby or no round has been started
+export const getAnswerOptions = createSelector(
+  [getRoundInfo],
+  infoObj => infoObj ? infoObj.outputs : []
 )
 
 // Get a list of all the players. Each player is represented as an
@@ -116,12 +135,22 @@ export const getPlayerListSorted = createSelector(
   }
 )
 
-// Check if all players in the lobby has status "READY"
+// Check if all players in the lobby have status "READY"
 // If 0 players in lobby, this returns false
 export const allPlayersReady = createSelector(
   [getPlayerList],
   players => players.reduce(
     (allReady, player) => (allReady && player.status === STATUS.ready),
+    players.length > 0 // We want to return false if length = 0
+  )
+)
+
+// Check if all players in the lobby have answered the last question
+// If 0 players in lobby, this returns false
+export const allPlayersHaveAnswered = createSelector(
+  [getPlayerList],
+  players => players.reduce(
+    (allAnswered, player) => (allAnswered && player.status === STATUS.ready && player.answerOption > -1),
     players.length > 0 // We want to return false if length = 0
   )
 )
@@ -151,26 +180,3 @@ export const getUnsubscribe = createSelector(
   [unsubscribe],
   func => func
 )
-
-
-/* --------------- testData --------------- */
-
-// Info about a game round
-export const getModelType = state => "Food"
-export const getImageType = state => "Celebrity"
-export const getOptions = state => {
-  return [
-    [
-        "https://i.ytimg.com/vi/Tdac7EAyL80/maxresdefault.jpg",
-        0.3, false
-    ],
-    [
-        "https://i.ytimg.com/vi/WRsPwaDT8Ao/maxresdefault.jpg",
-        0.4, false
-    ],
-    [
-        "https://i.ytimg.com/vi/UobKColhhtU/maxresdefault.jpg",
-        0.7, true
-    ]
-  ]
-}
