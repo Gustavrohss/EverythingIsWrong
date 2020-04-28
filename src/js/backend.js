@@ -1,4 +1,4 @@
-import {fbDatabase} from "./firebaseConfig"
+import {fbDatabase, fbStore} from "./firebaseConfig"
 
 /**
  * Here we have functions to read and write from the Realtime Database
@@ -36,6 +36,11 @@ import {fbDatabase} from "./firebaseConfig"
  *   }
  *}
  */
+
+ const addFavorite = (userHash, gameRound) => fbStore.collection("favorites")
+  .document(userHash)
+  .collection("saved")
+  .add(gameRound)
 
  // Create an initial player object with a specific username
  const getInitialPlayerObject = (name) => ({name, score: 0, status: "READY", answerOption: -1})
