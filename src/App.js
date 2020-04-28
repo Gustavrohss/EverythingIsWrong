@@ -8,6 +8,7 @@ import HostGameContainer from './js/hostGame/hostGameContainer'
 import GameRoundContainer from './js/gameRound/gameRoundContainer'
 import GameResultsContainer from './js/gameResults/gameResultsContainer'
 import HighScoresContainer from './js/highScores/highScoresContainer'
+import TopBarContainer from './js/topBar/topBarContainer'
 import {
   Switch,
   Route,
@@ -29,6 +30,12 @@ function App() {
   
   return (
     <div>
+
+      {/* Third party generic presentational component */}
+      <TopBarContainer
+        home = {homeNav} about = {aboutNav} highScores = {hsNav}
+      />
+
       <Switch>                {/* Parent node for routes */}
         <Route path="/about"> {/* Route usage */}
           <AboutContainer

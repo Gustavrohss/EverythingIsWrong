@@ -37,29 +37,26 @@ return (<div>
         </p>)
     }
     <div>
-        {answerOptions.map(
-            ({image, score, correctAnswer}, index) =>
-            <figure key = {index}>
-                <img
-                    src = {image}
-                    width = {"400px"}
-                    alt = {"Placeholder"}
-                    onClick = {showResults ? ()=> {} :
-                      () => answerCallback(index, correctAnswer)}>
-                </img>
-                {showResults ?
-                (<figcaption>
-                    {answers[index].map(
-                        (player, index2) => correctAnswer ?
-                        (<p key = {index2}>
-                            <b>{player.name} answered correctly!</b>
-                        </p>) :
-                        (<p key = {index2}>
-                            {player.name}
-                        </p>))}
-                </figcaption>) : null}
-            </figure>
-        )}
+        {showResults ? 
+            // Show results
+            (<div>
+                Placeholder
+            </div>)
+            :
+            // Game round
+            answerOptions.map(
+                ({image, score, correctAnswer}, index) =>
+                <figure key = {index}>
+                    <img
+                        src = {image}
+                        width = {"400px"}
+                        alt = {"Placeholder"}
+                        onClick = {showResults ? ()=> {} :
+                          () => answerCallback(index, correctAnswer)}>
+                    </img>
+                </figure>
+            )
+        }
     </div>
     <button onClick={nextCallback} disabled={nextDisabled}>{nextLable}</button>
     <button onClick={resultsCallback}>{resultsLabel}</button>
