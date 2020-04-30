@@ -1,27 +1,21 @@
 import {connect} from 'react-redux'
 import HostGameComponent from './hostGameComponent'
-import {createLobby, setUsername, leaveLobby, setSettings} from '../actions/gameSessionActions'
+import {createLobby, setUsername, setSettings} from '../actions/gameSessionActions'
+import {populateNavArray} from '../actions/utilActions'
 
 const mapStateToProps = (state, ownProps) => ({
 
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  const [homeLabel, homeCallback] = ownProps.home
-  return {
-    createLobby: (name, settings) => {
-      dispatch(setUsername(name))
-      dispatch(setSettings(settings))
-      dispatch(createLobby())
-    },
-    home: [
-      homeLabel,
-      () => {
-          // Composed function, navigation callback and stop listening to database changes
-          homeCallback()
-          dispatch(leaveLobby())
-    }]
-}}
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  createLobby: (name, settings) => {
+    dispatch(setUsername(name))
+    dispatch(setSettings(settings))
+    dispatch(createLobby())
+  },
+  home: populateNavArray(ownProps.home, dispatch),
+  lobby: populateNavArray(ownProps.lobby, dispatch)
+})
 
 // Container for host game component
 const HostGameContainer = connect(

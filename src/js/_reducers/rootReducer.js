@@ -1,9 +1,13 @@
+import { combineReducers } from 'redux'
+import { connectRouter } from 'connected-react-router'
 import gameSessionReducer from './gameSessionReducer'
 import loaderReducer from './loaderReducer'
 
-const rootReducer = (state = {}, action) => ({
-  gameSession: gameSessionReducer(state.gameSession, action),
-  loader: loaderReducer(state.loader, action)
+
+const createRootReducer = (history) => combineReducers({
+  router: connectRouter(history),
+  gameSession: gameSessionReducer,
+  loader: loaderReducer
 })
 
-export default rootReducer
+export default createRootReducer

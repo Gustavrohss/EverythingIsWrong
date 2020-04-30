@@ -1,26 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import rootReducer from './js/_reducers/rootReducer';
-import {createStore, applyMiddleware} from 'redux';
-import {Provider} from 'react-redux';
-import ReduxThunk from 'redux-thunk';
-import {BrowserRouter} from "react-router-dom";
+import React from 'react'
+import ReactDOM from 'react-dom'
+import {Provider} from 'react-redux'
+import {ConnectedRouter} from 'connected-react-router'
+import './index.css'
+import App from './App'
+import configureStore, {history} from './configureStore'
 
-const store = createStore(
-    rootReducer,
-    applyMiddleware(
-        // This is what allows us to dispatch functions rather than objects
-        ReduxThunk
-    )
-)
+const store = configureStore(/* provide initial state if any */)
 
 ReactDOM.render(
-    <Provider store = {store}>
-      <BrowserRouter>
+    <Provider store={store}>
+      <ConnectedRouter history={history}>
         <App />
-      </BrowserRouter>
+      </ConnectedRouter>
     </Provider>,
     document.getElementById('root')
 );

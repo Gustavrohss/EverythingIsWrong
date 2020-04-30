@@ -23,6 +23,7 @@ const GameRoundComponent = ({
 
     What works right now should give an idea of how to implement further functionality.
 */
+console.log(showResults)
 return (<div>
     {round ? // TODO: Maybe not have this check on `round`, but has a prop telling this component what should be displayed
       (<p align = {"center"}>
@@ -37,7 +38,7 @@ return (<div>
         </p>)
     }
     <div>
-        {showResults ? 
+        {showResults ?
             // Show results
             (<div>
                 Placeholder

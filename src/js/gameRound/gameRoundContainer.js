@@ -1,6 +1,7 @@
 import {connect} from 'react-redux'
 import GameRoundComponent from './gameRoundComponent'
 import {answerQuestion, startNextRound} from '../actions/gameSessionActions'
+import {populateNavArray} from '../actions/utilActions'
 import {
   getPlayerAnswers,
   getGameInfo,
@@ -29,7 +30,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     next: [
       "Next Question",
       () => dispatch(startNextRound())
-    ]
+    ],
+    results: populateNavArray(ownProps.results, dispatch)
   }
 }
 

@@ -11,23 +11,22 @@ import HighScoresContainer from './js/highScores/highScoresContainer'
 import TopBarContainer from './js/topBar/topBarContainer'
 import {
   Switch,
-  Route,
-  useHistory
+  Route
 } from "react-router-dom"
 
 function App() {
 
-  const history = useHistory()
+  //const history = useHistory()
 
-  const aboutNav  = ["About",             () => history.push("/about")]
-  const homeNav   = ["Home",              () => history.push("/")]
-  const lobbyNav  = ["Go to game session",() => history.push("/lobby")]
-  const joinNav   = ["Join game session", () => history.push("/join")]
-  const hostNav   = ["Host game session", () => history.push("/host")]
-  const gameNav   = ["Start game",        () => history.push("/game")]
-  const resultsNav= ["Results",           () => history.push("/results")]
-  const hsNav     = ["High Scores",       () => history.push("/high_scores")]
-  
+  const aboutNav  = ["About",               "/about"]
+  const homeNav   = ["Home",                "/"]
+  const lobbyNav  = ["Go to game session",  "/lobby"]
+  const joinNav   = ["Join game session",   "/join"]
+  const hostNav   = ["Host game session",   "/host"]
+  const gameNav   = ["Start game",          "/game"]
+  const resultsNav= ["Results",             "/results"]
+  const hsNav     = ["High Scores",         "/high_scores"]
+
   return (
     <div>
 
