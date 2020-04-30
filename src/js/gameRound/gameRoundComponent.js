@@ -1,4 +1,5 @@
 import React from 'react'
+import LoaderContainer from '../loader/loaderContainer';
 
 const GameRoundComponent = ({
     results: [resultsLabel, resultsCallback],
@@ -9,11 +10,12 @@ const GameRoundComponent = ({
     question,       // the question to be displayed
     answers,        // the answers from all the other players
     answerCallback, // what should happen when a player clicks on an answer?
-    showResults     // should the results for the round be shown?
+    showResults,     // should the results for the round be shown?
     /*
         Exact shape/specification of roundInfo TBD
         See default argument for testing example
     */
+   isLoading
 }) => {
 
 /*
@@ -24,9 +26,11 @@ const GameRoundComponent = ({
     What works right now should give an idea of how to implement further functionality.
 */
 return (<div>
+   
+
     {round ? // TODO: Maybe not have this check on `round`, but has a prop telling this component what should be displayed
       (<p align = {"center"}>
-        <b>Round {round}: </b> {question}
+        <b>Round {round}: </b> {isLoading ? (<b>Loading place holder...</b>) : question}
       </p>) :
       round === 0 ?
         (<p align = {"center"}>
@@ -43,6 +47,7 @@ return (<div>
                 Placeholder
             </div>)
             :
+            !isLoading ?
             // Game round
             answerOptions.map(
                 ({image, score, correctAnswer}, index) =>
@@ -55,7 +60,8 @@ return (<div>
                           () => answerCallback(index, correctAnswer)}>
                     </img>
                 </figure>
-            )
+            ) :
+            (<LoaderContainer />)
         }
     </div>
     <button onClick={nextCallback} disabled={nextDisabled}>{nextLable}</button>

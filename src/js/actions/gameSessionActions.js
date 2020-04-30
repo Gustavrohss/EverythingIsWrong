@@ -14,8 +14,10 @@ import {
   getUnsubscribe,
   getPlayerID,
   getScore,
-  isHost
+  isHost,
 } from '../selectors/gameSessionSelectors'
+import {isLoading} from '../selectors/gameSessionSelectors'
+import {setLoader} from './loaderActions'
 import {asyncAction, performAsync} from './utilActions'
 
 /**
@@ -219,7 +221,8 @@ const setBackendListeners = (dispatch, getState) => {
     ({gameInfo}) => dispatch(setGameInfo(gameInfo)),
     modifyPlayerCallback,
     modifyPlayerCallback,
-    ({playerID}) => dispatch(deletePlayer(playerID))
+    ({playerID}) => dispatch(deletePlayer(playerID)),
+    isLoading => dispatch(setLoader(isLoading))
   )
   dispatch(setUnsubscribe(unsubscribe))
 }

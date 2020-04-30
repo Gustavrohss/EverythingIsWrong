@@ -120,7 +120,8 @@ export function setListener(
   gameInfoCallback,
   addPlayerCallback,
   changePlayerCallback,
-  removePlayerCallback
+  removePlayerCallback,
+  setLoadingCallback
 ){
     const players = fbDatabase.ref("/lobbies/" + lobbyCode +"/players/")
     const listeners = {
@@ -128,6 +129,8 @@ export function setListener(
         .on("value", snapshot => {
             console.log("Rewritten gameinfo in lobby " + lobbyCode)
             gameInfoCallback({gameInfo: snapshot.val()})
+            console.log("Changed loading state")
+            setLoadingCallback(snapshot.val().isLoading)
         }),
 
       playerChangedListener: players.on("child_changed",
@@ -154,7 +157,13 @@ export function setListener(
         oldChildSnapshot => {
             console.log("Player " + oldChildSnapshot.key + " removed from lobby " + lobbyCode)
             removePlayerCallback({playerID: oldChildSnapshot.key})
-        })
+        }),
+      loadingListener : fbDatabase.ref("/lobbies/" + lobbyCode + "/gameInfo/roundInfo/isLoading")
+      .on("value", snapshot => {
+        //set state to loading.
+        //console.log("Changed loading state")
+        //setLoadingCallback(snapshot.val()); //Set the loading state to whatever this should be!
+      })
     }
 
     return () => stopListener(lobbyCode, listeners)
@@ -176,7 +185,8 @@ export function stopListener(lobbyCode, {
     gameInfoListener,
     playerChangedListener,
     playerAddedListener,
-    playerRemovedListener
+    playerRemovedListener,
+    loadingListener
   }) {
     console.log("Remove listeners in lobby " + lobbyCode)
     fbDatabase.ref("/lobbies/" + lobbyCode + "/gameInfo/").off("value", gameInfoListener)
@@ -184,6 +194,8 @@ export function stopListener(lobbyCode, {
     players.off("child_changed", playerChangedListener)
     players.off("child_added", playerAddedListener)
     players.off("child_removed", playerRemovedListener)
+    fbDatabase.ref("/lobbies/" + lobbyCode + "/gameInfo/roundInfo/isLoading")
+    .off("value", loadingListener)
 }
 
 /**
@@ -278,7 +290,7 @@ export function nextQuestion(lobbyCode) {
       if (snapshot.exists()) { // check if lobby exists
         const nextRound = snapshot.val() + 1
         fbDatabase.ref(`lobbies/${lobbyCode}/gameInfo`)
-          .update({round: nextRound})
+          .update({round: nextRound, isLoading: 1})
           .then(
             fbDatabase.ref(`lobbies/${lobbyCode}/players`).once("value").then(snapshot => {
               let allUpdates = {}

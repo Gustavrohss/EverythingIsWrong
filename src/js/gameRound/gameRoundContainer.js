@@ -11,6 +11,8 @@ import {
   allPlayersHaveAnswered
 } from '../selectors/gameSessionSelectors'
 
+import {isLoading} from '../selectors/loaderSelectors'
+
 const mapStateToProps = (state, ownProps) => ({
   gameInfo: getGameInfo(state),
   answers: getPlayerAnswers(state),
@@ -18,7 +20,8 @@ const mapStateToProps = (state, ownProps) => ({
   round: getRoundCount(state),
   answerOptions: getAnswerOptions(state),
   question: getQuestion(state),
-  nextDisabled: !allPlayersReady(state)
+  nextDisabled: !allPlayersReady(state),
+  isLoading: isLoading(state)
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => {
