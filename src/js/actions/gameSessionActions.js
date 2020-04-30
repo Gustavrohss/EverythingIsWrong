@@ -1,3 +1,4 @@
+import {push} from 'connected-react-router'
 import {
   createLobby as createLobbyBackend,
   joinLobby as joinLobbyBackend,
@@ -14,7 +15,8 @@ import {
   getUnsubscribe,
   getPlayerID,
   getScore,
-  isHost
+  isHost,
+  getRoundCount
 } from '../selectors/gameSessionSelectors'
 import {asyncAction, performAsync} from './utilActions'
 
@@ -216,7 +218,17 @@ const setBackendListeners = (dispatch, getState) => {
   const modifyPlayerCallback = ({playerID, player}) => dispatch(modifyPlayer(playerID, player))
   const unsubscribe = setListener(
     getLobbyID(getState()),
-    ({gameInfo}) => dispatch(setGameInfo(gameInfo)),
+    ({gameInfo}) => {
+      if (gameInfo.round === 1 && getRoundCount(getState()) === 0) {
+        dispatch(setGameInfo(gameInfo))
+        if (!isHost(getState())) {
+          dispatch(startGameSession())
+        }
+        dispatch(push("/game")) // TODO: save the route elsewhere?
+      } else {
+        dispatch(setGameInfo(gameInfo))
+      }
+    },
     modifyPlayerCallback,
     modifyPlayerCallback,
     ({playerID}) => dispatch(deletePlayer(playerID))
