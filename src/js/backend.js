@@ -40,6 +40,23 @@ import {fbDatabase} from "./firebaseConfig"
  // Create an initial player object with a specific username
  const getInitialPlayerObject = (name) => ({name, score: 0, status: "READY", answerOption: -1})
 
+
+ /**
+  * 
+  * 
+  * 
+  */
+ export function checkInput(input){
+   if(!(new RegExp('[A-Za-z0-9]{1,20}')).test(input) ||
+   input.length < 1){
+     return false
+   }
+   return true
+ }
+
+
+
+
 /**
  * Create a lobby in the database
  * @param {str} hostName - the chosen alias for the host
@@ -49,6 +66,10 @@ import {fbDatabase} from "./firebaseConfig"
  *          object with a `playerID` and a `lobby` element.
  */
 export function createLobby(hostName, settings) {
+    if(!checkInput(hostName)){
+      console.log("ERROR CREATING LOBBY")
+      return new Promise(() => {throw new Error("Name must contain characters and numbers only!")})
+    }
     const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
     let lobbyID = ""
     for (let i = 0; i < 4; i++) { lobbyID += CHARS.charAt(Math.floor(Math.random() * CHARS.length)) }
@@ -76,6 +97,11 @@ export function createLobby(hostName, settings) {
  *          in the lobby),the returned promise will fail.
  */
 export function joinLobby(lobbyCode, user) {
+    if(!checkInput(user)){
+      console.log("ERROR JOINING LOBBY")
+      return new Promise(() => {throw new Error("Name must contain characters and numbers only!")})
+    }
+    
     if(!(new RegExp('[A-Z0-9]{4}')).test(lobbyCode) ||
         lobbyCode.length != 4) //if does not contain valid characters:
       return new Promise(() => {throw new Error("No such lobby!")});
@@ -98,7 +124,7 @@ export function joinLobby(lobbyCode, user) {
             //console.log("Lobby " + lobbyCode + " does not exist!");
             throw new Error("Lobby does not exist!"); //Failure!
         }
-    }).catch(error => {console.log(error)});
+    })//.catch(error => {console.log(error)}); //error should not be handled here
 }
 
 /**

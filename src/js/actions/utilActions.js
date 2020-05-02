@@ -17,6 +17,7 @@ export const asyncAction = (asyncCall, errorMessage) => {
       .catch( error => {
         console.log(errorMessage)
         console.log(error)
+        throw error; //Throw it again, since we cannot do much for the user to handle the error here!
       })
       //.finally(() => dispatch(hideLoader())) /* This is executed wether or not the promise is resolved.*/
   }

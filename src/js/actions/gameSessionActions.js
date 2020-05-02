@@ -206,7 +206,7 @@ export const joinLobby = (lobbyID) => {
         .then(({playerID, lobby}) => {
             dispatch(initGameSession(playerID, lobby))
             setBackendListeners(dispatch, getState)
-        }).catch(error => console.log(error));
+        })
     },
     "Error when joining lobby:"
   )

@@ -11,6 +11,7 @@ const JoinGameComponent = ({
 // https://reactjs.org/docs/hooks-state.html
 const [text, setText] = React.useState("");
 const [code, setCode] = React.useState("");
+const [isNotOK, setIsNotOK] = React.useState(false)
 
 return (
 <div>
@@ -19,10 +20,14 @@ return (
         Game link: <input style={{ textTransform: "uppercase"}} onChange = {e => setCode(e.target.value) } value = {code}></input>
     </div>
     <button onClick = {() => {
-            console.log(joinLobby(code.toUpperCase(), text))
-            lobbyCallback()
+            joinLobby(code.toUpperCase(), text)
+            .then(val => {console.log(val); lobbyCallback()})
+            .catch(error => {console.log(error); setIsNotOK(true)})
         }}>Join</button>
     <button onClick = {homeCallback}>{homeLabel}</button>
+    {isNotOK &&
+        <h3 className="error"> { "placeholder: User must contain letters! or something else..." } </h3> 
+    }
 </div>)}
 
 export default JoinGameComponent
