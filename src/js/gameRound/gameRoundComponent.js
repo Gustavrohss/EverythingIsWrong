@@ -16,8 +16,6 @@ const GameRoundComponent = ({
         See default argument for testing example
     */
     isLoading,
-
-    showResults,    // should the results for the round be shown?
     roundReason,
     loggedIn: [isLoggedIn, username]
 
