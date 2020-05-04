@@ -12,6 +12,7 @@ const JoinGameComponent = ({
 const [text, setText] = React.useState("");
 const [code, setCode] = React.useState("");
 const [isNotOK, setIsNotOK] = React.useState(false)
+const [errorMessage, setErrorMessage] = React.useState("")
 
 return (
 <div>
@@ -22,11 +23,11 @@ return (
     <button onClick = {() => {
             joinLobby(code.toUpperCase(), text)
             .then(val => {console.log(val); lobbyCallback()})
-            .catch(error => {console.log(error); setIsNotOK(true)})
+            .catch(error => {console.log(error); setIsNotOK(true); setErrorMessage(error.message)})
         }}>Join</button>
     <button onClick = {homeCallback}>{homeLabel}</button>
     {isNotOK &&
-        <h3 className="error"> { "placeholder: User must contain letters! or something else..." } </h3> 
+        <h3 className="error"> { "placeholder: " + errorMessage} </h3> 
     }
 </div>)}
 

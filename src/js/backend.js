@@ -109,6 +109,11 @@ export function joinLobby(lobbyCode, user) {
     const ref = fbDatabase.ref("/lobbies/" + lobbyCode)
     return ref.once("value").then(snapshot => {
         if(snapshot.exists()) { //Check if lobby exists
+          if(snapshot.child("gameInfo/round").val() > 0){
+            console.log(snapshot.child("gameInfo/round").val())
+            throw new Error("Cannot join this lobby!");
+          }
+          else{
             let pushReturn = fbDatabase.ref("/lobbies/" + lobbyCode + "/players")
                 .push(getInitialPlayerObject(user)); //push new player
 
@@ -120,6 +125,7 @@ export function joinLobby(lobbyCode, user) {
                 return {playerID: pushReturn.key, lobby: snapshot.val()}
               })
             }); //Success!
+          }
         } else {
             //console.log("Lobby " + lobbyCode + " does not exist!");
             throw new Error("Lobby does not exist!"); //Failure!
