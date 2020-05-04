@@ -27,9 +27,14 @@ return (
         Game link: <input style={{ textTransform: "uppercase"}} onChange = {e => setCode(e.target.value) } value = {code}></input>
     </div>
     <button onClick = {() => {
-            joinLobby(code.toUpperCase(), isLoggedIn ? name : text)
-            .then(val => {console.log(val); lobbyCallback()})
-            .catch(error => {console.log(error); setError(error)})
+            const acceptUser = isLoggedIn || text.length > 0
+            if (acceptUser) {
+                joinLobby(code.toUpperCase(), isLoggedIn ? name : text)
+                .then(val => {console.log(val); lobbyCallback()})
+                .catch(error => {console.log(error); setError(error)})
+            } else {
+                setText("Sorry, that username is invalid!")
+            }
         }}>Join</button>
     <button onClick = {homeCallback}>{homeLabel}</button>
     {(myError != null) &&
