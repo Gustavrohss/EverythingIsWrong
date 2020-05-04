@@ -86,12 +86,13 @@ const gameSessionReducer = function(state = {
             return Object.assign({}, state, {
               lobbyID: null,
               players: null,
-              self: {
+              self: Object.assign({}, {
                 playerID: null,
                 username: state.self.username,
                 score: 0,
-                status: null
-              },
+                status: null,
+                hash: state.self.hash
+              }),
               gameInfo: null,
               haveAnswered: false,
               unsubscribe: () => {}
