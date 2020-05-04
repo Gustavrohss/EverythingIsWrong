@@ -13,3 +13,10 @@ export const showLoader = function () {
     type: SHOW_LOADER
   }
 }
+
+export const setLoader = function(isLoading){
+  console.log("SETTING THE LOADER!")
+  return {
+    type: isLoading ? SHOW_LOADER : HIDE_LOADER
+  }
+}

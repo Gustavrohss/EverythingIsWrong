@@ -13,7 +13,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     createLobby: (name, settings) => {
       dispatch(setUsername(name))
       dispatch(setSettings(settings))
-      dispatch(createLobby())
+      return dispatch(createLobby())
+      //return new Promise((resolve, rejection) =>)
     },
     home: [
       homeLabel,

@@ -37,7 +37,7 @@ exports.UPDATE_IMAGES = functions.database.ref('/lobbies/{lobbyID}/gameInfo/roun
     }
     const curr_round = change.before.val(); //round in index format
 
-    gameInfo_ref = change.before.ref.parent; //ref to ".../gameInfo/"
+    const gameInfo_ref = change.before.ref.parent; //ref to ".../gameInfo/"
 
     //Get a promise containing images and subreddit.
     
@@ -66,14 +66,15 @@ exports.UPDATE_IMAGES = functions.database.ref('/lobbies/{lobbyID}/gameInfo/roun
             const data = result.outputs;
     
             //Call to generate prompts and scores
-            roundInfo = gameRoundGen.generatePromptAndScores({
+            const roundInfo = gameRoundGen.generatePromptAndScores({
                 modelType: model,
                 imageType: subreddit,
                 modelOutputs: data,
                 images: images
             });
             //return change.after.ref.parent.child("images").set(images); //update the database.
-            return change.after.ref.parent.child("roundInfo").set(roundInfo);
+            return change.after.ref.parent.child("roundInfo").set(roundInfo)
+                    .then(() => change.after.ref.parent.child("isLoading").set(0));
         })
         .catch(error => console.log(error.message)); //Probably return some error
     });
@@ -138,14 +139,14 @@ exports.ADD_IMAGES = functions.database.ref("/lobbies/{lobbyID}/gameInfo")
     var promises    = []    //empty promise array
     var updates = {}; //object to contain all updates to be made
 
-    for(i = 0; i < num_rounds; i++){
+    for(let i = 0; i < num_rounds; i++){
         subreddits.push(IMAGES[choice(Object.keys(IMAGES))]);
         requestOptions.uri = 'https://api.imgur.com/3/' + 'gallery/r/' + subreddits[i] + '/top/all';
         promises.push(rp(requestOptions)
         .then(result => result.data.filter(d => d.type === "image/jpeg")) //filter out images
         .then(data => {
             var imgs = []
-            for (j = 0; j < num_images; j++) {
+            for (let j = 0; j < num_images; j++) {
                 imgs[j] = data.splice(Math.floor(Math.random() * data.length), 1)[0].link;
                 //console.log(i*num_images + j)
             }
@@ -160,7 +161,7 @@ exports.ADD_IMAGES = functions.database.ref("/lobbies/{lobbyID}/gameInfo")
         .then(result =>{
             
                 //Loop through result:
-                for(i = 0; i < num_rounds; i++){
+                for(let i = 0; i < num_rounds; i++){
                     images.push(...result[i]);
                 }
                 updates["/images"] = images;

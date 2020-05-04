@@ -12,7 +12,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     joinLobby: (lobbyID, name) => {
       dispatch(setUsername(name))
-      dispatch(joinLobby(lobbyID))
+      return dispatch(joinLobby(lobbyID))
     },
     home: [
       homeLabel,

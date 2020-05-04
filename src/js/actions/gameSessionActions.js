@@ -18,6 +18,8 @@ import {
   isHost,
   getUserHash
 } from '../selectors/gameSessionSelectors'
+import {isLoading} from '../selectors/gameSessionSelectors'
+import {setLoader} from './loaderActions'
 import {asyncAction, performAsync} from './utilActions'
 
 /**
@@ -214,7 +216,7 @@ export const joinLobby = (lobbyID) => {
         .then(({playerID, lobby}) => {
             dispatch(initGameSession(playerID, lobby))
             setBackendListeners(dispatch, getState)
-        }).catch(error => console.log(error));
+        })
     },
     "Error when joining lobby:"
   )
@@ -242,7 +244,8 @@ const setBackendListeners = (dispatch, getState) => {
     ({gameInfo}) => dispatch(setGameInfo(gameInfo)),
     modifyPlayerCallback,
     modifyPlayerCallback,
-    ({playerID}) => dispatch(deletePlayer(playerID))
+    ({playerID}) => dispatch(deletePlayer(playerID)),
+    isLoading => dispatch(setLoader(isLoading))
   )
   dispatch(setUnsubscribe(unsubscribe))
 }

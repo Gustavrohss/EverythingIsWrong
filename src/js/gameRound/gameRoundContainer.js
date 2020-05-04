@@ -13,6 +13,8 @@ import {
   getLoggedIn
 } from '../selectors/gameSessionSelectors'
 
+import {isLoading} from '../selectors/loaderSelectors'
+
 const mapStateToProps = (state, ownProps) => ({
   gameInfo: getGameInfo(state),
   answers: getPlayerAnswers(state),
@@ -21,8 +23,10 @@ const mapStateToProps = (state, ownProps) => ({
   answerOptions: getAnswerOptions(state),
   question: getQuestion(state),
   nextDisabled: !allPlayersReady(state),
+  isLoading: isLoading(state),
   roundReason: getRoundReason(state),
   loggedIn: getLoggedIn(state)
+
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => {
