@@ -77,8 +77,8 @@ return (<div align = "center">
                 : null}
             </figure></td>
         )}
-        )}
     </tr></tbody></table>
+    )}
 
     {showResults ? 
         <div>
