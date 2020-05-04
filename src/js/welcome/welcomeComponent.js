@@ -5,10 +5,15 @@ const WelcomeComponent = ({
     host: [hostLabel, hostCallback],
     join: [joinLabel, joinCallback],
     about: [aboutLabel, aboutCallback],
-    highScores: [highScoresLabel, highScoresCallback]
+    highScores: [highScoresLabel, highScoresCallback],
+    login: [loginLabel, loginCallback],
+    loggedIn: [showName, name]
 }) =>
 (<div>
-    <p>Welcome to Everything is Wrong!</p>
+    <p>{showName ? 
+        "Welcome to Everything is Wrong, " + name + "!" 
+        : 
+        "Welcome to Everything is Wrong!"}</p>
     <table><tbody>
         <tr>
             <td>
@@ -24,6 +29,11 @@ const WelcomeComponent = ({
             </td>
             <td>
                 <button onClick = {aboutCallback}>{aboutLabel}</button>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button onClick = {loginCallback}>{loginLabel}</button>
             </td>
         </tr>
     </tbody></table>

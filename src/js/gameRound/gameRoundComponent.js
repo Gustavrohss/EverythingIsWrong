@@ -10,7 +10,8 @@ const GameRoundComponent = ({
     answers,        // the answers from all the other players
     answerCallback, // what should happen when a player clicks on an answer?
     showResults,    // should the results for the round be shown?
-    roundReason
+    roundReason,
+    loggedIn: [isLoggedIn, username]
 }) => {
 
 /*
@@ -78,7 +79,7 @@ return (<div align = "center">
     null}
             
     <button onClick={nextCallback} disabled={nextDisabled}>{nextLable}</button>
-    <button onClick={resultsCallback}>{resultsLabel}</button>
+    <button onClick={() => resultsCallback(isLoggedIn)}>{resultsLabel}</button>
 </div>)}
 
 

@@ -1,6 +1,6 @@
 import {connect} from 'react-redux'
 import GameRoundComponent from './gameRoundComponent'
-import {answerQuestion, startNextRound} from '../actions/gameSessionActions'
+import {answerQuestion, startNextRound, uploadHighscore} from '../actions/gameSessionActions'
 import {
   getPlayerAnswers,
   getGameInfo,
@@ -9,7 +9,8 @@ import {
   getQuestion,
   getRoundReason,
   allPlayersReady,
-  allPlayersHaveAnswered
+  allPlayersHaveAnswered,
+  getLoggedIn
 } from '../selectors/gameSessionSelectors'
 
 const mapStateToProps = (state, ownProps) => ({
@@ -20,10 +21,12 @@ const mapStateToProps = (state, ownProps) => ({
   answerOptions: getAnswerOptions(state),
   question: getQuestion(state),
   nextDisabled: !allPlayersReady(state),
-  roundReason: getRoundReason(state)
+  roundReason: getRoundReason(state),
+  loggedIn: getLoggedIn(state)
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => {
+  const [resultsLabel, resultsCallback] = ownProps.results
   return {
     answerCallback: (answerOption, correct) => {
       dispatch(answerQuestion(answerOption, correct))
@@ -31,6 +34,13 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     next: [
       "Next Question",
       () => dispatch(startNextRound())
+    ],
+    results: [
+      resultsLabel,
+      (isLoggedIn) => {
+        if (isLoggedIn) dispatch(uploadHighscore())
+        resultsCallback()
+      }
     ]
   }
 }
