@@ -6,10 +6,14 @@ const WelcomeComponent = ({
     join: [joinLabel, joinCallback],
     about: [aboutLabel, aboutCallback],
     highScores: [highScoresLabel, highScoresCallback],
-    login: [loginLabel, loginCallback]
+    login: [loginLabel, loginCallback],
+    loggedIn: [showName, name]
 }) =>
 (<div>
-    <p>Welcome to Everything is Wrong!</p>
+    <p>{showName ? 
+        "Welcome to Everything is Wrong, " + name + "!" 
+        : 
+        "Welcome to Everything is Wrong!"}</p>
     <table><tbody>
         <tr>
             <td>

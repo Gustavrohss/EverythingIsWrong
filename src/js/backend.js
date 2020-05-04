@@ -45,6 +45,19 @@ import {fbDatabase, fbStore} from "./firebaseConfig"
  // Create an initial player object with a specific username
  const getInitialPlayerObject = (name) => ({name, score: 0, status: "READY", answerOption: -1})
 
+export const uploadHighscore = (hash, name, score) => {
+  return score > 0 ? fbStore
+    .collection("highscores")
+    .doc(hash.toString())
+    .collection("scores")
+    .add({
+      name,
+      score
+    })
+    :
+    new Promise(() => {})
+}
+
 /**
  * Create a lobby in the database
  * @param {str} hostName - the chosen alias for the host

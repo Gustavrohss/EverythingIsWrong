@@ -5,7 +5,8 @@ import React from 'react'
 const HostGameComponent = ({
     home: [homeLabel, homeCallback],
     lobby: [lobbyLabel, lobbyCallback],
-    createLobby
+    createLobby,
+    loggedIn: [isLoggedIn, name]
 }) => {
 
     const [text, setText] = React.useState("")
@@ -14,9 +15,13 @@ const HostGameComponent = ({
     //Add settings: galleries nad modes.
     //Possible extension using react Semantic UI for nice stuff: https://react.semantic-ui.com/
     return (<div>
-        Your name: <input onChange = {e => setText(e.target.value)} value={text}></input>
+        Your name: 
+        {isLoggedIn ? 
+            <b>{name}</b> :
+            <input onChange = {e => setText(e.target.value)} value={text}></input>
+        }
         <button onClick = {() => {
-            createLobby(text, {
+            createLobby(isLoggedIn ? name : text, {
                                 gameType: choice, 
                                 questions: num_questions
                             })
