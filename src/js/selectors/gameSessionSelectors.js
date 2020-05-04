@@ -21,7 +21,19 @@ const players = state => state.gameSession.players
 const unsubscribe = state => state.gameSession.unsubscribe
 const gameInfo = state => state.gameSession.gameInfo
 const showAnswers = state => state.gameSession.showAnswers
+const loggedIn = state => state.gameSession.self.username
+const getHash = state => state.gameSession.self.hash
 
+export const getLoggedIn = createSelector(
+  [loggedIn],
+  name => name !== null ?
+    [true, name] : [false, null]
+)
+
+export const getUserHash = createSelector(
+  [getHash],
+  hash => hash
+)
 
 // Get the username to the player
 export const getUsername = createSelector(
@@ -85,6 +97,10 @@ export const getRoundInfo = createSelector(
   infoObj => infoObj ? infoObj.roundInfo : undefined
 )
 
+export const getRoundReason = createSelector(
+  [getRoundInfo],
+  infoObj => infoObj ? infoObj.reason : undefined
+)
 
 // Get the number of the current game round
 // 'undefined' if player hasn't joined a lobby

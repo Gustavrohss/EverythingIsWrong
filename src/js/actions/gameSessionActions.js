@@ -6,6 +6,7 @@ import {
   updateScore as updateScoreBackend,
   updateStatus as updateStatusBackend,
   answerQuestion as answerQuestionBackend,
+  uploadHighscore as uploadHighscoreBackend,
   nextQuestion as nextQuestionBackend} from '../backend'
 import {
   getUsername,
@@ -15,6 +16,7 @@ import {
   getPlayerID,
   getScore,
   isHost,
+  getUserHash
 } from '../selectors/gameSessionSelectors'
 import {isLoading} from '../selectors/gameSessionSelectors'
 import {setLoader} from './loaderActions'
@@ -45,6 +47,14 @@ export const setUsername = function (newName) {
         newName
     }
 }
+
+export const SET_USERHASH = 'SET_USERHASH'
+
+export const setUserhash = (name, pass) => ({
+  type: SET_USERHASH,
+  name,
+  pass
+})
 
 // Init a new game session, with `lobby` and `playerID` from the database
 export const INIT_GAME_SESSION = "INIT_GAME_SESSION"
@@ -209,6 +219,19 @@ export const joinLobby = (lobbyID) => {
         })
     },
     "Error when joining lobby:"
+  )
+}
+
+export const uploadHighscore = () => {
+  return asyncAction(
+    (dispatch, getState) => {
+      return uploadHighscoreBackend(
+          getUserHash(getState()),
+          getUsername(getState()), 
+          getScore(getState())
+        )
+    },
+    "Error when uploading high score:"
   )
 }
 
