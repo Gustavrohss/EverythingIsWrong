@@ -64,9 +64,8 @@ import {fbDatabase, fbStore} from "./firebaseConfig"
 export const uploadHighscore = (hash, name, score) => {
   return score > 0 ? fbStore
     .collection("highscores")
-    .doc(hash.toString())
-    .collection("scores")
     .add({
+      hash,
       name,
       score
     })
@@ -74,6 +73,11 @@ export const uploadHighscore = (hash, name, score) => {
     new Promise(() => {})
 }
 
+export const getHighScores = () => {
+  return fbStore
+    .collection("highscores")
+    .get()
+}
 
 /**
  * Create a lobby in the database

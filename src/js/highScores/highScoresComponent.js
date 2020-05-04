@@ -3,24 +3,30 @@ import React from 'react'
 // High scores component
 const HighScoreComponent = ({
     home: [homeLabel, homeCallback],
-    // Placeholder
-    scores = [
-        ["Alice", 10], ["Bob", 5], 
-        ["Carla", 20], ["Duncan", 12], 
-        ["Erika", 7], ["Fandango", 3000]]
-}) => 
-(<div>
-    <button onClick = {homeCallback}>{homeLabel}</button>
-    <div>
-        <p>If we have game modes, this nested component might contain some filtering options!</p>
+    available,
+    highScores,
+    populate
+}) => {
+
+    if (!available) populate()
+
+    return <div>
+        <button onClick = {homeCallback}>{homeLabel}</button>
+        <div>
+            <b>High Scores</b>
+            <ol>
+                {
+                    highScores
+                        .sort((s1, s2) => s1.score - s2.score)
+                        .map(({name, score}, idx) => 
+                            <li key = {idx}>
+                                <b>{name}:</b> {score}
+                            </li>    
+                        )
+                }
+            </ol>
+        </div>
     </div>
-    <ol>
-        {/* Sort by player score and map to HTML element */}
-        {scores
-            .sort(([p1, score1], [p2, score2]) => score2 - score1)
-            .map(([player, score], index) => <p key = {index}>{player}: <b>{score}</b></p>)
-        }
-    </ol>
-</div>)
+}
 
 export default HighScoreComponent
