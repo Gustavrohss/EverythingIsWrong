@@ -18,9 +18,7 @@ const GameRoundComponent = ({
     */
     isLoading,
     roundReason,
-    loggedIn: {
-        isLoggedIn
-    }
+    loggedIn
 
 }) => {
 
@@ -93,7 +91,7 @@ return (<div align = "center">
     null}
             
     <StyledButton color = 'orchid' onClick={nextCallback} disabled={nextDisabled}>{nextLable}</StyledButton>
-    <StyledButton color = 'orchid' onClick={() => resultsCallback(isLoggedIn)}>{resultsLabel}</StyledButton>
+    <StyledButton color = 'orchid' onClick={() => resultsCallback(loggedIn)}>{resultsLabel}</StyledButton>
 </div>)}
 
 
