@@ -30,7 +30,12 @@ const GameRoundComponent = ({
     What works right now should give an idea of how to implement further functionality.
 */
 
-return (<div align = "center">
+return ( 
+    <div>
+    {isLoading &&
+        (<LoaderContainer />)}
+    <div align = "center">
+    
     {round ? // TODO: Maybe not have this check on `round`, but has a prop telling this component what should be displayed
       (<p align = {"center"}>
         <b>Round {round}: </b> {isLoading ? (<b>Loading place holder...</b>) : question}
@@ -43,9 +48,9 @@ return (<div align = "center">
           You need to join a game in order to play
         </p>)
     }
-    {isLoading ? 
+    {/*isLoading ? 
         (<LoaderContainer />) 
-    : (    
+    : */(    
     <table><tbody>
         <tr>
             {answerOptions.map(
@@ -100,7 +105,7 @@ return (<div align = "center">
         <StyledButton color = 'orchid' onClick={nextCallback} disabled={nextDisabled}>{nextLable}</StyledButton>
         <StyledButton color = 'orchid' onClick={() => resultsCallback(loggedIn)}>{resultsLabel}</StyledButton>
     </div>
-</div>)}
+</div></div>)}
 
 
 export default GameRoundComponent
