@@ -7,10 +7,13 @@ const WelcomeComponent = ({
     about: [aboutLabel, aboutCallback],
     highScores: [highScoresLabel, highScoresCallback],
     login: [loginLabel, loginCallback],
-    loggedIn: [showName, name]
+    loggedIn: {
+        name,
+        isLoggedIn
+    }
 }) =>
 (<div>
-    <p>{showName ? 
+    <p>{isLoggedIn ? 
         "Welcome to Everything is Wrong, " + name + "!" 
         : 
         "Welcome to Everything is Wrong!"}</p>
