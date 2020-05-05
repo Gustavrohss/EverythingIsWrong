@@ -12,83 +12,72 @@ const gameRoundGen = require('./gameRoundGen');
 // Functions here are not available in the program necessarily
 // They are just written here and the exported to Firebase
 
+
+/* HARDCODED. TODO: CHANGE TO MORE DYNAMIC */
+const IMAGES = {
+    FOOD:       'FoodPorn',
+    BEARS:      'bears',
+    CARS:       'carporn'
+};
+const MODELS = {
+    "MODEL_MODERATION":     Clarifai.MODERATION_MODEL,
+    "MODEL_FOOD":           Clarifai.FOOD_MODEL
+};
+
+const choice = arr => arr[Math.floor(Math.random() * arr.length)]
+
 //=================================
 //When a new game round starts, "when game-round changes", make a call to imgur API and choose.abs
 //This would've worked if we pay-to-win
 //https://firebase.google.com/docs/functions/database-events#handle_event_data
 exports.UPDATE_IMAGES = functions.database.ref('/lobbies/{lobbyID}/gameInfo/round')
 .onUpdate((change, context) => {
-    //TODO: add images to this lobby.
-    // Only edit data AFTER it is created
-    if (!change.before.exists()) {
+    if(!change.before.exists()){
         return null;
     }
+    const curr_round = change.before.val(); //round in index format
 
-    //Test variables only
-    //const subreddit = 'FoodPorn'
+    const gameInfo_ref = change.before.ref.parent; //ref to ".../gameInfo/"
 
-    /* HARDCODED. TODO: CHANGE TO MORE DYNAMIC */
-    const IMAGES = {
-                FOOD:       'FoodPorn',
-                BEARS:      'bears',
-                CARS:       'carporn'
-    };
-    const MODELS = {
-            "MODEL_MODERATION":     Clarifai.MODERATION_MODEL,
-            "MODEL_FOOD":           Clarifai.FOOD_MODEL
-    };
+    //Get a promise containing images and subreddit.
     
-    // Randomly select one:
-    // TODO
-    const choice = arr => arr[Math.floor(Math.random() * arr.length)]
-    const subreddit = IMAGES[choice(Object.keys(IMAGES))]
-    const model = MODELS[subreddit === IMAGES.FOOD ? 
-        choice(Object.keys(MODELS).filter(key => key !== "MODEL_FOOD")):choice(Object.keys(MODELS))
-    ]
+    return gameInfo_ref.once('value', snapshot => {
+        const images = snapshot.child("images").val().slice(curr_round * 3, curr_round * 3 + 3); //empty array to be filled
+        const subreddit = snapshot.child("types").val()[curr_round];
+        const model = MODELS[subreddit === IMAGES.FOOD ? 
+            choice(Object.keys(MODELS).filter(key => key !== "MODEL_FOOD")):choice(Object.keys(MODELS))
+        ];
+
+        /*
+        console.log(curr_round);
+        console.log(images);
+        console.log(subreddit);
+        console.log(model);
+        */
+
+        //Clarifai app
+        const clarifai_app = new Clarifai.App({
+            apiKey: functions.config().clarifai.key
+        });
+
+        return clarifai_app.models.predict(model, images)
+        .then(response => response)
+        .then(result => {
+            const data = result.outputs;
     
-    const imgur_client_id = functions.config().imgur.id
-    const extension = 'gallery/r/' + subreddit + '/top/all' ;   //change to get it from game-settings
-    const num_images = 3;           // -||-
-
-    var requestOptions = {
-        uri: 'https://api.imgur.com/3/' + extension,
-        method: 'GET',
-        headers: {'Authorization': imgur_client_id},
-        redirect: 'follow',
-        json: true // Automatically parses the JSON string in the response
-    };
-
-    //Clarifai app
-    const clarifai_app = new Clarifai.App({
-        apiKey: functions.config().clarifai.key
+            //Call to generate prompts and scores
+            const roundInfo = gameRoundGen.generatePromptAndScores({
+                modelType: model,
+                imageType: subreddit,
+                modelOutputs: data,
+                images: images
+            });
+            //return change.after.ref.parent.child("images").set(images); //update the database.
+            return change.after.ref.parent.child("roundInfo").set(roundInfo)
+                    .then(() => change.after.ref.parent.child("isLoading").set(0));
+        })
+        .catch(error => console.log(error.message)); //Probably return some error
     });
-
-    return rp(requestOptions)
-            .then(result => result.data.filter(d => d.type === "image/jpeg")) //filter out images
-            .then(data => {
-                var images = [] //array for clarifai app
-                for (let i = 0; i < num_images; i++) {
-                    images[i] = data[Math.floor(Math.random() * data.length)].link
-                }
-                //Call to clarifai
-                return clarifai_app.models.predict(model, images)
-                    .then(response => response)
-                    .then(result => {
-                        const data = result.outputs;
-
-                        //Call to generate prompts and scores
-                        roundInfo = gameRoundGen.generatePromptAndScores({
-                            modelType: model,
-                            imageType: subreddit,
-                            modelOutputs: data,
-                            images: images
-                        })
-                        //return change.after.ref.parent.child("images").set(images); //update the database.
-                        return change.after.ref.parent.child("roundInfo").set(roundInfo)
-                    }
-                    ).catch(error => console.log(error.message)); //Probably return some error
-            })
-            .catch(error => console.log(error.message)); //Return some error
 });
 
 
@@ -103,7 +92,6 @@ exports.CLEANUP = functions.database.ref("/lobbies/{lobbyID}/players/")
         return null;
     }
 })
-
 
 //When creating a lobby, add a timestamp to it:
 exports.ADD_TIMESTAMP = functions.database.ref("/lobbies/{lobbyID}")
@@ -124,5 +112,62 @@ exports.ADD_TIMESTAMP = functions.database.ref("/lobbies/{lobbyID}")
         });
         return ref.update(updates);
     });
-
 })
+
+
+
+//Function to add images when lobby/gameInfo is created.
+exports.ADD_IMAGES = functions.database.ref("/lobbies/{lobbyID}/gameInfo")
+.onCreate((snapshot, context) => {
+
+    const imgur_client_id = functions.config().imgur.id
+
+    const num_rounds = 10;
+    const num_images = 3;
+
+
+    var requestOptions = {
+        uri: null,
+        method: 'GET',
+        headers: {'Authorization': imgur_client_id},
+        redirect: 'follow',
+        json: true // Automatically parses the JSON string in the response
+    };
+
+    var images      = []    //image array
+    var subreddits  = []    //subreddit array
+    var promises    = []    //empty promise array
+    var updates = {}; //object to contain all updates to be made
+
+    for(let i = 0; i < num_rounds; i++){
+        subreddits.push(IMAGES[choice(Object.keys(IMAGES))]);
+        requestOptions.uri = 'https://api.imgur.com/3/' + 'gallery/r/' + subreddits[i] + '/top/all';
+        promises.push(rp(requestOptions)
+        .then(result => result.data.filter(d => d.type === "image/jpeg")) //filter out images
+        .then(data => {
+            var imgs = []
+            for (let j = 0; j < num_images; j++) {
+                imgs[j] = data.splice(Math.floor(Math.random() * data.length), 1)[0].link;
+                //console.log(i*num_images + j)
+            }
+            //console.log(subreddit);
+            return Promise.resolve(imgs)
+        })
+        .catch(error => console.log(error))
+        )
+    }
+
+    return Promise.all(promises)
+        .then(result =>{
+            
+                //Loop through result:
+                for(let i = 0; i < num_rounds; i++){
+                    images.push(...result[i]);
+                }
+                updates["/images"] = images;
+                updates["/types"] = subreddits;
+
+                return snapshot.ref.update(updates); //change.after.ref.parent.child("roundInfo").set(roundInfo)
+        })
+        .catch(error => console.log(error));
+});

@@ -1,4 +1,4 @@
-import {fbDatabase} from "./firebaseConfig"
+import {fbDatabase, fbStore} from "./firebaseConfig"
 
 /**
  * Here we have functions to read and write from the Realtime Database
@@ -37,8 +37,47 @@ import {fbDatabase} from "./firebaseConfig"
  *}
  */
 
+ const addFavorite = (userHash, gameRound) => fbStore.collection("favorites")
+  .document(userHash)
+  .collection("saved")
+  .add(gameRound)
+
  // Create an initial player object with a specific username
  const getInitialPlayerObject = (name) => ({name, score: 0, status: "READY", answerOption: -1})
+
+
+ /**
+  * 
+  * 
+  * 
+  */
+ export function checkInput(input){
+   if(!(new RegExp('[A-Za-z0-9]{1,20}')).test(input) ||
+   input.length < 1){
+     return false
+   }
+   return true
+ }
+
+
+
+export const uploadHighscore = (hash, name, score) => {
+  return score > 0 ? fbStore
+    .collection("highscores")
+    .add({
+      hash,
+      name,
+      score
+    })
+    :
+    new Promise(() => {})
+}
+
+export const getHighScores = () => {
+  return fbStore
+    .collection("highscores")
+    .get()
+}
 
 /**
  * Create a lobby in the database
@@ -49,6 +88,10 @@ import {fbDatabase} from "./firebaseConfig"
  *          object with a `playerID` and a `lobby` element.
  */
 export function createLobby(hostName, settings) {
+    if(!checkInput(hostName)){
+      console.log("ERROR CREATING LOBBY")
+      return new Promise(() => {throw new Error("Name must contain characters and numbers only!")})
+    }
     const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
     let lobbyID = ""
     for (let i = 0; i < 4; i++) { lobbyID += CHARS.charAt(Math.floor(Math.random() * CHARS.length)) }
@@ -76,6 +119,11 @@ export function createLobby(hostName, settings) {
  *          in the lobby),the returned promise will fail.
  */
 export function joinLobby(lobbyCode, user) {
+    if(!checkInput(user)){
+      console.log("ERROR JOINING LOBBY")
+      return new Promise(() => {throw new Error("Name must contain characters and numbers only!")})
+    }
+    
     if(!(new RegExp('[A-Z0-9]{4}')).test(lobbyCode) ||
         lobbyCode.length != 4) //if does not contain valid characters:
       return new Promise(() => {throw new Error("No such lobby!")});
@@ -83,6 +131,11 @@ export function joinLobby(lobbyCode, user) {
     const ref = fbDatabase.ref("/lobbies/" + lobbyCode)
     return ref.once("value").then(snapshot => {
         if(snapshot.exists()) { //Check if lobby exists
+          if(snapshot.child("gameInfo/round").val() > 0){
+            console.log(snapshot.child("gameInfo/round").val())
+            throw new Error("Cannot join this lobby!");
+          }
+          else{
             let pushReturn = fbDatabase.ref("/lobbies/" + lobbyCode + "/players")
                 .push(getInitialPlayerObject(user)); //push new player
 
@@ -94,11 +147,12 @@ export function joinLobby(lobbyCode, user) {
                 return {playerID: pushReturn.key, lobby: snapshot.val()}
               })
             }); //Success!
+          }
         } else {
             //console.log("Lobby " + lobbyCode + " does not exist!");
             throw new Error("Lobby does not exist!"); //Failure!
         }
-    }).catch(error => {console.log(error)});
+    })//.catch(error => {console.log(error)}); //error should not be handled here
 }
 
 /**
@@ -120,7 +174,8 @@ export function setListener(
   gameInfoCallback,
   addPlayerCallback,
   changePlayerCallback,
-  removePlayerCallback
+  removePlayerCallback,
+  setLoadingCallback
 ){
     const players = fbDatabase.ref("/lobbies/" + lobbyCode +"/players/")
     const listeners = {
@@ -128,6 +183,8 @@ export function setListener(
         .on("value", snapshot => {
             console.log("Rewritten gameinfo in lobby " + lobbyCode)
             gameInfoCallback({gameInfo: snapshot.val()})
+            console.log("Changed loading state")
+            setLoadingCallback(snapshot.val().isLoading)
         }),
 
       playerChangedListener: players.on("child_changed",
@@ -154,7 +211,13 @@ export function setListener(
         oldChildSnapshot => {
             console.log("Player " + oldChildSnapshot.key + " removed from lobby " + lobbyCode)
             removePlayerCallback({playerID: oldChildSnapshot.key})
-        })
+        }),
+      loadingListener : fbDatabase.ref("/lobbies/" + lobbyCode + "/gameInfo/roundInfo/isLoading")
+      .on("value", snapshot => {
+        //set state to loading.
+        //console.log("Changed loading state")
+        //setLoadingCallback(snapshot.val()); //Set the loading state to whatever this should be!
+      })
     }
 
     return () => stopListener(lobbyCode, listeners)
@@ -176,7 +239,8 @@ export function stopListener(lobbyCode, {
     gameInfoListener,
     playerChangedListener,
     playerAddedListener,
-    playerRemovedListener
+    playerRemovedListener,
+    loadingListener
   }) {
     console.log("Remove listeners in lobby " + lobbyCode)
     fbDatabase.ref("/lobbies/" + lobbyCode + "/gameInfo/").off("value", gameInfoListener)
@@ -184,6 +248,8 @@ export function stopListener(lobbyCode, {
     players.off("child_changed", playerChangedListener)
     players.off("child_added", playerAddedListener)
     players.off("child_removed", playerRemovedListener)
+    fbDatabase.ref("/lobbies/" + lobbyCode + "/gameInfo/roundInfo/isLoading")
+    .off("value", loadingListener)
 }
 
 /**
@@ -278,7 +344,7 @@ export function nextQuestion(lobbyCode) {
       if (snapshot.exists()) { // check if lobby exists
         const nextRound = snapshot.val() + 1
         fbDatabase.ref(`lobbies/${lobbyCode}/gameInfo`)
-          .update({round: nextRound})
+          .update({round: nextRound, isLoading: 1})
           .then(
             fbDatabase.ref(`lobbies/${lobbyCode}/players`).once("value").then(snapshot => {
               let allUpdates = {}

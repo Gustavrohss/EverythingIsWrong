@@ -10,6 +10,7 @@ import GameResultsContainer from './js/gameResults/gameResultsContainer'
 import HighScoresContainer from './js/highScores/highScoresContainer'
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import TopBarContainer from './js/topBar/topBarContainer'
+import LoginContainer from './js/login/loginContainer'
 import {
   Switch,
   Route,
@@ -30,6 +31,7 @@ function App() {
   const gameNav   = ["Start game",        () => history.push("/game")]
   const resultsNav= ["Results",           () => history.push("/results")]
   const hsNav     = ["High Scores",       () => history.push("/high_scores")]
+  const loginNav  = ["Log in / Create account", () => history.push("/login")]
   
   return (
     <DivBox>
@@ -76,10 +78,16 @@ function App() {
             home={homeNav}
           />
         </Route>
+        <Route path = "/login">
+          <LoginContainer
+            home={homeNav}
+          />
+        </Route>
         <Route path="/">
           <WelcomeContainer
             about={aboutNav} highScores={hsNav}
             join={joinNav} host={hostNav}
+            login={loginNav}
           />
         </Route>
       </Switch>

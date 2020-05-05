@@ -1,9 +1,10 @@
 import {connect} from 'react-redux'
 import JoinGameComponent from './joinGameComponent'
 import {joinLobby, leaveLobby, setUsername} from '../actions/gameSessionActions'
+import {getLoggedIn} from '../selectors/gameSessionSelectors'
 
 const mapStateToProps = (state, ownProps) => ({
-
+  loggedIn: getLoggedIn(state)
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => {
@@ -11,7 +12,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     joinLobby: (lobbyID, name) => {
       dispatch(setUsername(name))
-      dispatch(joinLobby(lobbyID))
+      return dispatch(joinLobby(lobbyID))
     },
     home: [
       homeLabel,
