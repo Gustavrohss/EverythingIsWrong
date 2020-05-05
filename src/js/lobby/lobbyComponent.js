@@ -1,4 +1,5 @@
 import React from 'react'
+import StyledButton from '../../stylingComponents/StyledButton'
 
 // Returns a list of players (currently seen only as strings) as table rows
 // Two players per row
@@ -32,7 +33,7 @@ const LobbyComponent = ({
     game: [gameLabel, gameCallbac],
 }) =>
 (<div>
-    <button onClick =  {gameCallbac}>{gameLabel}</button>
+    <StyledButton color = 'green' onClick =  {gameCallbac}>{gameLabel}</StyledButton>
     <p>Game code: {lobbyID}</p>
     <table><tbody>
         {playersToRows(players)}

@@ -1,4 +1,5 @@
 import React from 'react'
+import StyledButton from '../../stylingComponents/StyledButton'
 
 const LoginComponent = ({
     home: [homeLabel, homeCallback],
@@ -12,9 +13,10 @@ const LoginComponent = ({
 
     return (
     <div>
-        <button 
+        <StyledButton 
+            color = 'red'
             onClick = {homeCallback}
-        >{homeLabel}</button>
+        >{homeLabel}</StyledButton>
         Your username: <input
             onChange = {e => setName(e.target.value)}
             value = {name}
@@ -27,7 +29,8 @@ const LoginComponent = ({
             }}
             value = {pass}
         />
-        <button
+        <StyledButton
+            color = 'green'
             onClick = {() => {
                 const validName = name.length > 0
                 const validPass = pass.length > 0
@@ -43,7 +46,7 @@ const LoginComponent = ({
                     setType("")
                 }
             }}
-        >{loginLabel}</button>
+        >{loginLabel}</StyledButton>
     </div>
     )
 }

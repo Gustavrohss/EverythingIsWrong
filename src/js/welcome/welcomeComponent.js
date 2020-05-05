@@ -37,7 +37,7 @@ const WelcomeComponent = ({
         </tr>
         <tr>
             <td>
-                <button onClick = {loginCallback}>{loginLabel}</button>
+                <StyledButton color = 'orchid' onClick = {loginCallback}>{loginLabel}</StyledButton>
             </td>
         </tr>
     </tbody></table>

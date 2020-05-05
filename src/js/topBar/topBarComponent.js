@@ -3,6 +3,7 @@ import TopAppBar, {
     TopAppBarIcon,
     TopAppBarRow,
 } from '@material/react-top-app-bar'
+import StyledButton from '../../stylingComponents/StyledButton'
 import menu from './menu.png'
 
 const TopBarComponent = ({
@@ -24,15 +25,15 @@ const TopBarComponent = ({
                         <u>Using any of these while in game will cause you to leave the game!</u>
                     </TopAppBarRow>
                     <TopAppBarRow>
-                        <button onClick = {homeCallback}>
+                        <StyledButton color = 'red' onClick = {homeCallback}>
                             {homeLabel}
-                        </button>
-                        <button onClick = {aboutCallback}>
+                        </StyledButton>
+                        <StyledButton color = 'blue' onClick = {aboutCallback}>
                             {aboutLabel}
-                        </button>
-                        <button onClick = {highScoresCallback}>
+                        </StyledButton>
+                        <StyledButton color = 'green' onClick = {highScoresCallback}>
                             {highScoresLabel}
-                        </button>
+                        </StyledButton>
                     </TopAppBarRow>
                 </div>)
                 : null}

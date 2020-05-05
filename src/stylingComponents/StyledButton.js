@@ -12,8 +12,8 @@ const AboutButton = styled.button`
 	color: #FFF;
 	text-decoration: none;	
 	&:hover{
-    	background: lightgrey;
-    	color: grey;
+    	background: white;
+    	color: ${props => props.color};
 	}
 `;
 
