@@ -19,15 +19,27 @@ const [myError, setError] = React.useState(null)
 
 return (
 <div>
-    <div>
-        Your name: 
-        {loggedIn ? 
-            <b>{name}</b> :
-            <input onChange = {e => setText(e.target.value)} value = {text}></input>
-        }
-
-        Game link: <input style={{ textTransform: "uppercase"}} onChange = {e => setCode(e.target.value) } value = {code}></input>
-    </div>
+    <table><tbody>
+        <tr>
+            <td>Your name:</td>
+            <td>
+                {loggedIn ? 
+                <b>{name}</b> :
+                <input 
+                    onChange = {e => setText(e.target.value)} 
+                    value = {text}/>
+            }</td>
+        </tr>
+        <tr>
+            <td>Game link:</td>
+            <td>
+                <input 
+                style={{textTransform: "uppercase"}} 
+                onChange = {e => setCode(e.target.value) } 
+                value = {code}/>
+            </td>
+        </tr>
+    </tbody></table>
     <StyledButton color = 'red' onClick = {() => {
             const acceptUser = loggedIn || text.length > 0
             if (acceptUser) {
@@ -38,7 +50,7 @@ return (
                 setText("Sorry, that username is invalid!")
             }
         }}>{lobbyLabel}</StyledButton>
-    <StyledButton color = 'red' onClick = {homeCallback}>{homeLabel}</StyledButton>
+    <StyledButton color = 'blue' onClick = {homeCallback}>{homeLabel}</StyledButton>
     {(myError != null) &&
         <ErrorContainer error={myError}/>}
 </div>)}

@@ -96,9 +96,10 @@ return (<div align = "center">
         </div>
         : 
     null}
-            
-    <StyledButton color = 'orchid' onClick={nextCallback} disabled={nextDisabled}>{nextLable}</StyledButton>
-    <StyledButton color = 'orchid' onClick={() => resultsCallback(loggedIn)}>{resultsLabel}</StyledButton>
+    <div align = 'center'>
+        <StyledButton color = 'orchid' onClick={nextCallback} disabled={nextDisabled}>{nextLable}</StyledButton>
+        <StyledButton color = 'orchid' onClick={() => resultsCallback(loggedIn)}>{resultsLabel}</StyledButton>
+    </div>
 </div>)}
 
 
