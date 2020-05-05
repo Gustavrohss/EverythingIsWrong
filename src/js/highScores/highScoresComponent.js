@@ -1,5 +1,6 @@
 import React from 'react'
 import StyledButton from '../../stylingComponents/StyledButton'
+import LoaderContainer from '../loader/loaderContainer'
 
 // High scores component
 const HighScoreComponent = ({
@@ -13,6 +14,7 @@ const HighScoreComponent = ({
 
     return <div>
         <StyledButton color = 'lightblue' onClick = {homeCallback}>{homeLabel}</StyledButton>
+        {available ?
         <div>
             <b>High Scores</b>
             <ol>
@@ -27,6 +29,9 @@ const HighScoreComponent = ({
                 }
             </ol>
         </div>
+        :
+        <LoaderContainer/>    
+        }
     </div>
 }
 
