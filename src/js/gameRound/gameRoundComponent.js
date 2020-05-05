@@ -18,7 +18,9 @@ const GameRoundComponent = ({
     */
     isLoading,
     roundReason,
-    loggedIn: [isLoggedIn, username]
+    loggedIn: {
+        isLoggedIn
+    }
 
 }) => {
 

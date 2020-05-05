@@ -1,9 +1,10 @@
 import WelcomeComponent from './welcomeComponent'
 import {connect} from 'react-redux'
-import {getLoggedIn} from '../selectors/gameSessionSelectors'
+import {getLoggedIn, getUsername} from '../selectors/gameSessionSelectors'
 
 const mapStateToProps = (state, ownProps) => ({
-    loggedIn: getLoggedIn(state)
+    loggedIn: getLoggedIn(state),
+    name: getUsername(state)
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

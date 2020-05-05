@@ -1,10 +1,11 @@
 import {connect} from 'react-redux'
 import HostGameComponent from './hostGameComponent'
 import {createLobby, setUsername, leaveLobby, setSettings} from '../actions/gameSessionActions'
-import {getLoggedIn} from '../selectors/gameSessionSelectors'
+import {getLoggedIn, getUsername} from '../selectors/gameSessionSelectors'
 
 const mapStateToProps = (state, ownProps) => ({
-  loggedIn: getLoggedIn(state)
+  loggedIn: getLoggedIn(state),
+  name: getUsername(state)
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => {
@@ -14,7 +15,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(setUsername(name))
       dispatch(setSettings(settings))
       return dispatch(createLobby())
-      //return new Promise((resolve, rejection) =>)
     },
     home: [
       homeLabel,

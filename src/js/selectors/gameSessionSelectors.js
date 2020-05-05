@@ -22,25 +22,10 @@ const unsubscribe = state => state.gameSession.unsubscribe
 const gameInfo = state => state.gameSession.gameInfo
 const showAnswers = state => state.gameSession.showAnswers
 const getHash = state => state.gameSession.self.hash
-const getLoggedInInfo = state => ({
-  name: state.gameSession.self.username,
-  hash: state.gameSession.self.hash
-})
 
 export const getLoggedIn = createSelector(
-  [getLoggedInInfo],
-  ({name, hash}) => hash !== null ?
-    ({
-      name,
-      hash,
-      loggedIn: true
-    })
-    :
-    ({
-      name,
-      hash,
-      loggedIn: false
-    })
+  [getHash],
+  hash => hash !== null ? true : false
 )
 
 export const getUserHash = createSelector(

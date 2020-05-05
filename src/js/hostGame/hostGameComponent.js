@@ -8,10 +8,8 @@ const HostGameComponent = ({
     home: [homeLabel, homeCallback],
     lobby: [lobbyLabel, lobbyCallback],
     createLobby,
-    loggedIn: {
-        name,
-        isLoggedIn
-    }
+    loggedIn,
+    name
 }) => {
 
     const [text, setText] = React.useState("")
@@ -20,14 +18,15 @@ const HostGameComponent = ({
     const [myError, setError] = React.useState(null)
     //Add settings: galleries nad modes.
     //Possible extension using react Semantic UI for nice stuff: https://react.semantic-ui.com/
+    
     return (<div>
         Your name: 
-        {isLoggedIn ? 
+        {loggedIn ? 
             <b>{name}</b> :
             <input onChange = {e => setText(e.target.value)} value={text}></input>
         }
         <StyledButton color = 'green' onClick = {() => {
-            createLobby(isLoggedIn ? name : text, {
+            createLobby(loggedIn ? name : text, {
                                 gameType: choice, 
                                 questions: num_questions
                             })

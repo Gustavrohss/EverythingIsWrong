@@ -1,10 +1,11 @@
 import {connect} from 'react-redux'
 import JoinGameComponent from './joinGameComponent'
 import {joinLobby, leaveLobby, setUsername} from '../actions/gameSessionActions'
-import {getLoggedIn} from '../selectors/gameSessionSelectors'
+import {getLoggedIn, getUsername} from '../selectors/gameSessionSelectors'
 
 const mapStateToProps = (state, ownProps) => ({
-  loggedIn: getLoggedIn(state)
+  loggedIn: getLoggedIn(state),
+  name: getUsername(state)
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => {
