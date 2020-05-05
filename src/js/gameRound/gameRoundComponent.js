@@ -44,39 +44,46 @@ return (<div align = "center">
         </p>)
     }
     {isLoading ? 
-             (<LoaderContainer />) 
+        (<LoaderContainer />) 
     : (    
-    <table><tbody><tr>
-        {answerOptions.map(
-            ({image, correctAnswer}, index) =>
-            <td key = {index}><figure>
-                <img
-                    src = {image}
-                    height = {"300px"}
-                    alt = {"Placeholder"}
-                    onClick = {showResults ? () => {} :
-                    () => answerCallback(index, correctAnswer)}>
-                </img> 
-                {showResults ? 
-                <div>
+    <table><tbody>
+        <tr>
+            {answerOptions.map(
+                ({image, correctAnswer}, index) =>
+                <td key = {index}><figure>
+                    <img
+                        src = {image}
+                        height = {"300px"}
+                        alt = {"Sorry, we couldn't show the image!"}
+                        onClick = {showResults ? () => {} :
+                        () => answerCallback(index, correctAnswer)}>
+                    </img>
+                </figure></td>
+            )}
+        </tr>
+        {showResults ? 
+        <tr>
+            {answerOptions.map(
+                ({correctAnswer}, imIndex) =>
+                <td key = {imIndex}>
                     <p>{
-                    correctAnswer && answers[index].length > 1 ? 
+                    correctAnswer && answers[imIndex].length > 1 ? 
                     "And the winners are..." :
-                    correctAnswer && answers[index].length === 1 ?
+                    correctAnswer && answers[imIndex].length === 1 ?
                     "And the winner is..." :
                     correctAnswer ?
                     "This is the correct answer, Everyone is Wrong!" : ""
                     }</p>
-                    {answers[index].map(({name}, index2) => 
-                        <p key = {index + 3 * index2}>
-                            {name}
-                        </p>
+                    {answers[imIndex].map(({name}, plIndex) => 
+                    <p key = {imIndex + 3 * plIndex}>
+                        {name}
+                    </p>
                     )}
-                </div>
-                : null}
-            </figure></td>
-        )}
-    </tr></tbody></table>
+                </td>
+            )}
+        </tr>
+        : null}
+    </tbody></table>
     )}
 
     {showResults ? 
