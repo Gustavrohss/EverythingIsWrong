@@ -13,10 +13,13 @@ const WelcomeComponent = ({
     about: [aboutLabel, aboutCallback],
     highScores: [highScoresLabel, highScoresCallback],
     login: [loginLabel, loginCallback],
-    loggedIn: [showName, name]
+    loggedIn: {
+        name,
+        isLoggedIn
+    }
 }) =>
 (<DivBox>
-    <p>{showName ? 
+    <p>{isLoggedIn ? 
         "Welcome to Everything is Wrong, " + name + "!" 
         : 
         "Welcome to Everything is Wrong!"}</p>

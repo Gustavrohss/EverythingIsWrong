@@ -9,7 +9,7 @@ const HighScoreComponent = ({
     populate
 }) => {
 
-    if (!available) populate()
+    populate()
 
     return <div>
         <InitialPageButton onClick = {homeCallback}>{homeLabel}</InitialPageButton>
@@ -18,7 +18,7 @@ const HighScoreComponent = ({
             <ol>
                 {
                     highScores
-                        .sort((s1, s2) => s1.score - s2.score)
+                        .sort((s1, s2) => s2.score - s1.score)
                         .map(({name, score}, idx) => 
                             <li key = {idx}>
                                 <b>{name}:</b> {score}

@@ -8,7 +8,10 @@ const JoinGameComponent = ({
     home: [homeLabel, homeCallback],
     lobby: [lobbyLabel, lobbyCallback],
     joinLobby,
-    loggedIn: [isLoggedIn, name]
+    loggedIn: {
+        name,
+        isLoggedIn
+    }
 }) => {
 // State hooks
 // https://reactjs.org/docs/hooks-state.html
@@ -36,7 +39,7 @@ return (
             } else {
                 setText("Sorry, that username is invalid!")
             }
-        }}>Join</JOIN>
+        }}>{lobbyLabel}</JOIN>
     <JOIN onClick = {homeCallback}>{homeLabel}</JOIN>
     {(myError != null) &&
         <ErrorContainer error={myError}/>}

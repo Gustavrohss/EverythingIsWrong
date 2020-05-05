@@ -7,7 +7,10 @@ const HostGameComponent = ({
     home: [homeLabel, homeCallback],
     lobby: [lobbyLabel, lobbyCallback],
     createLobby,
-    loggedIn: [isLoggedIn, name]
+    loggedIn: {
+        name,
+        isLoggedIn
+    }
 }) => {
 
     const [text, setText] = React.useState("")
@@ -29,7 +32,7 @@ const HostGameComponent = ({
                             })
             .then(val => {console.log(val); lobbyCallback()})
             .catch(error => {console.log(error); setError(error)})
-            }}>Create game</button>
+                        }}>{lobbyLabel}</button>
         <button onClick = {homeCallback}>{homeLabel}</button>
         {(myError != null) &&
         <ErrorContainer error={myError}/>}
