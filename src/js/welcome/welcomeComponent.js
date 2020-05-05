@@ -1,11 +1,6 @@
 import React from 'react'
-import styled from 'styled-components';
-import JoinGameButton from '../../stylingComponents/JoinGameButton.js';
-import HostGameButton from '../../stylingComponents/HostGameButton.js'
-import HighScoresButton from '../../stylingComponents/HighScoresButton.js';
-import AboutButton from '../../stylingComponents/AboutButton.js'
+import StyledButton from '../../stylingComponents/StyledButton'
 import DivBox from '../../stylingComponents/InitialBoard.js'
-import { NavigationBar } from '../../stylingComponents/NavigationBar'
 // The welcome screen component
 const WelcomeComponent = ({
     host: [hostLabel, hostCallback],
@@ -26,18 +21,18 @@ const WelcomeComponent = ({
     <table><tbody>
         <tr>
             <td>
-                <JoinGameButton onClick = {joinCallback}>{joinLabel}</JoinGameButton>
+                <StyledButton color = 'blue' onClick = {joinCallback}>{joinLabel}</StyledButton>
             </td>
             <td>
-                <HostGameButton onClick = {hostCallback}>{hostLabel}</HostGameButton>
+                <StyledButton color = 'red' onClick = {hostCallback}>{hostLabel}</StyledButton>
             </td>
         </tr>
         <tr>
             <td>
-                <HighScoresButton onClick = {highScoresCallback}>{highScoresLabel}</HighScoresButton>
+                <StyledButton color = 'green' onClick = {highScoresCallback}>{highScoresLabel}</StyledButton>
             </td>
             <td>
-                <AboutButton onClick = {aboutCallback}>{aboutLabel}</AboutButton>
+                <StyledButton color = 'gold' onClick = {aboutCallback}>{aboutLabel}</StyledButton>
             </td>
         </tr>
         <tr>

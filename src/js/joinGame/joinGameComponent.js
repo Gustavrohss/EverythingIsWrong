@@ -1,5 +1,5 @@
 import React from 'react'
-import JOIN from '../../stylingComponents/JOIN'
+import StyledButton from '../../stylingComponents/StyledButton'
 import ErrorContainer from '../error/errorContainer'
 
 // Join Game component.
@@ -30,7 +30,7 @@ return (
 
         Game link: <input style={{ textTransform: "uppercase"}} onChange = {e => setCode(e.target.value) } value = {code}></input>
     </div>
-    <JOIN onClick = {() => {
+    <StyledButton color = 'red' onClick = {() => {
             const acceptUser = isLoggedIn || text.length > 0
             if (acceptUser) {
                 joinLobby(code.toUpperCase(), isLoggedIn ? name : text)
@@ -39,8 +39,8 @@ return (
             } else {
                 setText("Sorry, that username is invalid!")
             }
-        }}>{lobbyLabel}</JOIN>
-    <JOIN onClick = {homeCallback}>{homeLabel}</JOIN>
+        }}>{lobbyLabel}</StyledButton>
+    <StyledButton color = 'red' onClick = {homeCallback}>{homeLabel}</StyledButton>
     {(myError != null) &&
         <ErrorContainer error={myError}/>}
 </div>)}

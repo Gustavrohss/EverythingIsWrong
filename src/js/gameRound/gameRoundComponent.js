@@ -1,5 +1,5 @@
 import React from 'react'
-import GameRoundButton from '../../stylingComponents/GameRoundButton'
+import StyledButton from '../../stylingComponents/StyledButton'
 import LoaderContainer from '../loader/loaderContainer';
 
 const GameRoundComponent = ({
@@ -90,8 +90,8 @@ return (<div align = "center">
         : 
     null}
             
-    <GameRoundButton onClick={nextCallback} disabled={nextDisabled}>{nextLable}</GameRoundButton>
-    <GameRoundButton onClick={() => resultsCallback(isLoggedIn)}>{resultsLabel}</GameRoundButton>
+    <StyledButton color = 'orchid' onClick={nextCallback} disabled={nextDisabled}>{nextLable}</StyledButton>
+    <StyledButton color = 'orchid' onClick={() => resultsCallback(isLoggedIn)}>{resultsLabel}</StyledButton>
 </div>)}
 
 

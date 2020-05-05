@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-const HighScoresButton = styled.button`
-	background: green;
+const AboutButton = styled.button`
+	background: ${props => props.color};
 	position: relative;
 	padding: 10px 40px;
   	margin: 0px 10px 10px 0px;
@@ -12,9 +12,10 @@ const HighScoresButton = styled.button`
 	color: #FFF;
 	text-decoration: none;	
 	&:hover{
-    	background: lightblue;
-    	color: blue;
+    	background: lightgrey;
+    	color: grey;
 	}
 `;
 
-export default HighScoresButton
+export default AboutButton
+
