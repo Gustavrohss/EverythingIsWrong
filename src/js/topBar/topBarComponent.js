@@ -1,10 +1,7 @@
 import React from 'react'
 import TopAppBar, {
-    TopAppBarFixedAdjust, 
     TopAppBarIcon,
     TopAppBarRow,
-    TopAppBarSection,
-    TopAppBarTitle,
 } from '@material/react-top-app-bar'
 import menu from './menu.png'
 
