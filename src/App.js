@@ -8,7 +8,7 @@ import HostGameContainer from './js/hostGame/hostGameContainer'
 import GameRoundContainer from './js/gameRound/gameRoundContainer'
 import GameResultsContainer from './js/gameResults/gameResultsContainer'
 import HighScoresContainer from './js/highScores/highScoresContainer'
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
+// import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import TopBarContainer from './js/topBar/topBarContainer'
 import LoginContainer from './js/login/loginContainer'
 import {

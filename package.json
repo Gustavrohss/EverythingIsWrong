@@ -4,10 +4,7 @@
   "private": true,
   "dependencies": {
     "@material/react-top-app-bar": "^0.15.0",
-<<<<<<< HEAD
     "bootstrap": "^4.4.1",
-=======
->>>>>>> aae3c25f991d53b1d1946fa7915b62a5120689c7
     "clarifai": "^2.9.1",
     "cra-template": "1.0.2",
     "firebase": "^7.9.3",
