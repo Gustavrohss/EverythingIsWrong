@@ -8,7 +8,7 @@ const DivBox = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   width: flex;
-  background: linear-gradient(grey, lightblue);
+  /*background: linear-gradient(grey, lightblue);*/
   /*background-image:  url(https://picsum.photos/200/300/);*/
   background-size: cover;
   background: opacity(0.2);

@@ -31,58 +31,60 @@ function App() {
   const loginNav  = ["Log in / Create account", () => history.push("/login")]
   
   return (
-    <DivBox>
+    <div>
       <TopBarContainer home = {homeNav} about = {aboutNav} highScores = {hsNav}/>
-      <Switch>                {/* Parent node for routes */}
-        <Route path="/about"> {/* Route usage */}
-          <AboutContainer
-            home={homeNav}
-          />
-        </Route>
-        <Route path="/host">
-          <HostGameContainer
-            home={homeNav} lobby={lobbyNav}
-          />
-        </Route>
-        <Route path = "/join">
-          <JoinGameContainer
-            home={homeNav} lobby={lobbyNav}
-          />
-        </Route>
-        <Route path="/lobby">
-          <LobbyContainer
-            game={gameNav}
-          />
-        </Route>
-        <Route path="/game">
-          <GameRoundContainer
-            results={resultsNav}
-          />
-        </Route>
-        <Route path="/results">
-          <GameResultsContainer
-            home={homeNav}
-          />
-        </Route>
-        <Route path="/high_scores">
-          <HighScoresContainer
-            home={homeNav}
-          />
-        </Route>
-        <Route path = "/login">
-          <LoginContainer
-            home={homeNav}
-          />
-        </Route>
-        <Route path="/">
-          <WelcomeContainer
-            about={aboutNav} highScores={hsNav}
-            join={joinNav} host={hostNav}
-            login={loginNav}
-          />
-        </Route>
-      </Switch>
-    </DivBox>
+      <DivBox>
+        <Switch>                {/* Parent node for routes */}
+          <Route path="/about"> {/* Route usage */}
+            <AboutContainer
+              home={homeNav}
+            />
+          </Route>
+          <Route path="/host">
+            <HostGameContainer
+              home={homeNav} lobby={lobbyNav}
+            />
+          </Route>
+          <Route path = "/join">
+            <JoinGameContainer
+              home={homeNav} lobby={lobbyNav}
+            />
+          </Route>
+          <Route path="/lobby">
+            <LobbyContainer
+              game={gameNav}
+            />
+          </Route>
+          <Route path="/game">
+            <GameRoundContainer
+              results={resultsNav}
+            />
+          </Route>
+          <Route path="/results">
+            <GameResultsContainer
+              home={homeNav}
+            />
+          </Route>
+          <Route path="/high_scores">
+            <HighScoresContainer
+              home={homeNav}
+            />
+          </Route>
+          <Route path = "/login">
+            <LoginContainer
+              home={homeNav}
+            />
+          </Route>
+          <Route path="/">
+            <WelcomeContainer
+              about={aboutNav} highScores={hsNav}
+              join={joinNav} host={hostNav}
+              login={loginNav}
+            />
+          </Route>
+        </Switch>
+      </DivBox>
+    </div>
   );
 }
 
