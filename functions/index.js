@@ -17,8 +17,12 @@ const gameRoundGen = require('./gameRoundGen');
 const IMAGES = {
     FOOD:       'FoodPorn',
     BEARS:      'bears',
-    CARS:       'carporn'
+    CARS:       'carporn',
+    DOGS:       'dogpictures',
+    CATS:       'cat',
+    PLANTS:     'plants'
 };
+
 const MODELS = {
     "MODEL_MODERATION":     Clarifai.MODERATION_MODEL,
     "MODEL_FOOD":           Clarifai.FOOD_MODEL
