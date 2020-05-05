@@ -1,5 +1,5 @@
 import React from 'react'
-import InitialPageButton from '../../stylingComponents/InitialPageButton'
+import StyledButton from '../../stylingComponents/StyledButton'
 
 // High scores component
 const HighScoreComponent = ({
@@ -12,7 +12,7 @@ const HighScoreComponent = ({
     populate()
 
     return <div>
-        <InitialPageButton onClick = {homeCallback}>{homeLabel}</InitialPageButton>
+        <StyledButton color = 'lightblue' onClick = {homeCallback}>{homeLabel}</StyledButton>
         <div>
             <b>High Scores</b>
             <ol>
