@@ -1,3 +1,4 @@
+import {push} from 'connected-react-router'
 import {
   createLobby as createLobbyBackend,
   joinLobby as joinLobbyBackend,
@@ -7,7 +8,9 @@ import {
   updateStatus as updateStatusBackend,
   answerQuestion as answerQuestionBackend,
   uploadHighscore as uploadHighscoreBackend,
-  nextQuestion as nextQuestionBackend} from '../backend'
+  nextQuestion as nextQuestionBackend,
+  reconnectToLobby as reconnectToLobbyBackend
+} from '../backend'
 import {
   getUsername,
   getSettings,
@@ -16,7 +19,8 @@ import {
   getPlayerID,
   getScore,
   isHost,
-  getUserHash
+  getUserHash,
+  getRoundCount
 } from '../selectors/gameSessionSelectors'
 import {isLoading} from '../selectors/gameSessionSelectors'
 import {setLoader} from './loaderActions'
@@ -222,12 +226,33 @@ export const joinLobby = (lobbyID) => {
   )
 }
 
+export const reconnectToLobby = (lobbyID, playerID) => {
+  return asyncAction(
+    (dispatch, getState) =>
+      reconnectToLobbyBackend(lobbyID, playerID)
+        .then(returnValue => {
+          if (returnValue === false) {
+
+            /**
+              Here a trigger for failed reconnections (without "errors")
+             */
+
+          } else {
+            const {playerID, lobby} = returnValue
+            dispatch(initGameSession(playerID, lobby))
+            setBackendListeners(dispatch, getState)
+          }
+        }),
+    "Error rejoining lobby:"
+  )
+}
+
 export const uploadHighscore = () => {
   return asyncAction(
     (dispatch, getState) => {
       return uploadHighscoreBackend(
           getUserHash(getState()),
-          getUsername(getState()), 
+          getUsername(getState()),
           getScore(getState())
         )
     },
@@ -241,7 +266,17 @@ const setBackendListeners = (dispatch, getState) => {
   const modifyPlayerCallback = ({playerID, player}) => dispatch(modifyPlayer(playerID, player))
   const unsubscribe = setListener(
     getLobbyID(getState()),
-    ({gameInfo}) => dispatch(setGameInfo(gameInfo)),
+    ({gameInfo}) => {
+      if (gameInfo.round === 1 && getRoundCount(getState()) === 0) {
+        dispatch(setGameInfo(gameInfo))
+        if (!isHost(getState())) {
+          dispatch(startGameSession())
+        }
+        dispatch(push("/game")) // TODO: save the route elsewhere?
+      } else {
+        dispatch(setGameInfo(gameInfo))
+      }
+    },
     modifyPlayerCallback,
     modifyPlayerCallback,
     ({playerID}) => dispatch(deletePlayer(playerID)),
