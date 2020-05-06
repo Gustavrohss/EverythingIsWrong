@@ -1,7 +1,8 @@
 import {connect} from 'react-redux'
-import highScoreComponent from './highScoresComponent'
+import HighScoreComponent from './highScoresComponent'
 import {getAvailable, getHighScores} from '../selectors/highScoresSelectors'
 import {getHighScores as getHighScoresAction} from '../actions/highScoresActions'
+import {populateNavArray} from '../actions/utilActions'
 
 const mapStateToProps = (state, ownProps) => ({
     available: getAvailable(state),
@@ -9,13 +10,14 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-    populate: () => dispatch(getHighScoresAction())
+  home: populateNavArray(ownProps.home, dispatch),
+  populate: () => dispatch(getHighScoresAction())
 })
 
 // Container for high scores component
 const HighScoreContainer = connect(
     mapStateToProps,
     mapDispatchToProps
-)(highScoreComponent)
+)(HighScoreComponent)
 
 export default HighScoreContainer

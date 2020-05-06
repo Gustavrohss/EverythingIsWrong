@@ -30,12 +30,12 @@ const GameRoundComponent = ({
     What works right now should give an idea of how to implement further functionality.
 */
 
-return ( 
+return (
     <div>
     {isLoading &&
         (<LoaderContainer />)}
     <div align = "center">
-    
+
     {round ? // TODO: Maybe not have this check on `round`, but has a prop telling this component what should be displayed
       (<p align = {"center"}>
         <b>Round {round}: </b> {isLoading ? (<b>Loading place holder...</b>) : question}
@@ -48,9 +48,9 @@ return (
           You need to join a game in order to play
         </p>)
     }
-    {/*isLoading ? 
-        (<LoaderContainer />) 
-    : */(    
+    {/*isLoading ?
+        (<LoaderContainer />)
+    : */(
     <table><tbody>
         <tr>
             {answerOptions.map(
@@ -66,20 +66,20 @@ return (
                 </figure></td>
             )}
         </tr>
-        {showResults ? 
+        {showResults ?
         <tr>
             {answerOptions.map(
                 ({correctAnswer}, imIndex) =>
                 <td key = {imIndex}>
                     <p>{
-                    correctAnswer && answers[imIndex].length > 1 ? 
+                    correctAnswer && answers[imIndex].length > 1 ?
                     "And the winners are..." :
                     correctAnswer && answers[imIndex].length === 1 ?
                     "And the winner is..." :
                     correctAnswer ?
                     "This is the correct answer, Everyone is Wrong!" : ""
                     }</p>
-                    {answers[imIndex].map(({name}, plIndex) => 
+                    {answers[imIndex].map(({name}, plIndex) =>
                     <p key = {imIndex + 3 * plIndex}>
                         {name}
                     </p>
@@ -91,15 +91,15 @@ return (
     </tbody></table>
     )}
 
-    {showResults ? 
+    {showResults ?
         <div>
             <i>Why is that the correct answer?</i> {roundReason}
-            {answers.map((list, index1) => 
-            list.map(({name, score}, index2) => 
+            {answers.map((list, index1) =>
+            list.map(({name, score}, index2) =>
                 <p key = {index1 + 3 * index2}><b>{name}</b> has <b>{score}</b> points</p>
             ))}
         </div>
-        : 
+        :
     null}
     <div align = 'center'>
         <StyledButton color = 'orchid' onClick={nextCallback} disabled={nextDisabled}>{nextLable}</StyledButton>

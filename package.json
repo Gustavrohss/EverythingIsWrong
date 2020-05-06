@@ -6,6 +6,7 @@
     "@material/react-top-app-bar": "^0.15.0",
     "bootstrap": "^4.4.1",
     "clarifai": "^2.9.1",
+    "connected-react-router": "^6.8.0",
     "cra-template": "1.0.2",
     "firebase": "^7.14.2",
     "firebase-functions": "^3.3.0",

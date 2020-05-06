@@ -30,10 +30,11 @@ const playersToRows = players => {
 const LobbyComponent = ({
     players,
     lobbyID,
+    isHost,
     game: [gameLabel, gameCallbac],
 }) =>
 (<div>
-    <StyledButton color = 'green' onClick =  {gameCallbac}>{gameLabel}</StyledButton>
+    {isHost && <StyledButton color = 'green' onClick =  {gameCallbac}>{gameLabel}</StyledButton>}
     <p>Game code: {lobbyID}</p>
     <table><tbody>
         {playersToRows(players)}
