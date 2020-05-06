@@ -20,7 +20,7 @@ const lobbyID = state => state.gameSession.lobbyID
 const players = state => state.gameSession.players
 const unsubscribe = state => state.gameSession.unsubscribe
 const gameInfo = state => state.gameSession.gameInfo
-const showAnswers = state => state.gameSession.showAnswers
+const haveAnswered = state => state.gameSession.haveAnswered
 const getHash = state => state.gameSession.self.hash
 
 export const getLoggedIn = createSelector(
@@ -58,9 +58,9 @@ export const isAnswering = createSelector(
 )
 
 // Chech if the answers should be showed in the game component or not
-export const getShowAnswers = createSelector(
-  [showAnswers],
-  show => show
+export const getHaveAnswered = createSelector(
+  [haveAnswered],
+  ha => ha
 )
 
 // Get the score of the player in the current game

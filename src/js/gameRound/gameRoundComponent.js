@@ -12,6 +12,7 @@ const GameRoundComponent = ({
     answers,        // the answers from all the other players
     answerCallback, // what should happen when a player clicks on an answer?
     showResults,     // should the results for the round be shown?
+    canAnswer,
     /*
         Exact shape/specification of roundInfo TBD
         See default argument for testing example
@@ -60,8 +61,7 @@ return (
                         src = {image}
                         height = {"300px"}
                         alt = {"Sorry, we couldn't show the image!"}
-                        onClick = {showResults ? () => {} :
-                        () => answerCallback(index, correctAnswer)}>
+                        onClick = {canAnswer ? () => answerCallback(index, correctAnswer) : () => {}}>
                     </img>
                 </figure></td>
             )}
