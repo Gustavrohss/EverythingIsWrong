@@ -10,11 +10,23 @@ const ImageBox = ({image, execute}) => (
                     </ImageStyle>
 );*/
 
-const ImageStyle = styled.img`
-    object-fit:cover;
-    width:100%;
+export const ImageBoxStyle = styled.div`
+    border-width:5px;
+    border-color:${props => props.color || "grey"};
+    border-style:solid;
+    border-radius:5px;
+    padding:5px;
+    background: ${props => props.choice ? props.color==="green" ? props.color : "yellow" : "white"};
+    &:hover{
+    	background:grey;
+        border-color:white;
+	}
 `
 
-
-
-export default ImageStyle;
+export const ImageStyle = styled.img`
+    object-fit:cover;
+    width:15rem;
+    opacity:${props => props.transparent ? 0.5 : 1.0};
+    /*border-radius:inherit;
+    border-width:inherit;*/
+`

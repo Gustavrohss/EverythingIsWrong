@@ -11,7 +11,7 @@ const WelcomeComponent = ({
     loggedIn,
     name
 }) =>
-(<DivBox>
+(<div>
     <p>{loggedIn ? 
         "Welcome to Everything is Wrong, " + name + "!" 
         : 
@@ -39,6 +39,6 @@ const WelcomeComponent = ({
             </td>
         </tr>
     </tbody></table>
-</DivBox>)
+</div>)
 
 export default WelcomeComponent
