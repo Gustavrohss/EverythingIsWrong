@@ -10,7 +10,7 @@ const ImageBox = ({image, execute}) => (
                     </ImageStyle>
 );*/
 
-export const ImageBoxStyle = styled.div`
+/*export const ImageBoxStyle = styled.div`
     border-width:5px;
     border-color:${props => props.color || "grey"};
     border-style:solid;
@@ -19,9 +19,25 @@ export const ImageBoxStyle = styled.div`
     background: ${props => props.choice ? props.color==="green" ? props.color : "yellow" : "white"};
     &:hover{
     	background:grey;
-        border-color:white;
-	}
+      border-color:white;
+	  }
+`*/
+
+export const ImageBoxStyle = styled.div.attrs(({correct}) => ({
+  revealColor: correct ? "seagreen" : "crimson"
+}))`
+    border-width:5px;
+    border-color:${props => props.reveal ? props.revealColor : (props.selected ? "dimgray" : "darkgray")};
+    border-style:solid;
+    border-radius:5px;
+    padding:5px;
+    background: ${props => props.reveal ? props.revealColor : "white"};
+    ${props => !props.blocked && `&:hover{
+    	background:darkgray;
+      border-color:white;
+	  }`}
 `
+
 
 export const ImageStyle = styled.img`
     object-fit:cover;

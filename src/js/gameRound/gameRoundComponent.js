@@ -34,7 +34,7 @@ const GameRoundComponent = ({
 
 const [choice, setChoice] = React.useState(null)
 
-return ( 
+return (
     <div>
     {isLoading &&
         (<LoaderContainer />)}
@@ -60,24 +60,20 @@ return (
             {answerOptions.map(
                 ({image, correctAnswer}, index) =>
                 <td key = {index}><figure>
-                    {/*<img
-                        src = {image}
-                        height = {"300px"}
-                        alt = {"Sorry, we couldn't show the image!"}
-                        onClick = {showResults ? () => {} :
-                        () => answerCallback(index, correctAnswer)}>
-                    </img>*/}
-                    <ImageBoxStyle 
-                        color = {showResults ? correctAnswer ? "green" : "red" : "grey"} 
-                        choice = {choice == index}    
+                    <ImageBoxStyle
+                        blocked={!canAnswer}
+                        reveal={showResults}
+                        correct={correctAnswer}
+                        selected={!canAnswer && choice == index}
                     >
-                    <ImageStyle 
-                        transparent = {showResults ? !correctAnswer : false} //If we want to show results
+                    <ImageStyle
+                        transparent = {showResults && choice != index} //If we want to show results
                         src = {image}
                         height = {"300px"}
                         alt = {"Sorry, we couldn't show the image!"}
-                        onClick = {showResults ? () => {} :
-                        () => {setChoice(index); answerCallback(index, correctAnswer)}}>
+                        onClick = {canAnswer ?
+                          () => {setChoice(index); answerCallback(index, correctAnswer)} :
+                          () => {}}>
                     </ImageStyle>
                     </ImageBoxStyle>
                 </figure></td>
