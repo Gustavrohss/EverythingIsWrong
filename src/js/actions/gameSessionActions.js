@@ -7,7 +7,9 @@ import {
   updateStatus as updateStatusBackend,
   answerQuestion as answerQuestionBackend,
   uploadHighscore as uploadHighscoreBackend,
-  nextQuestion as nextQuestionBackend} from '../backend'
+  nextQuestion as nextQuestionBackend,
+  reconnectToLobby as reconnectToLobbyBackend
+} from '../backend'
 import {
   getUsername,
   getSettings,
@@ -219,6 +221,27 @@ export const joinLobby = (lobbyID) => {
         })
     },
     "Error when joining lobby:"
+  )
+}
+
+export const reconnectToLobby = (lobbyID, playerID) => {
+  return asyncAction(
+    (dispatch, getState) => 
+      reconnectToLobbyBackend(lobbyID, playerID)
+        .then(returnValue => {
+          if (returnValue === false) {
+
+            /** 
+              Here a trigger for failed reconnections (without "errors")
+             */
+
+          } else {
+            const {playerID, lobby} = returnValue
+            dispatch(initGameSession(playerID, lobby))
+            setBackendListeners(dispatch, getState)
+          }
+        }),
+    "Error rejoining lobby:"
   )
 }
 

@@ -119,40 +119,80 @@ export function createLobby(hostName, settings) {
  *          in the lobby),the returned promise will fail.
  */
 export function joinLobby(lobbyCode, user) {
-    if(!checkInput(user)){
-      console.log("ERROR JOINING LOBBY")
-      return new Promise(() => {throw new Error("Name must contain characters and numbers only!")})
-    }
-    
-    if(!(new RegExp('[A-Z0-9]{4}')).test(lobbyCode) ||
-        lobbyCode.length != 4) //if does not contain valid characters:
-      return new Promise(() => {throw new Error("No such lobby!")});
 
-    const ref = fbDatabase.ref("/lobbies/" + lobbyCode)
-    return ref.once("value").then(snapshot => {
-        if(snapshot.exists()) { //Check if lobby exists
-          if(snapshot.child("gameInfo/round").val() > 0){
-            console.log(snapshot.child("gameInfo/round").val())
-            throw new Error("Cannot join this lobby!");
-          }
-          else{
-            let pushReturn = fbDatabase.ref("/lobbies/" + lobbyCode + "/players")
-                .push(getInitialPlayerObject(user)); //push new player
+  // Control valid username.
+  if (!checkInput(user)) 
+    return new Promise(() => {
+      throw new Error("Name must contain characters and numbers only!")
+    })
 
-            // TODO: check that the players in the lobby haven't started playing yet.
-            return pushReturn.then(() => {
-              return ref.once("value").then(snapshot => {
-                //console.log("pID: " + pushReturn.key + ", snapshot:")
-                //console.log(snapshot.val())
-                return {playerID: pushReturn.key, lobby: snapshot.val()}
-              })
-            }); //Success!
-          }
-        } else {
-            //console.log("Lobby " + lobbyCode + " does not exist!");
-            throw new Error("Lobby does not exist!"); //Failure!
+  // Control valid lobby code.
+  if (
+    !(new RegExp('[A-Z0-9]{4}')).test(lobbyCode) ||
+      lobbyCode.length != 4
+  )
+    return new Promise(() => {
+      throw new Error("No such lobby!")
+    });
+
+  const ref = fbDatabase.ref("/lobbies/" + lobbyCode)
+  return ref
+    .once("value")
+    .then(snapshot => {
+      // Control existence of lobby.
+      if (snapshot.exists()) { 
+        // Has game started?
+        if (snapshot.child("gameInfo/round").val() > 0) {
+          throw new Error("Cannot join game in progress!");
         }
-    })//.catch(error => {console.log(error)}); //error should not be handled here
+        // Player can join.
+        else {
+          const pushReturn = fbDatabase
+            .ref("/lobbies/" + lobbyCode + "/players")
+            // Push new player.
+            .push(getInitialPlayerObject(user));
+
+          return pushReturn
+            .then(() => 
+              ref.once("value").then(snapshot => 
+                ({
+                  playerID: pushReturn.key, 
+                  lobby: snapshot.val()
+                })
+            )
+          ); //Success!
+        }
+      } else {
+        throw new Error("Lobby does not exist!"); //Failure!
+      }
+  })
+}
+
+export function reconnectToLobby(lobbyCode, playerID) {
+  
+  const ref = fbDatabase.ref(`/lobbies/${lobbyCode}`)
+
+  const playerOrFalseOrNull = ref.once("value")
+    .then(snapshot => {
+      if (!snapshot.exists()) return false
+      let playerObj = null
+      snapshot.child("players").forEach(child => {
+        if (child.ref.key === playerID) {
+          playerObj = {
+            playerID,
+            lobby: snapshot.val()
+          }
+        }
+      })
+      return playerObj
+    })
+  
+  if (playerOrFalseOrNull !== null) {
+    return playerOrFalseOrNull
+  } else if (playerOrFalseOrNull === false) {
+    return playerOrFalseOrNull
+  }
+  throw new Error(`Could not reconnect to lobby ${lobbyCode}`)
 }
 
 /**
