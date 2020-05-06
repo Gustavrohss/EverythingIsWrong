@@ -4,7 +4,6 @@ import LoaderContainer from '../loader/loaderContainer'
 
 // High scores component
 const HighScoreComponent = ({
-    home: [homeLabel, homeCallback],
     available,
     highScores,
     populate
@@ -13,7 +12,6 @@ const HighScoreComponent = ({
     populate()
 
     return <div>
-        <StyledButton color = 'lightblue' onClick = {homeCallback}>{homeLabel}</StyledButton>
         {available ?
         <div>
             <b>High Scores</b>

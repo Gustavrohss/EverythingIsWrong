@@ -14,7 +14,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(setUsername(name))
     return dispatch(joinLobby(lobbyID))
   },
-  home: populateNavArray(ownProps.home, dispatch),
   lobby: populateNavArray(ownProps.lobby, dispatch)
 })
 

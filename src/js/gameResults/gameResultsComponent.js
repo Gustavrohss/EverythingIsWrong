@@ -3,7 +3,6 @@ import StyledButton from '../../stylingComponents/StyledButton'
 
 // Game results component
 const GameResultsComponent = ({
-    home: [homeLabel, homeCallback],
     scores
 }) =>
 // TODO
@@ -19,7 +18,6 @@ const GameResultsComponent = ({
             .map(player => <p key = {player.playerID}> {player.name}: <b>{player.score}</b></p>)
         }
     </ol>
-    <StyledButton color = 'lightblue' onClick={homeCallback}>Go back to start page</StyledButton>
 </div>)
 
 export default GameResultsComponent

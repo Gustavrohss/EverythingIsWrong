@@ -10,7 +10,6 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  home: populateNavArray(ownProps.home, dispatch),
   populate: () => dispatch(getHighScoresAction())
 })
 

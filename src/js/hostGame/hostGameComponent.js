@@ -5,7 +5,6 @@ import StyledButton from '../../stylingComponents/StyledButton'
 // Host Game component.
 // This is where a user starts a game by hosting it.
 const HostGameComponent = ({
-    home: [homeLabel, homeCallback],
     lobby: [lobbyLabel, lobbyCallback],
     createLobby,
     loggedIn,
@@ -33,7 +32,6 @@ const HostGameComponent = ({
             .then(val => {console.log(val); lobbyCallback()})
             .catch(error => {console.log(error); setError(error)})
                         }}>{lobbyLabel}</StyledButton>
-        <StyledButton color = 'orchid' onClick = {homeCallback}>{homeLabel}</StyledButton>
         {(myError != null) &&
         <ErrorContainer error={myError}/>}
     </div>

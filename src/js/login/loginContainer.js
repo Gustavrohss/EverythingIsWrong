@@ -10,7 +10,6 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-    home: populateNavArray(ownProps.home, dispatch),
     login: populateNavArray(["Log in / Create Account", ownProps.home[1]], dispatch),
     finalize_login_callback: (name, pass) => {
         dispatch(setUsername(name))

@@ -5,7 +5,6 @@ import ErrorContainer from '../error/errorContainer'
 // Join Game component.
 // Shown when a player wants to join a game.
 const JoinGameComponent = ({
-    home: [homeLabel, homeCallback],
     lobby: [lobbyLabel, lobbyCallback],
     joinLobby,
     loggedIn,
@@ -50,7 +49,6 @@ return (
                 setText("Sorry, that username is invalid!")
             }
         }}>{lobbyLabel}</StyledButton>
-    <StyledButton color = 'blue' onClick = {homeCallback}>{homeLabel}</StyledButton>
     {(myError != null) &&
         <ErrorContainer error={myError}/>}
 </div>)}

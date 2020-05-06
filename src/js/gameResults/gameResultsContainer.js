@@ -9,9 +9,7 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  home: populateNavArray(ownProps.home, dispatch, () => {
-    dispatch(leaveLobby()) // stop listening to database events
-  })
+  
 })
 
 // Container for game results component

@@ -2,9 +2,7 @@ import React from 'react'
 import StyledButton from '../../stylingComponents/StyledButton'
 
 // Component for the About page.
-const AboutComponent = ({
-  home: [homeLabel, homeCallback]
-}) => (
+const AboutComponent = () => (
   <div>
     <h1>About Everything is Wrong</h1>
     <p>
@@ -30,7 +28,6 @@ const AboutComponent = ({
       This is the point of the game. 
       It's not supposed to be a serious multiplayer experience, but rather a fun party-game type of experience.
     </p>
-    <StyledButton color = 'gold' onClick={homeCallback}>{homeLabel}</StyledButton>
   </div>
 )
 

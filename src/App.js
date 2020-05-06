@@ -14,9 +14,8 @@ import {
   Switch,
   Route
 } from "react-router-dom"
-import DivBox from './stylingComponents/InitialBoard'
+import DivBox from './stylingComponents/DivBox'
 function App() {
-
 
   const aboutNav  = ["About",               "/about"]
   const homeNav   = ["Home",                "/"]
@@ -30,22 +29,22 @@ function App() {
 
   return (
     <div>
-      <TopBarContainer home = {homeNav} about = {aboutNav} highScores = {hsNav}/>
+      <DivBox>
+        <TopBarContainer home = {homeNav} about = {aboutNav} highScores = {hsNav}/>
+      </DivBox>
       <DivBox>
         <Switch>                {/* Parent node for routes */}
           <Route path="/about"> {/* Route usage */}
-            <AboutContainer
-              home={homeNav}
-            />
+            <AboutContainer/>
           </Route>
           <Route path="/host">
             <HostGameContainer
-              home={homeNav} lobby={lobbyNav}
+              lobby={lobbyNav}
             />
           </Route>
           <Route path = "/join">
             <JoinGameContainer
-              home={homeNav} lobby={lobbyNav}
+              lobby={lobbyNav}
             />
           </Route>
           <Route path="/lobby">
@@ -59,14 +58,10 @@ function App() {
             />
           </Route>
           <Route path="/results">
-            <GameResultsContainer
-              home={homeNav}
-            />
+            <GameResultsContainer/>
           </Route>
           <Route path="/high_scores">
-            <HighScoresContainer
-              home={homeNav}
-            />
+            <HighScoresContainer/>
           </Route>
           <Route path = "/login">
             <LoginContainer
@@ -75,7 +70,6 @@ function App() {
           </Route>
           <Route path="/">
             <WelcomeContainer
-              about={aboutNav} highScores={hsNav}
               join={joinNav} host={hostNav}
               login={loginNav}
             />
