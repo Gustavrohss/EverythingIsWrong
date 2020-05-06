@@ -65,6 +65,12 @@ export const getSettings = createSelector(
   s => s
 )
 
+// Check if the player is currently in any lobby
+export const getInLobby = createSelector(
+  [lobbyID],
+  id => id !== null
+)
+
 // Get the ID to the lobby which has been joined by the player
 // `null` if player hasn't joined a lobby
 export const getLobbyID = createSelector(
