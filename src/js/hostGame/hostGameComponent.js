@@ -20,6 +20,9 @@ const HostGameComponent = ({
     //Possible extension using react Semantic UI for nice stuff: https://react.semantic-ui.com/
     
     return (<div>
+        {(myError != null) &&
+        <ErrorContainer error={myError}/>}
+        
         Your name: 
         {loggedIn ? 
             <b>{name}</b> :
@@ -34,8 +37,7 @@ const HostGameComponent = ({
             .catch(error => {console.log(error); setError(error)})
                         }}>{lobbyLabel}</StyledButton>
         <StyledButton color = 'orchid' onClick = {homeCallback}>{homeLabel}</StyledButton>
-        {(myError != null) &&
-        <ErrorContainer error={myError}/>}
+        
     </div>
     )
 }

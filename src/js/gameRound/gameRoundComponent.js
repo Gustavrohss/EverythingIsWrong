@@ -1,5 +1,6 @@
 import React from 'react'
-import StyledButton from '../../stylingComponents/StyledButton'
+import StyledButton from '../../stylingComponents/StyledButton';
+import ImageStyle from '../../stylingComponents/ImageBox';
 import LoaderContainer from '../loader/loaderContainer';
 
 const GameRoundComponent = ({
@@ -56,13 +57,20 @@ return (
             {answerOptions.map(
                 ({image, correctAnswer}, index) =>
                 <td key = {index}><figure>
-                    <img
+                    {/*<img
                         src = {image}
                         height = {"300px"}
                         alt = {"Sorry, we couldn't show the image!"}
                         onClick = {showResults ? () => {} :
                         () => answerCallback(index, correctAnswer)}>
-                    </img>
+                    </img>*/}
+                    <ImageStyle 
+                        src = {image}
+                        height = {"300px"}
+                        alt = {"Sorry, we couldn't show the image!"}
+                        onClick = {showResults ? () => {} :
+                        () => answerCallback(index, correctAnswer)}>
+                    </ImageStyle>
                 </figure></td>
             )}
         </tr>

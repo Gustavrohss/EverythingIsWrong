@@ -1,11 +1,14 @@
 import React from 'react'
+import ErrorStyle from '../../stylingComponents/ErrorStyle'
 
 
 const ErrorComponent = ({
     error
     }) => {console.log(error);
         return (<div>
-                    <h3 className="error"> { "placeholder: " + error.message } </h3>
+                    <ErrorStyle>
+                    {error.message }
+                    </ErrorStyle> 
                 </div>)
     };
 
