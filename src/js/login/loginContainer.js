@@ -7,11 +7,11 @@ import {
 import {populateNavArray} from '../actions/utilActions'
 
 const mapStateToProps = (state, ownProps) => ({
-    login: ["Log in / Create Account", ownProps.home[1]]
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
     home: populateNavArray(ownProps.home, dispatch),
+    login: populateNavArray(["Log in / Create Account", ownProps.home[1]], dispatch),
     finalize_login_callback: (name, pass) => {
         dispatch(setUsername(name))
         dispatch(setUserhash(name, pass))
