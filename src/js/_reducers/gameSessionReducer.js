@@ -15,28 +15,30 @@ import {
   SET_SETTINGS
 } from '../actions/gameSessionActions'
 
+export const getInitState = () => ({
+  lobbyID: null,
+  players: null,
+  settings: {
+      gameType: 0,
+      questions: 2, // The number of questions in the session
+  },
+  self: {
+    playerID: null,
+    username: null,
+    score: 0,
+    status: null,
+    hash: null
+  },
+  gameInfo: null,
+  haveAnswered: false,
+  unsubscribe: () => {}
+})
+
 /**
  * Reducer handling the gameSession part of the state and all actions to it
  */
-const gameSessionReducer = function(state = {
-    lobbyID: null,
-    players: null,
-    settings: {
-        gameType: 0,
-        questions: 2, // The number of questions in the session
-    },
-    self: {
-      playerID: null,
-      username: null,
-      score: 0,
-      status: null,
-      hash: null
-    },
-    gameInfo: null,
-    haveAnswered: false,
-    unsubscribe: () => {}
-}, action) {
-  
+const gameSessionReducer = function(state = getInitState() , action) {
+
     switch(action.type) {
 
         case SET_USERNAME:
@@ -83,19 +85,12 @@ const gameSessionReducer = function(state = {
             })
 
         case RESET_GAME_SESSION:
-            return Object.assign({}, state, {
-              lobbyID: null,
-              players: null,
-              self: Object.assign({}, {
-                playerID: null,
+            const newState = getInitState()
+            return Object.assign(newState, {
+              self: Object.assign(newState.self, {
                 username: state.self.username,
-                score: 0,
-                status: null,
                 hash: state.self.hash
-              }),
-              gameInfo: null,
-              haveAnswered: false,
-              unsubscribe: () => {}
+              })
             })
 
         case SET_SETTINGS:
