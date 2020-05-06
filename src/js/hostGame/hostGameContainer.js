@@ -13,7 +13,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   createLobby: (name, settings) => {
     dispatch(setUsername(name))
     dispatch(setSettings(settings))
-    dispatch(createLobby())
+    return dispatch(createLobby())
   },
   home: populateNavArray(ownProps.home, dispatch),
   lobby: populateNavArray(ownProps.lobby, dispatch)

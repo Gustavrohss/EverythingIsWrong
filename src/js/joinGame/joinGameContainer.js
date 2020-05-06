@@ -12,7 +12,7 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   joinLobby: (lobbyID, name) => {
     dispatch(setUsername(name))
-    dispatch(joinLobby(lobbyID))
+    return dispatch(joinLobby(lobbyID))
   },
   home: populateNavArray(ownProps.home, dispatch),
   lobby: populateNavArray(ownProps.lobby, dispatch)

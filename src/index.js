@@ -10,7 +10,7 @@ import {setUsername, reconnectToLobby} from './js/actions/gameSessionActions'
 const store = configureStore(/* provide initial state if any */)
 
 const gameSession = JSON.parse(localStorage.getItem("gameSession"))
-if (gameSession.currentLobby !== null) {
+if (gameSession && gameSession.currentLobby !== null) {
     store.dispatch(setUsername(gameSession.username))
     const returned = store.dispatch(
       reconnectToLobby(gameSession.currentLobby, gameSession.playerID)
