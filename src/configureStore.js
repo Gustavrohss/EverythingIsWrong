@@ -49,9 +49,9 @@ export default function configureStore(preloadedState) {
   // TODO: add devTools ...
 
   const middlewares = [
+    ReduxThunk,  // this is what allows us to dispatch functions rather than objects
     redirectMiddleWare,
-    routerMiddleware(history), // for dispatching history actions
-    ReduxThunk  // this is what allows us to dispatch functions rather than objects
+    routerMiddleware(history) // for dispatching history actions
   ]
 
   const store = createStore(
