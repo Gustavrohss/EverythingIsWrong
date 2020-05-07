@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+/**
+ * Styling for divBox
+ * 
+ */
 const DivBox = styled.div`
   position: absolute;
   top: 50%;

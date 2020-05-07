@@ -1,5 +1,13 @@
 import styled from 'styled-components';
 
+/**
+ * Styling for buttons. 
+ * 
+ * properties:
+ * 		color - value for background color
+ * 
+ */
+
 const AboutButton = styled.button`
 	background: ${props => props.color};
 	position: relative;

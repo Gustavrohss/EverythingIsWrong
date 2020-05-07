@@ -23,12 +23,22 @@ const ImageBox = ({image, execute}) => (
 	  }
 `*/
 
+
+
+//Different colors for the ImageBox Component
 const colors = {correct : "seagreen",
                 wrong : "crimson",
                 selected : "dimgray",
                 notSelected : "darkgray",
                 background : "white"}
-
+/**
+ * Properties that are sent:
+ *    blocked   (boolean)   - hovering should be blocked
+ *    reveal    (boolean)   - if it should be revealed
+ *    correct   (boolean)   - if the selected item is correct
+ *    selected  (boolean)   - if this is a selected item
+ * 
+ */
 export const ImageBoxStyle = styled.div.attrs(({correct}) => ({
   revealColor: correct ? colors.correct : colors.wrong
 }))`
@@ -44,11 +54,25 @@ export const ImageBoxStyle = styled.div.attrs(({correct}) => ({
 	  }`}
 `
 
-
+/**
+ * properties:
+ *    transparent (boolean) - if the object should be transparent or not.
+ */
 export const ImageStyle = styled.img`
     object-fit:cover;
     width:15rem;
     opacity:${props => props.transparent ? 0.5 : 1.0};
     /*border-radius:inherit;
     border-width:inherit;*/
+`
+
+
+/**
+ * 
+ * 
+ */
+export const ImageWrapper = styled.div`
+
+
+
 `
