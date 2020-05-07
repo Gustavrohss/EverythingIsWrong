@@ -37,11 +37,6 @@ import {fbDatabase, fbStore} from "./firebaseConfig"
  *}
  */
 
- const addFavorite = (userHash, gameRound) => fbStore.collection("favorites")
-  .document(userHash)
-  .collection("saved")
-  .add(gameRound)
-
  // Create an initial player object with a specific username
  const getInitialPlayerObject = (name) => ({name, score: 0, status: "READY", answerOption: -1})
 
@@ -58,8 +53,6 @@ import {fbDatabase, fbStore} from "./firebaseConfig"
    }
    return true
  }
-
-
 
 export const uploadHighscore = (hash, name, score) => {
   return score > 0 ? fbStore
@@ -87,7 +80,7 @@ export const getHighScores = () => {
  * @return {Object} Returns the new lobby and the player ID of the host as an
  *          object with a `playerID` and a `lobby` element.
  */
-export function createLobby(hostName, settings) {
+export function createLobby(hostName) {
     if(!checkInput(hostName)){
       console.log("ERROR CREATING LOBBY")
       return new Promise(() => {throw new Error("Invalid name. Letters and digits only!")})
@@ -97,7 +90,6 @@ export function createLobby(hostName, settings) {
     for (let i = 0; i < 4; i++) { lobbyID += CHARS.charAt(Math.floor(Math.random() * CHARS.length)) }
     const lobby = {
         lobbyID: lobbyID,
-        settings: settings,
         gameInfo: {
             round: 0
         },
@@ -129,7 +121,7 @@ export function joinLobby(lobbyCode, user) {
   // Control valid lobby code.
   if (
     !(new RegExp('[A-Z0-9]{4}')).test(lobbyCode) ||
-      lobbyCode.length != 4
+      lobbyCode.length !== 4
   )
     return new Promise(() => {
       throw new Error("No such lobby!")

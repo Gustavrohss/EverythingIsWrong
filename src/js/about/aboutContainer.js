@@ -1,6 +1,5 @@
 import {connect} from 'react-redux'
 import AboutComponent from './aboutComponent'
-import {populateNavArray} from '../actions/utilActions'
 
 const mapStateToProps = (state, ownProps) => ({
 

@@ -2,7 +2,6 @@ import {connect} from 'react-redux'
 import {push} from 'connected-react-router'
 import GameRoundComponent from './gameRoundComponent'
 import {answerQuestion, startNextRound, uploadHighscore} from '../actions/gameSessionActions'
-import {populateNavArray} from '../actions/utilActions'
 import {
   getPlayerAnswers,
   getGameInfo,

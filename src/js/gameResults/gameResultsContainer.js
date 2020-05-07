@@ -1,7 +1,5 @@
 import {connect} from 'react-redux'
 import GameResultsComponent from './gameResultsComponent'
-import {leaveLobby} from '../actions/gameSessionActions'
-import {populateNavArray} from '../actions/utilActions'
 import {getPlayerListSorted} from '../selectors/gameSessionSelectors'
 
 const mapStateToProps = (state, ownProps) => ({

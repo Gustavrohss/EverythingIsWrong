@@ -11,17 +11,12 @@ import {
   SET_UNSUBSCRIBE,
   RESET_GAME_SESSION,
   SET_SCORE,
-  SET_HAVE_ANSWERED,
-  SET_SETTINGS
+  SET_HAVE_ANSWERED
 } from '../actions/gameSessionActions'
 
 export const getInitState = () => ({
   lobbyID: null,
   players: null,
-  settings: {
-      gameType: 0,
-      questions: 2, // The number of questions in the session
-  },
   self: {
     playerID: null,
     username: null,
@@ -91,11 +86,6 @@ const gameSessionReducer = function(state = getInitState() , action) {
                 username: state.self.username,
                 hash: state.self.hash
               })
-            })
-
-        case SET_SETTINGS:
-            return Object.assign({}, state, {
-              settings: action.settings
             })
 
         case SET_PLAYERS:

@@ -1,5 +1,4 @@
 import React from 'react'
-import StyledButton from '../../stylingComponents/StyledButton'
 
 // Game results component
 const GameResultsComponent = ({

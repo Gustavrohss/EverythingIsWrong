@@ -10,7 +10,7 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  const [gameLabel, gamePath] = ownProps.game
+  const gameLabel = ownProps.game[0]
   return {
     game: [gameLabel, () => {
       dispatch(startGameSession()) // TODO: only the host should start the quiz and generate quesion...

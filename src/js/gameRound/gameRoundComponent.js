@@ -65,13 +65,13 @@ return (
                         blocked={!canAnswer}
                         reveal={showResults}
                         correct={correctAnswer}
-                        selected={!canAnswer && choice == index}
+                        selected={!canAnswer && choice === index}
                         onClick = {canAnswer ?
                           () => {setChoice(index); answerCallback(index, correctAnswer)} :
                           () => {}}
                     >
                     <ImageStyle
-                        transparent = {showResults && choice != index} //If we want to show results
+                        transparent = {showResults && choice !== index} //If we want to show results
                         src = {image}
                         height = {"300px"}
                         alt = {"Sorry, we couldn't show the image!"}
