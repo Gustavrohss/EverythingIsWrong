@@ -13,7 +13,6 @@ import {
 } from '../backend'
 import {
   getUsername,
-  getSettings,
   getLobbyID,
   getUnsubscribe,
   getPlayerID,
