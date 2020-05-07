@@ -1,6 +1,19 @@
 import React from 'react'
-import {HighScoreTable, TabRow, TabData} from '../../stylingComponents/HighScoreStyling'
 import LoaderContainer from '../loader/loaderContainer'
+
+const styles = {
+    table: {
+        fontFamily: "cursive",
+        fontSize: "24px",
+        border: "1px solid black"
+    },
+    row: {
+        border: "1px solid black"
+    },
+    td: width => ({
+        width
+    })
+}
 
 // High scores component
 const HighScoreComponent = ({
@@ -13,7 +26,7 @@ const HighScoreComponent = ({
 
     return isLoading ? <LoaderContainer/>
     :
-    <HighScoreTable><tbody>
+    <table style = {styles.table}><tbody>
         <tr>
             <th>#</th>
             <th>Player</th>
@@ -22,12 +35,12 @@ const HighScoreComponent = ({
         {highScores
             .sort((s1, s2) => s2.score - s1.score)
             .map(({name, score}, idx) => 
-                <TabRow key = {idx}>
-                    <TabData width = {75}>{idx + 1}</TabData>
-                    <TabData>{name}</TabData>
-                    <TabData width = {100}>{score}</TabData>
-                </TabRow>)}
-    </tbody></HighScoreTable>
+                <tr style = {styles.row} key = {idx}>
+                    <td style = {styles.td(75 )}> {idx + 1} </td>
+                    <td style = {styles.td(300)}> {name}    </td>
+                    <td style = {styles.td(100)}> {score}   </td>
+                </tr>)}
+    </tbody></table>
 
 }
 

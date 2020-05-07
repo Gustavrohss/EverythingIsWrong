@@ -24,11 +24,14 @@ const HostGameComponent = ({
             <b>{name}</b> :
             <input onChange = {e => setText(e.target.value)} value={text}></input>
         }
-        <StyledButton color = 'green' onClick = {() => {
+        <StyledButton color = 'green' 
+        onClick = {() => {
             createLobby(loggedIn ? name : text)
-            .then(val => {console.log(val); lobbyCallback()})
-            .catch(error => {console.log(error); setError(error)})
-                        }}>{lobbyLabel}</StyledButton>
+            .then(val => {lobbyCallback()})
+            .catch(error => {setError(error)})
+        }}>
+            {lobbyLabel}
+        </StyledButton>
     </DivBox>
     )
 }

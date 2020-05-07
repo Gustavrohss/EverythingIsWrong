@@ -1,16 +1,13 @@
 import React from 'react'
-import ErrorStyle from '../../stylingComponents/ErrorStyle'
 
+const styles = {
+    color: "red"
+}
 
 const ErrorComponent = ({
     error
-    }) => {console.log(error);
-        return (<div>
-                    <ErrorStyle>
-                    {error.message }
-                    </ErrorStyle> 
-                </div>)
-    };
-
+}) => (<div style = {styles}>
+    {error.message}
+</div>)
 
 export default ErrorComponent

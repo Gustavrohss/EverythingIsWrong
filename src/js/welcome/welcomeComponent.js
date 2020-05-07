@@ -10,7 +10,7 @@ const WelcomeComponent = ({
     name
 }) =>
 (<DivBox column = {true}>
-    <p align = 'center'>{loggedIn ? 
+    <p>{loggedIn ? 
         "Welcome to Everything is Wrong, " + name + "!" 
         : 
         "Welcome to Everything is Wrong!"}
