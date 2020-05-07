@@ -1,6 +1,7 @@
 import React from 'react'
 import ErrorContainer from '../error/errorContainer'
 import StyledButton from '../../stylingComponents/StyledButton'
+import DivBox from '../../stylingComponents/DivBox'
 
 // Host Game component.
 // This is where a user starts a game by hosting it.
@@ -16,7 +17,7 @@ const HostGameComponent = ({
     const [num_questions, setNum_questions] = React.useState(2) //Not used. Set the number of questions
     const [myError, setError] = React.useState(null)
     
-    return (<div>
+    return (<DivBox column = {true}>
         {(myError != null) &&
         <ErrorContainer error={myError}/>}
 
@@ -33,7 +34,7 @@ const HostGameComponent = ({
             .then(val => {console.log(val); lobbyCallback()})
             .catch(error => {console.log(error); setError(error)})
                         }}>{lobbyLabel}</StyledButton>
-    </div>
+    </DivBox>
     )
 }
 

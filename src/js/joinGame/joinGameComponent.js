@@ -1,6 +1,7 @@
 import React from 'react'
 import StyledButton from '../../stylingComponents/StyledButton'
 import ErrorContainer from '../error/errorContainer'
+import DivBox from '../../stylingComponents/DivBox'
 
 // Join Game component.
 // Shown when a player wants to join a game.
@@ -15,37 +16,44 @@ const JoinGameComponent = ({
 const [text, setText] = React.useState("");
 const [code, setCode] = React.useState("");
 const [myError, setError] = React.useState(null)
+const margins = {margin: "10px 10px 10px 10px"}
 
 return (
-<div>
+<DivBox column = {true}>
     {(myError != null) &&
     <ErrorContainer error={myError}/>}
-    <table><tbody>
-        <tr>
-            <td>Your name:</td>
-            <td>
-                {loggedIn ? 
-                <b>{name}</b> :
-                <input 
-                    onChange = {e => setText(e.target.value)} 
-                    value = {text}/>
-            }</td>
-        </tr>
-        <tr>
-            <td>Game link:</td>
-            <td>
-                <input 
-                style={{textTransform: "uppercase"}} 
-                onChange = {e => setCode(e.target.value) } 
-                value = {code}/>
-            </td>
-        </tr>
-    </tbody></table>
-    <StyledButton color = 'red' onClick = {() => {
+        <p style = {margins}>
+            Your name:
+        </p>
+        {loggedIn ? 
+            <b style = {margins}>
+                {name}
+            </b> 
+            :
+            <input 
+                style = {margins}
+                onChange = {e => setText(e.target.value)} 
+                value = {text}/>
+        }
+        <p style = {margins}>
+            Game link:
+        </p>
+        <input 
+            style={
+                Object.assign({}, 
+                    margins, 
+                    {textTransform: 'uppercase'}
+                    )}
+            onChange = {e => setCode(e.target.value) } 
+            value = {code}/>
+    <StyledButton 
+        color = 'red' 
+        style = {margins} 
+        onClick = {() => {
             joinLobby(code.toUpperCase(), loggedIn ? name : text)
             .then(val => {console.log(val); lobbyCallback()})
             .catch(error => {console.log(error); setError(error)})
         }}>{lobbyLabel}</StyledButton>
-</div>)}
+</DivBox>)}
 
 export default JoinGameComponent

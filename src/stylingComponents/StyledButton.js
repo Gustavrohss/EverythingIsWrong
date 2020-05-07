@@ -18,7 +18,7 @@ const AboutButton = styled.button`
 	font-size: 25px;
 	color: #FFF;
 	text-decoration: none;	
-	&:hover{
+	&:hover {
     	background: white;
     	color: ${props => props.color};
 	}
