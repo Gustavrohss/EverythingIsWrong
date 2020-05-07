@@ -1,28 +1,4 @@
 import styled from 'styled-components';
-/*
-const ImageBox = ({image, execute}) => (
-                    <ImageStyle
-                        src = {image}
-                        height = {"300px"}
-                        alt = {"Sorry, we couldn't show the image!"}
-                        onClick = {execute}
-                    </ImageStyle>
-);*/
-
-/*export const ImageBoxStyle = styled.div`
-    border-width:5px;
-    border-color:${props => props.color || "grey"};
-    border-style:solid;
-    border-radius:5px;
-    padding:5px;
-    background: ${props => props.choice ? props.color==="green" ? props.color : "yellow" : "white"};
-    &:hover{
-    	background:grey;
-      border-color:white;
-	  }
-`*/
-
-
 
 //Different colors for the ImageBox Component
 const colors = {correct : "seagreen",
@@ -71,7 +47,6 @@ export const ImageStyle = styled.img`
     /*border-radius:inherit;
     border-width:inherit;*/
 `
-
 
 /**
  * 
