@@ -51,6 +51,7 @@ export const ImageBoxStyle = styled.div.attrs(({correct}) => ({
     	background:${colors.notSelected};
       border-color:${colors.background};
 	  }`}
+    
 `
 
 /**
@@ -60,7 +61,13 @@ export const ImageBoxStyle = styled.div.attrs(({correct}) => ({
 export const ImageStyle = styled.img`
     object-fit:cover;
     width:15rem;
+    height: 300px;
     opacity:${props => props.transparent ? 0.5 : 1.0};
+    @media (max-height: 1400px) and (max-width: 1000px){ /*Fit to smaller screens */
+      height:100px;
+      width:20rem;
+      /*width:auto;*/
+    }
     /*border-radius:inherit;
     border-width:inherit;*/
 `
