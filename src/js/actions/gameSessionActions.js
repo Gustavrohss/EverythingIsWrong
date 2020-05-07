@@ -186,7 +186,7 @@ export const setHaveAnswered = answered => {
 export const createLobby = () => {
   return asyncAction(
       (dispatch, getState) => {
-        return createLobbyBackend(getUsername(getState()), getSettings(getState()))
+        return createLobbyBackend(getUsername(getState()))
             .then(({playerID, lobby}) => {
                 dispatch(initGameSession(playerID, lobby))
                 setBackendListeners(dispatch, getState)

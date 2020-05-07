@@ -75,7 +75,6 @@ export const getHighScores = () => {
 /**
  * Create a lobby in the database
  * @param {str} hostName - the chosen alias for the host
- * @param {Object} settings - a setting-object with the settings of the game
  *
  * @return {Object} Returns the new lobby and the player ID of the host as an
  *          object with a `playerID` and a `lobby` element.
