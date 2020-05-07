@@ -42,7 +42,7 @@ return (
 
     {round ? // TODO: Maybe not have this check on `round`, but has a prop telling this component what should be displayed
       (<p align = {"center"}>
-        <b>Round {round}: </b> {isLoading ? (<b>Loading place holder...</b>) : question}
+        <b>Round {round}: </b> {isLoading ? (<b>Loading...</b>) : question}
       </p>) :
       round === 0 ?
         (<p align = {"center"}>
