@@ -28,7 +28,7 @@ function App() {
   const loginNav  = ["Log in / Create account", "/login"]
 
   return (
-    <div>
+    <DivBox column = {true}>
       <DivBox>
         <TopBarContainer home = {homeNav} about = {aboutNav} highScores = {hsNav}/>
       </DivBox>
@@ -76,7 +76,7 @@ function App() {
           </Route>
         </Switch>
       </DivBox>
-    </div>
+    </DivBox>
   );
 }
 

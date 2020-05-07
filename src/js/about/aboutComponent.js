@@ -1,5 +1,4 @@
 import React from 'react'
-import StyledButton from '../../stylingComponents/StyledButton'
 
 // Component for the About page.
 const AboutComponent = () => (

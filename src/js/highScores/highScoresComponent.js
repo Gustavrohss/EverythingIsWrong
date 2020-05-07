@@ -1,36 +1,34 @@
 import React from 'react'
-import StyledButton from '../../stylingComponents/StyledButton'
+import {HighScoreTable, TabRow, TabData} from '../../stylingComponents/HighScoreStyling'
 import LoaderContainer from '../loader/loaderContainer'
 
 // High scores component
 const HighScoreComponent = ({
-    available,
+    isLoading,
     highScores,
-    populate
+    getHighScores
 }) => {
 
-    populate()
+    if (highScores.length === 0) getHighScores()
 
-    return <div>
-        {available ?
-        <div>
-            <b>High Scores</b>
-            <ol>
-                {
-                    highScores
-                        .sort((s1, s2) => s2.score - s1.score)
-                        .map(({name, score}, idx) => 
-                            <li key = {idx}>
-                                <b>{name}:</b> {score}
-                            </li>    
-                        )
-                }
-            </ol>
-        </div>
-        :
-        <LoaderContainer/>    
-        }
-    </div>
+    return isLoading ? <LoaderContainer/>
+    :
+    <HighScoreTable><tbody>
+        <tr>
+            <th>#</th>
+            <th>Player</th>
+            <th>Score</th>
+        </tr>
+        {highScores
+            .sort((s1, s2) => s2.score - s1.score)
+            .map(({name, score}, idx) => 
+                <TabRow key = {idx}>
+                    <TabData width = {75}>{idx + 1}</TabData>
+                    <TabData>{name}</TabData>
+                    <TabData width = {100}>{score}</TabData>
+                </TabRow>)}
+    </tbody></HighScoreTable>
+
 }
 
 export default HighScoreComponent

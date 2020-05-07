@@ -1,16 +1,16 @@
 import {connect} from 'react-redux'
 import HighScoreComponent from './highScoresComponent'
-import {getAvailable, getHighScores} from '../selectors/highScoresSelectors'
+import {getHighScores} from '../selectors/highScoresSelectors'
+import {isLoading} from '../selectors/loaderSelectors'
 import {getHighScores as getHighScoresAction} from '../actions/highScoresActions'
-import {populateNavArray} from '../actions/utilActions'
 
 const mapStateToProps = (state, ownProps) => ({
-    available: getAvailable(state),
+    isLoading: isLoading(state),
     highScores: getHighScores(state)
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  populate: () => dispatch(getHighScoresAction())
+  getHighScores: () => dispatch(getHighScoresAction())
 })
 
 // Container for high scores component

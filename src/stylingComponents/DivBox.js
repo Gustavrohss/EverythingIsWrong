@@ -3,15 +3,14 @@ import styled from 'styled-components';
 const DivBox = styled.div`
   flex: 1;
   overflow-y: auto;
-  margin: 50px;
+  margin: 25px 70px 5px 70px;
   align-items: center;
   justify-content: center;
 
   @media (min-width:500px) {
     display:flex;
-    flex-direction:"row";
+    flex-direction:${props => props.column ? "column" : "row"};
     flex: 1;
-    width: 80%;
     overflow: hidden;
   }
 `
