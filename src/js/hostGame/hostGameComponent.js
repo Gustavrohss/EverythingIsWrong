@@ -33,8 +33,6 @@ const HostGameComponent = ({
             .then(val => {console.log(val); lobbyCallback()})
             .catch(error => {console.log(error); setError(error)})
                         }}>{lobbyLabel}</StyledButton>
-        {(myError != null) &&
-        <ErrorContainer error={myError}/>}
     </div>
     )
 }

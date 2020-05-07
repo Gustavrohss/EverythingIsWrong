@@ -42,17 +42,10 @@ return (
         </tr>
     </tbody></table>
     <StyledButton color = 'red' onClick = {() => {
-            //const acceptUser = loggedIn || text.length > 0
-            //if (acceptUser) {
-                joinLobby(code.toUpperCase(), loggedIn ? name : text)
-                .then(val => {console.log(val); lobbyCallback()})
-                .catch(error => {console.log(error); setError(error)})
-            //} else {
-                //setText("Sorry, that username is invalid!")
-            //}
+            joinLobby(code.toUpperCase(), loggedIn ? name : text)
+            .then(val => {console.log(val); lobbyCallback()})
+            .catch(error => {console.log(error); setError(error)})
         }}>{lobbyLabel}</StyledButton>
-    {(myError != null) &&
-        <ErrorContainer error={myError}/>}
 </div>)}
 
 export default JoinGameComponent
