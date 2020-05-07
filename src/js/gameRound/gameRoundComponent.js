@@ -73,7 +73,7 @@ return (
                     <ImageStyle
                         transparent = {showResults && choice !== index} //If we want to show results
                         src = {image}
-                        height = {"300px"}
+                        /*height = {"300px"}*/
                         alt = {"Sorry, we couldn't show the image!"}
                     >
                     </ImageStyle>
