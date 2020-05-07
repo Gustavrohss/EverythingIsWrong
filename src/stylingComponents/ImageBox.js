@@ -23,18 +23,24 @@ const ImageBox = ({image, execute}) => (
 	  }
 `*/
 
+const colors = {correct : "seagreen",
+                wrong : "crimson",
+                selected : "dimgray",
+                notSelected : "darkgray",
+                background : "white"}
+
 export const ImageBoxStyle = styled.div.attrs(({correct}) => ({
-  revealColor: correct ? "seagreen" : "crimson"
+  revealColor: correct ? colors.correct : colors.wrong
 }))`
     border-width:5px;
-    border-color:${props => props.reveal ? props.revealColor : (props.selected ? "dimgray" : "darkgray")};
+    border-color:${props => props.reveal ? props.revealColor : (props.selected ? colors.selected : colors.notSelected)};
     border-style:solid;
     border-radius:5px;
     padding:5px;
-    background: ${props => props.reveal ? props.revealColor : "white"};
+    background: ${props => props.reveal ? props.revealColor : colors.background};
     ${props => !props.blocked && `&:hover{
-    	background:darkgray;
-      border-color:white;
+    	background:${colors.notSelected};
+      border-color:${colors.background};
 	  }`}
 `
 
