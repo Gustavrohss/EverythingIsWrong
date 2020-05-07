@@ -1,5 +1,6 @@
 import React from 'react'
 import StyledButton from '../../stylingComponents/StyledButton'
+import DivBox from '../../stylingComponents/DivBox'
 
 const LoginComponent = ({
     login: [loginLabel, loginNav],
@@ -10,7 +11,7 @@ const LoginComponent = ({
     const [pass, setPass] = React.useState("")
     const [type, setType] = React.useState("password")
 
-    return (<div>
+    return (<DivBox column = {true}>
         Your username: <input
             onChange = {e => setName(e.target.value)}
             value = {name}
@@ -41,7 +42,7 @@ const LoginComponent = ({
                 }
             }}
         >{loginLabel}</StyledButton>
-    </div>)
+    </DivBox>)
 }
 
 export default LoginComponent

@@ -9,7 +9,7 @@ const WelcomeComponent = ({
     loggedIn,
     name
 }) =>
-(<div>
+(<DivBox column = {true}>
     <p align = 'center'>{loggedIn ? 
         "Welcome to Everything is Wrong, " + name + "!" 
         : 
@@ -30,6 +30,6 @@ const WelcomeComponent = ({
         onClick = {loginCallback}>
         {loginLabel}
     </StyledButton>
-</div>)
+</DivBox>)
 
 export default WelcomeComponent

@@ -33,8 +33,8 @@ function App() {
         <TopBarContainer home = {homeNav} about = {aboutNav} highScores = {hsNav}/>
       </DivBox>
       <DivBox>
-        <Switch>                {/* Parent node for routes */}
-          <Route path="/about"> {/* Route usage */}
+        <Switch>
+          <Route path="/about">
             <AboutContainer/>
           </Route>
           <Route path="/host">
