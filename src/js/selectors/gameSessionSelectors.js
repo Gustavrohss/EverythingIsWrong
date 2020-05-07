@@ -25,7 +25,7 @@ const getHash = state => state.gameSession.self.hash
 
 export const getLoggedIn = createSelector(
   [getHash],
-  hash => hash !== null ? true : false
+  hash => hash ? true : false
 )
 
 export const getUserHash = createSelector(

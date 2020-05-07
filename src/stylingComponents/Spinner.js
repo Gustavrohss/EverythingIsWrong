@@ -2,7 +2,13 @@ import React from 'react';
 import {connect} from 'react-redux'
 import styled from 'styled-components';
 
-//https://stackoverflow.com/questions/6091253/overlay-with-spinner/20013732
+/**
+ * Styled spinner component using svg and css3 animations. 
+ * 
+ * Modified from: //https://stackoverflow.com/questions/6091253/overlay-with-spinner/20013732
+ * 
+ * 
+ */
 
 const Spinner = styled.svg`
     position: absolute;

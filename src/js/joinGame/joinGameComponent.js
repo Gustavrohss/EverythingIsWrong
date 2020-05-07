@@ -18,6 +18,8 @@ const [myError, setError] = React.useState(null)
 
 return (
 <div>
+    {(myError != null) &&
+    <ErrorContainer error={myError}/>}
     <table><tbody>
         <tr>
             <td>Your name:</td>
@@ -40,14 +42,14 @@ return (
         </tr>
     </tbody></table>
     <StyledButton color = 'red' onClick = {() => {
-            const acceptUser = loggedIn || text.length > 0
-            if (acceptUser) {
+            //const acceptUser = loggedIn || text.length > 0
+            //if (acceptUser) {
                 joinLobby(code.toUpperCase(), loggedIn ? name : text)
                 .then(val => {console.log(val); lobbyCallback()})
                 .catch(error => {console.log(error); setError(error)})
-            } else {
-                setText("Sorry, that username is invalid!")
-            }
+            //} else {
+                //setText("Sorry, that username is invalid!")
+            //}
         }}>{lobbyLabel}</StyledButton>
     {(myError != null) &&
         <ErrorContainer error={myError}/>}

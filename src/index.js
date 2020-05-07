@@ -6,22 +6,34 @@ import './index.css'
 import App from './App'
 import configureStore, {history} from './configureStore'
 import {setUsername, reconnectToLobby} from './js/actions/gameSessionActions'
-
-const store = configureStore(/* provide initial state if any */)
+import {getInitState as getInitSessionState} from './js/_reducers/gameSessionReducer'
 
 const gameSession = JSON.parse(localStorage.getItem("gameSession"))
-if (gameSession && gameSession.currentLobby !== null) {
-    store.dispatch(setUsername(gameSession.username))
-    const returned = store.dispatch(
-      reconnectToLobby(gameSession.currentLobby, gameSession.playerID)
-    )
+const initSessionState = getInitSessionState()
+const initialState = gameSession ? {
+  gameSession: Object.assign(getInitSessionState(), {
+    lobbyID: gameSession.currentLobby,
+    self: {
+      ...initSessionState.self,
+      username: gameSession.username,
+      hash: gameSession.hash
+    }
+  })
+} : {}
+
+
+const store = configureStore(initialState)
+
+if (gameSession && gameSession.currentLobby) {
+  store.dispatch(reconnectToLobby(gameSession.currentLobby, gameSession.playerID))
 }
 
 store.subscribe(() => {
   const obj = JSON.stringify({
     username:     store.getState().gameSession.self.username,
     currentLobby: store.getState().gameSession.lobbyID,
-    playerID:     store.getState().gameSession.self.playerID
+    playerID:     store.getState().gameSession.self.playerID,
+    hash:         store.getState().gameSession.self.hash
   })
   localStorage.setItem("gameSession", obj)
 })

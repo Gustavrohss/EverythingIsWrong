@@ -1,5 +1,6 @@
 import React from 'react'
-import StyledButton from '../../stylingComponents/StyledButton'
+import StyledButton from '../../stylingComponents/StyledButton';
+import {ImageStyle, ImageBoxStyle} from '../../stylingComponents/ImageBox';
 import LoaderContainer from '../loader/loaderContainer';
 
 const GameRoundComponent = ({
@@ -31,6 +32,8 @@ const GameRoundComponent = ({
     What works right now should give an idea of how to implement further functionality.
 */
 
+const [choice, setChoice] = React.useState(null)
+
 return (
     <div>
     {isLoading &&
@@ -57,12 +60,22 @@ return (
             {answerOptions.map(
                 ({image, correctAnswer}, index) =>
                 <td key = {index}><figure>
-                    <img
+                    <ImageBoxStyle
+                        blocked={!canAnswer}
+                        reveal={showResults}
+                        correct={correctAnswer}
+                        selected={!canAnswer && choice == index}
+                    >
+                    <ImageStyle
+                        transparent = {showResults && choice != index} //If we want to show results
                         src = {image}
                         height = {"300px"}
                         alt = {"Sorry, we couldn't show the image!"}
-                        onClick = {canAnswer ? () => answerCallback(index, correctAnswer) : () => {}}>
-                    </img>
+                        onClick = {canAnswer ?
+                          () => {setChoice(index); answerCallback(index, correctAnswer)} :
+                          () => {}}>
+                    </ImageStyle>
+                    </ImageBoxStyle>
                 </figure></td>
             )}
         </tr>
