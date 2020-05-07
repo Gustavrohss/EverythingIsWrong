@@ -1,6 +1,6 @@
 import React from 'react'
 import StyledButton from '../../stylingComponents/StyledButton';
-import {ImageStyle, ImageBoxStyle} from '../../stylingComponents/ImageBox';
+import {ImageStyle, ImageBoxStyle, ImageWrapper} from '../../stylingComponents/ImageBox';
 import LoaderContainer from '../loader/loaderContainer';
 
 const GameRoundComponent = ({
@@ -55,53 +55,52 @@ return (
     {/*isLoading ?
         (<LoaderContainer />)
     : */(
-    <table><tbody>
-        <tr>
+    <div><div>
+        <div>
+            <ImageWrapper>
             {answerOptions.map(
                 ({image, correctAnswer}, index) =>
-                <td key = {index}><figure>
+                <div key = {index}><figure>
                     <ImageBoxStyle
                         blocked={!canAnswer}
                         reveal={showResults}
                         correct={correctAnswer}
                         selected={!canAnswer && choice == index}
+                        onClick = {canAnswer ?
+                          () => {setChoice(index); answerCallback(index, correctAnswer)} :
+                          () => {}}
                     >
                     <ImageStyle
                         transparent = {showResults && choice != index} //If we want to show results
                         src = {image}
                         height = {"300px"}
                         alt = {"Sorry, we couldn't show the image!"}
-                        onClick = {canAnswer ?
-                          () => {setChoice(index); answerCallback(index, correctAnswer)} :
-                          () => {}}>
+                    >
                     </ImageStyle>
                     </ImageBoxStyle>
-                </figure></td>
-            )}
-        </tr>
-        {showResults ?
-        <tr>
-            {answerOptions.map(
-                ({correctAnswer}, imIndex) =>
-                <td key = {imIndex}>
+                </figure>
+                {showResults ?
+                    <div key = {index}>
                     <p>{
-                    correctAnswer && answers[imIndex].length > 1 ?
+                    correctAnswer && answers[index].length > 1 ?
                     "And the winners are..." :
-                    correctAnswer && answers[imIndex].length === 1 ?
+                    correctAnswer && answers[index].length === 1 ?
                     "And the winner is..." :
                     correctAnswer ?
                     "This is the correct answer, Everyone is Wrong!" : ""
                     }</p>
-                    {answers[imIndex].map(({name}, plIndex) =>
-                    <p key = {imIndex + 3 * plIndex}>
+                    {answers[index].map(({name}, plIndex) =>
+                    <p key = {index + 3 * plIndex}>
                         {name}
                     </p>
                     )}
-                </td>
+                    </div>
+                :null}
+                </div>
             )}
-        </tr>
-        : null}
-    </tbody></table>
+            </ImageWrapper>
+        </div>
+    </div></div>
     )}
 
     {showResults ?

@@ -11,11 +11,11 @@ import styled from 'styled-components';
  */
 
 const Spinner = styled.svg`
-    position: absolute;
+    position: fixed;
     display: block;
     z-index: 100;
     left: 50%;
-    top: 0%;
+    top: 10%;
     width:15em;
     height: 15em;
     margin-left: -7.5em;

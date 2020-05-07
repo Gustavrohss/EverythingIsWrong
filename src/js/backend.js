@@ -90,7 +90,7 @@ export const getHighScores = () => {
 export function createLobby(hostName, settings) {
     if(!checkInput(hostName)){
       console.log("ERROR CREATING LOBBY")
-      return new Promise(() => {throw new Error("Name must contain characters and numbers only!")})
+      return new Promise(() => {throw new Error("Invalid name. Letters and digits only!")})
     }
     const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
     let lobbyID = ""

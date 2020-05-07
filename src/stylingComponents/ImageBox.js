@@ -72,7 +72,12 @@ export const ImageStyle = styled.img`
  * 
  */
 export const ImageWrapper = styled.div`
-
-
+  
+ @media (min-width:1000px) {
+    display:flex;
+    flex-direction:"column";
+    flex: 1;
+    overflow: hidden;
+  }
 
 `
