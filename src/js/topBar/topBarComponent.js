@@ -1,10 +1,8 @@
 import React from 'react'
 import TopAppBar, {
-    TopAppBarIcon,
     TopAppBarRow,
 } from '@material/react-top-app-bar'
 import StyledButton from '../../stylingComponents/StyledButton'
-import menu from './menu.png'
 
 const TopBarComponent = ({
     home: [homeLabel, homeCallback],
@@ -12,31 +10,17 @@ const TopBarComponent = ({
     highScores: [highScoresLabel, highScoresCallback]
 }) => {
 
-    const [showAll, setShowAll] = React.useState(false)
-
     return <TopAppBar>
         <TopAppBarRow>
-            <TopAppBarIcon navIcon onClick = {() => setShowAll(!showAll)}>
-                <img src = {menu} width = {30} height = {30} />
-            </TopAppBarIcon>
-            {showAll ?
-                (<div>
-                    <TopAppBarRow>
-                        <u>Using any of these while in game will cause you to leave the game!</u>
-                    </TopAppBarRow>
-                    <TopAppBarRow>
-                        <StyledButton color = 'red' onClick = {homeCallback}>
-                            {homeLabel}
-                        </StyledButton>
-                        <StyledButton color = 'blue' onClick = {aboutCallback}>
-                            {aboutLabel}
-                        </StyledButton>
-                        <StyledButton color = 'green' onClick = {highScoresCallback}>
-                            {highScoresLabel}
-                        </StyledButton>
-                    </TopAppBarRow>
-                </div>)
-                : null}
+            <StyledButton color = '#A0CECB' onClick = {homeCallback}>
+                {homeLabel}
+            </StyledButton>
+            <StyledButton color = '#48CFAD' onClick = {aboutCallback}>
+                {aboutLabel}
+            </StyledButton>
+            <StyledButton color = '#A0D468' onClick = {highScoresCallback}>
+                {highScoresLabel}
+            </StyledButton>
         </TopAppBarRow>
     </TopAppBar>
 }

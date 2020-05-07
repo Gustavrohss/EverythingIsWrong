@@ -2,7 +2,6 @@ import React from 'react'
 import StyledButton from '../../stylingComponents/StyledButton'
 
 const LoginComponent = ({
-    home: [homeLabel, homeCallback],
     login: [loginLabel, loginNav],
     finalize_login_callback
 }) => {
@@ -11,12 +10,7 @@ const LoginComponent = ({
     const [pass, setPass] = React.useState("")
     const [type, setType] = React.useState("password")
 
-    return (
-    <div>
-        <StyledButton 
-            color = 'red'
-            onClick = {homeCallback}
-        >{homeLabel}</StyledButton>
+    return (<div>
         Your username: <input
             onChange = {e => setName(e.target.value)}
             value = {name}
@@ -30,7 +24,7 @@ const LoginComponent = ({
             value = {pass}
         />
         <StyledButton
-            color = 'green'
+            color = 'orchid'
             onClick = {() => {
                 const validName = name.length > 0
                 const validPass = pass.length > 0
@@ -47,8 +41,7 @@ const LoginComponent = ({
                 }
             }}
         >{loginLabel}</StyledButton>
-    </div>
-    )
+    </div>)
 }
 
 export default LoginComponent

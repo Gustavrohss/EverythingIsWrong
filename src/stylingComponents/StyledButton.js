@@ -7,7 +7,7 @@ const AboutButton = styled.button`
   	margin: 0px 10px 10px 0px;
   	float: left;
 	border-radius: 10px;
-	font-family: 'Pacifico', cursive;
+	font-family: cursive;
 	font-size: 25px;
 	color: #FFF;
 	text-decoration: none;	

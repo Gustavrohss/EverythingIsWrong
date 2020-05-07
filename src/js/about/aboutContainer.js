@@ -7,7 +7,7 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  home: populateNavArray(ownProps.home, dispatch)
+  
 })
 
 // Container for the about page
