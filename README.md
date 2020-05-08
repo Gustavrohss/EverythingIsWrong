@@ -28,10 +28,12 @@ run the following commands in the root folder:
 - <b>npm install react-list</b>
 - <b>npm install styled-components</b>
 
-run the following commands in "functions/" folder:
+If you wish to deploy this on your own firebase project: run the following commands in "functions/" folder:
 
 - <b>npm install --save request</b>
 - <b>npm install --save request-promise</b>
+
+and then run deploy them to firebase.
 
 ## What we've done
 
