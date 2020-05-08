@@ -6,7 +6,8 @@ const WelcomeComponent = ({
     join: [joinLabel, joinCallback],
     login: [loginLabel, loginCallback],
     loggedIn,
-    name
+    name,
+    signout
 }) =>
 (<div className = "flexContainer mainContent">
     <p>{loggedIn ? 
@@ -22,10 +23,15 @@ const WelcomeComponent = ({
         onClick = {hostCallback}>
         {hostLabel}
     </button>
-    <button className = "generalButton"
-        onClick = {loginCallback}>
-        {loginLabel}
-    </button>
+    {loggedIn ? 
+        <button className ="generalButton" onClick ={signout}>Sign out
+        </button>
+    :
+        <button className = "generalButton"
+            onClick = {loginCallback}>
+            {loginLabel}
+        </button>
+    }
 </div>)
 
 export default WelcomeComponent

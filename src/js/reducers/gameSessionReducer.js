@@ -11,7 +11,8 @@ import {
   SET_UNSUBSCRIBE,
   RESET_GAME_SESSION,
   SET_SCORE,
-  SET_HAVE_ANSWERED
+  SET_HAVE_ANSWERED,
+  RESET_USERHASH
 } from '../actions/gameSessionActions'
 
 export const getInitState = () => ({
@@ -52,6 +53,13 @@ const gameSessionReducer = function(state = getInitState() , action) {
             self: Object.assign({}, state.self, {
               hash: hashCode(action.name + action.pass)
             })
+          })
+        
+        case RESET_USERHASH:
+          return Object.assign({}, state, {
+            self: Object.assign({}, state.self, {
+              hash: null
+            } )
           })
 
         case SET_SCORE:
