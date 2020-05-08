@@ -14,10 +14,15 @@ const GameRoundComponent = ({
     showResults,    // should the results for the round be shown?
     canAnswer,      // is the player allowed to answer, or have they made their choice?
     isLoading,      // checks if the loader should be displayed
-    roundReason     // the reason a certain choice was correct
+    roundReason,    // the reason a certain choice was correct
+    isHost,         // Checks if the user is host
+    unreadyPlayers, // Checks what players have not answered
+    kickUnready     // Kicks out unready players
 }) => {
 
 const [choice, setChoice] = React.useState(null)
+// For kicking out players (disconnect handling)
+const [override, setOverride] = React.useState(false)
 
 return (
     <div className = "flexContainer mainContent">
@@ -91,8 +96,22 @@ return (
         </div>
         :
     null}
+    {override ?<u>Click again to kick players who haven't answered out</u> : null}
     <div>
-        <button className = "generalButton" onClick={nextCallback} disabled={nextDisabled}>{nextLabel}</button>
+        <button 
+        className = "generalButton" 
+        onClick={() => {
+            if (!override && isHost) {
+                setOverride(true)
+            } else if (override) {
+                kickUnready(unreadyPlayers)
+                nextCallback()
+                setOverride(false)
+            } else {
+                nextCallback()
+            }
+        }} 
+        disabled={nextDisabled && !isHost}>{nextLabel}</button>
     </div>
 </div></div>)}
 

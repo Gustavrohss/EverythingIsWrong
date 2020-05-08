@@ -2,7 +2,8 @@ import {push} from 'connected-react-router'
 import {showLoader_front, hideLoader_front} from './loaderActions'
 import {
   startNextRound,
-  uploadHighscore
+  uploadHighscore,
+  kickPlayer
 } from './gameSessionActions'
 import {
   getLoggedIn,

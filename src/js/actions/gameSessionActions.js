@@ -408,3 +408,14 @@ export const setStatus = newStatus => {
     "Error when updating status:"
   )
 }
+
+/**
+ * Removes a player.
+ */
+export const kickPlayer = player => {
+  return asyncAction(
+    (dispatch, getState) => {
+      return deletePlayerBackend(getLobbyID(getState()), player.playerID)
+    }
+  )
+}

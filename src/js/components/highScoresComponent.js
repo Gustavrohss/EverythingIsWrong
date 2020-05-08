@@ -27,6 +27,7 @@ const HighScoreComponent = ({
     return isLoading ? <LoaderContainer/>
     :
     <div className = "flexContainer mainContent">
+    <u>Want to be seen here? Log in, and play some games!</u>
     <table style = {styles.table}><tbody>
         <tr>
             <th>#</th>
