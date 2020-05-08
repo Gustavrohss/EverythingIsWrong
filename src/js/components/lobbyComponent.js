@@ -10,7 +10,7 @@ const LobbyComponent = ({
     game: [gameLabel, gameCallback],
 }) =>
 (<div className = "flexContainer mainContent">
-    <p className = "bigFont">Warning! Going to Home, About, or High Scores during a game will cause you to leave!</p>
+    <u className = "bigFont">Warning! Going to Home, About, or High Scores during a game will cause you to leave!</u>
     {isHost && <button className = "generalButton" onClick =  {gameCallback}>{gameLabel}</button>}
     <b className = "bigFont">Game code: {lobbyID}</b>
     <p className = "bigFont">Players:</p>
