@@ -5,7 +5,12 @@ import ReduxThunk from 'redux-thunk'
 import createRootReducer from './js/reducers/rootReducer'
 import { getInLobby, gameHasEnded } from './js/selectors/gameSessionSelectors'
 import { getURL } from './js/selectors/navigationSelectors'
-import { didRedirect } from './js/actions/redirectActions'
+import {
+  didRedirect,
+  LOBBY as LOBBYPATH,
+  GAME as GAMEPATH,
+  RESULTS as RESULTSPATH
+} from './js/actions/redirectActions'
 
 /**
  * Configure the redux store in order to use the connected-react-router package
@@ -15,7 +20,7 @@ import { didRedirect } from './js/actions/redirectActions'
 // The navigation history object (this instance must be connected to the router)
 export const history = createBrowserHistory()
 
-const inGamePaths = ["/lobby", "/game", "/results"]
+const inGamePaths = [LOBBYPATH, GAMEPATH, RESULTSPATH]
 
 // Restrict navigation
 const redirectMiddleWare = store => next => action => {

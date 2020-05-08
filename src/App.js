@@ -14,17 +14,18 @@ import {
   Switch,
   Route
 } from "react-router-dom"
+import * as routes from './js/actions/redirectActions'
 function App() {
 
-  const aboutNav  = ["About",                   "/about"]
-  const homeNav   = ["Home",                    "/"]
-  const lobbyNav  = ["Go to game session",      "/lobby"]
-  const joinNav   = ["Join game session",       "/join"]
-  const hostNav   = ["Host game session",       "/host"]
-  const gameNav   = ["Start game",              "/game"]
-  const resultsNav= ["Results",                 "/results"]
-  const hsNav     = ["High Scores",             "/high_scores"]
-  const loginNav  = ["Log in / Create account", "/login"]
+  const aboutNav  = ["About",                   routes.ABOUT]
+  const homeNav   = ["Home",                    routes.HOME]
+  const lobbyNav  = ["Go to game session",      routes.LOBBY]
+  const joinNav   = ["Join game session",       routes.JOIN]
+  const hostNav   = ["Host game session",       routes.HOST]
+  const gameNav   = ["Start game",              routes.GAME]
+  const resultsNav= ["Results",                 routes.RESULTS]
+  const hsNav     = ["High Scores",             routes.HISGH_SCORES]
+  const loginNav  = ["Log in / Create account", routes.LOGIN]
 
   return (
     <div>
@@ -33,41 +34,41 @@ function App() {
       </div>
       <div>
         <Switch>
-          <Route path="/about">
+          <Route path={routes.ABOUT}>
             <AboutContainer/>
           </Route>
-          <Route path="/host">
+          <Route path={routes.HOST}>
             <HostGameContainer
               lobby={lobbyNav}
             />
           </Route>
-          <Route path = "/join">
+          <Route path ={routes.JOIN}>
             <JoinGameContainer
               lobby={lobbyNav}
             />
           </Route>
-          <Route path="/lobby">
+          <Route path={routes.LOBBY}>
             <LobbyContainer
               game={gameNav}
             />
           </Route>
-          <Route path="/game">
+          <Route path={routes.GAME}>
             <GameRoundContainer
               results={resultsNav}
             />
           </Route>
-          <Route path="/results">
+          <Route path={routes.RESULTS}>
             <GameResultsContainer/>
           </Route>
-          <Route path="/high_scores">
+          <Route path={routes.HISGH_SCORES}>
             <HighScoresContainer/>
           </Route>
-          <Route path = "/login">
+          <Route path ={routes.LOGIN}>
             <LoginContainer
               home={homeNav}
             />
           </Route>
-          <Route path="/">
+          <Route path={routes.HOME}>
             <WelcomeContainer
               join={joinNav} host={hostNav}
               login={loginNav}
