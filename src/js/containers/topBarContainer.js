@@ -3,9 +3,11 @@ import TopBarComponent from "../components/topBarComponent"
 import { leaveLobby } from '../actions/gameSessionActions'
 import { populateNavArray } from '../actions/utilActions'
 import { getHighScores } from '../actions/highScoresActions'
+import {getLoggedIn} from '../selectors/gameSessionSelectors'
+
 
 const mapStateToProps = (state, ownProps) => ({
-
+  loggedIn: getLoggedIn(state)
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

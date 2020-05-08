@@ -50,9 +50,26 @@
   }
 }
 
-.topBarButton:hover {
-  background: white;
+@media (hover: hover){
+  .topBarButton:hover {
+    background: white;
+  }
+
+    
+  .generalButton:hover {
+    background-color: white;
+  }
 }
+
+.generalButton:active {
+  background-color:white;
+}
+
+.topBarButton:active {
+  background-color: white;
+}
+
+
 
 .generalButton {
   width: 240px;
@@ -64,8 +81,4 @@
   border-radius: 10px;
   border: 1px solid black;
   background-color: rgb(225, 180, 226);
-}
-
-.generalButton:hover {
-  background-color: white;
 }
