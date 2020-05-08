@@ -7,7 +7,7 @@ const TopBarComponent = ({
 }) => {
 
     return <div className = "flexContainer">
-        <div>
+        <div style = {{flexDirection: "row"}}>
             <button className = "topBarButton" onClick = {homeCallback}>
                 {homeLabel}
             </button>
