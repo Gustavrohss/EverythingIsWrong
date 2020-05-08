@@ -24,5 +24,5 @@ The test were performed in different locations, while talking over Zoom. Since b
 - After the game round, L asked why she wasn't on the high score. M explained that you you need to sign in in order to get your results saved to the hisgh score.
 - L made an account and wanted to play a new round.
 - One more round was played
-- L could happily navigate to the hisgh scores page and see her name threre
+- L could happily navigate to the high scores page and see her name threre
 - L mentioned that there was a bit sad that a lot of the questions returned from the API didn't exist. But realised that it was a problem with the API that we couldn't fix.
