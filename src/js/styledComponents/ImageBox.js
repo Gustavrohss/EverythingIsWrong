@@ -12,7 +12,7 @@ const colors = {correct : "seagreen",
  *    reveal    (boolean)   - if it should be revealed
  *    correct   (boolean)   - if the selected item is correct
  *    selected  (boolean)   - if this is a selected item
- * 
+ *
  */
 export const ImageBoxStyle = styled.div.attrs(({correct}) => ({
   revealColor: correct ? colors.correct : colors.wrong
@@ -22,12 +22,13 @@ export const ImageBoxStyle = styled.div.attrs(({correct}) => ({
     border-style:solid;
     border-radius:5px;
     padding:5px;
+    margin:3px;
     background: ${props => props.reveal ? props.revealColor : colors.background};
     ${props => !props.blocked && `&:hover{
     	background:${colors.notSelected};
       border-color:${colors.background};
 	  }`}
-    
+
 `
 
 /**
@@ -49,11 +50,11 @@ export const ImageStyle = styled.img`
 `
 
 /**
- * 
- * 
+ *
+ *
  */
 export const ImageWrapper = styled.div`
-  
+
  @media (min-width:1000px) {
     display:flex;
     flex-direction:"column";
