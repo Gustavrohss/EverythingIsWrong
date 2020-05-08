@@ -14,6 +14,7 @@ const LobbyComponent = ({
     {isHost && <button className = "generalButton" onClick =  {gameCallback}>{gameLabel}</button>}
     <b className = "bigFont">Game code: {lobbyID}</b>
     <p className = "bigFont">Players:</p>
+    {/** Run npm install */}
     <ReactList
         itemRenderer = {(index, key) => {
             const {playerID, name} = players[index]

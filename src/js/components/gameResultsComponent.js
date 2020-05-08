@@ -12,6 +12,7 @@ const GameResultsComponent = ({
     {scores && scores.length > 0 ?
         <>
         <p className = "bigFont">The winner is <b>{scores[0].name}</b>!</p>
+        {/** Run npm install */}
         <ReactList
             itemRenderer = {(index, key) => {
                 const {name, score} = scores[index]
