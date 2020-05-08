@@ -14,7 +14,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   join: populateNavArray(ownProps.join, dispatch),
   host: populateNavArray(ownProps.host, dispatch),
   login: populateNavArray(ownProps.login, dispatch),
-  quit: ["Quit Game", () => dispatch(leaveLobby())],
+  quit: [ownProps.quit[0], () => dispatch(leaveLobby())],
   rejoin: ["Rejoin Game", () => dispatch(navBackToGame())],
   signout: () => {
     dispatch(resetUserHash())

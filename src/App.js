@@ -26,12 +26,13 @@ function App() {
   const resultsNav= ["Results",                 routes.RESULTS]
   const hsNav     = ["High Scores",             routes.HISGH_SCORES]
   const loginNav  = ["Log in / Create account", routes.LOGIN]
+  const quitGame  = ["Quit game",               routes.HOME]
 
   // Main screen
   return (
     <div>
       <div>
-        <TopBarContainer home = {homeNav} about = {aboutNav} highScores = {hsNav}/>
+        <TopBarContainer home={homeNav} about={aboutNav} highScores={hsNav}/>
       </div>
       <div>
         <Switch>
@@ -59,7 +60,7 @@ function App() {
             />
           </Route>
           <Route path={routes.RESULTS}>
-            <GameResultsContainer/>
+            <GameResultsContainer quit={quitGame}/>
           </Route>
           <Route path={routes.HISGH_SCORES}>
             <HighScoresContainer/>
@@ -72,7 +73,7 @@ function App() {
           <Route path={routes.HOME}>
             <WelcomeContainer
               join={joinNav} host={hostNav}
-              login={loginNav}
+              login={loginNav} quit={quitGame}
             />
           </Route>
         </Switch>

@@ -1,9 +1,11 @@
 import React from 'react'
 import ReactList from 'react-list'
+import GeneralButton from './generalButton'
 
 // Game results component
 const GameResultsComponent = ({
-    scores
+    scores,
+    quit
 }) =>
 
 (<div className = "flexContainer mainContent">
@@ -22,6 +24,7 @@ const GameResultsComponent = ({
         :
         <p>Trying to reconnect...</p>
     }
+    <GeneralButton navArray={quit}/>
 </div>)
 
 export default GameResultsComponent
