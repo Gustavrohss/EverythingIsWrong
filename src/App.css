@@ -1,3 +1,58 @@
 .host {
   color: gold;
 }
+
+.flexContainer {
+  display: flex;
+  flex: 1;
+  overflow-y: auto;
+  margin: 5px 5px 5px 5px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.mainContent {
+  @media (min-width: 900px) {
+    margin: 25px 70px 25px 70px;
+  }
+}
+
+.aboutComponent {
+  margin: 5% 20% 5% 20%;
+}
+
+.extraMargin {
+  margin: 15px;
+}
+
+.topBarButton {
+  width: 180px;
+  height: 50px;
+	position: relative;
+	padding: 10px 10px;
+  margin: 2px 2px 20px 2px;
+  font-size: 20px;
+  border: 1px solid black;
+  background-color: rgb(115, 216, 241);
+}
+
+.topBarButton:hover {
+  background: white;
+}
+
+.generalButton {
+  width: 240px;
+  height: 90px;
+	position: relative;
+	padding: 10px 10px;
+  margin: 4px;
+  font-size: 25px;
+  border-radius: 10px;
+  border: 1px solid black;
+  background-color: rgb(225, 180, 226);
+}
+
+.generalButton:hover {
+  background-color: white;
+}

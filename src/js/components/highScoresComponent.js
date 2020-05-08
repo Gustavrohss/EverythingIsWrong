@@ -26,6 +26,7 @@ const HighScoreComponent = ({
 
     return isLoading ? <LoaderContainer/>
     :
+    <div className = "flexContainer mainContent">
     <table style = {styles.table}><tbody>
         <tr>
             <th>#</th>
@@ -40,7 +41,7 @@ const HighScoreComponent = ({
                     <td style = {styles.td(300)}> {name}    </td>
                     <td style = {styles.td(100)}> {score}   </td>
                 </tr>)}
-    </tbody></table>
+    </tbody></table></div>
 
 }
 

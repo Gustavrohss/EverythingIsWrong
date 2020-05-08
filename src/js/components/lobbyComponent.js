@@ -1,5 +1,4 @@
 import React from 'react'
-import StyledButton from '../styledComponents/StyledButton'
 
 // Returns a list of players (currently seen only as strings) as table rows
 // Two players per row
@@ -33,8 +32,8 @@ const LobbyComponent = ({
     isHost,
     game: [gameLabel, gameCallbac],
 }) =>
-(<div>
-    {isHost && <StyledButton color = 'green' onClick =  {gameCallbac}>{gameLabel}</StyledButton>}
+(<div className = "flexContainer mainContent">
+    {isHost && <button className = "generalButton" onClick =  {gameCallbac}>{gameLabel}</button>}
     <p>Game code: {lobbyID}</p>
     <table><tbody>
         {playersToRows(players)}

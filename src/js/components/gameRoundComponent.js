@@ -1,5 +1,4 @@
 import React from 'react'
-import StyledButton from '../styledComponents/StyledButton';
 import {ImageStyle, ImageBoxStyle, ImageWrapper} from '../styledComponents/ImageBox';
 import LoaderContainer from '../containers/loaderContainer';
 
@@ -33,7 +32,7 @@ const GameRoundComponent = ({
 const [choice, setChoice] = React.useState(null)
 
 return (
-    <div>
+    <div className = "flexContainer mainContent">
     {isLoading &&
         (<LoaderContainer />)}
     <div align = "center">
@@ -47,59 +46,51 @@ return (
           Wait until the host starts the game
         </p>) :
         (<p align = {"center"}>
-          You need to join a game in order to play
+          Trying to reconnect...
         </p>)
     }
-    {/*isLoading ?
-        (<LoaderContainer />)
-    : */(
-    <div><div>
-        <div>
-            <ImageWrapper>
-            {answerOptions.map(
-                ({image, correctAnswer}, index) =>
-                <div key = {index}><figure>
-                    <ImageBoxStyle
-                        blocked={!canAnswer}
-                        reveal={showResults}
-                        correct={correctAnswer}
-                        selected={!canAnswer && choice === index}
-                        onClick = {canAnswer ?
-                          () => {setChoice(index); answerCallback(index, correctAnswer)} :
-                          () => {}}
-                    >
-                    <ImageStyle
-                        transparent = {showResults && choice !== index} //If we want to show results
-                        src = {image}
-                        /*height = {"300px"}*/
-                        alt = {"Sorry, we couldn't show the image!"}
-                    >
-                    </ImageStyle>
-                    </ImageBoxStyle>
-                </figure>
-                {showResults ?
-                    <div key = {index}>
-                    <p>{
-                    correctAnswer && answers[index].length > 1 ?
-                    "And the winners are..." :
-                    correctAnswer && answers[index].length === 1 ?
-                    "And the winner is..." :
-                    correctAnswer ?
-                    "This is the correct answer, Everyone is Wrong!" : ""
-                    }</p>
-                    {answers[index].map(({name}, plIndex) =>
-                    <p key = {index + 3 * plIndex}>
-                        {name}
-                    </p>
-                    )}
-                    </div>
-                :null}
+    {<ImageWrapper>
+        {answerOptions.map(
+            ({image, correctAnswer}, index) =>
+            <div key = {index}><figure>
+                <ImageBoxStyle
+                    blocked={!canAnswer}
+                    reveal={showResults}
+                    correct={correctAnswer}
+                    selected={!canAnswer && choice === index}
+                    onClick = {canAnswer ?
+                        () => {setChoice(index); answerCallback(index, correctAnswer)} :
+                        () => {}}
+                >
+                <ImageStyle
+                    transparent = {showResults && choice !== index} //If we want to show results
+                    src = {image}
+                    /*height = {"300px"}*/
+                    alt = {"Sorry, we couldn't show the image!"}
+                >
+                </ImageStyle>
+                </ImageBoxStyle>
+            </figure>
+            {showResults ?
+                <div key = {index}>
+                <p>{
+                correctAnswer && answers[index].length > 1 ?
+                "And the winners are..." :
+                correctAnswer && answers[index].length === 1 ?
+                "And the winner is..." :
+                correctAnswer ?
+                "This is the correct answer, Everyone is Wrong!" : ""
+                }</p>
+                {answers[index].map(({name}, plIndex) =>
+                <p key = {index + 3 * plIndex}>
+                    {name}
+                </p>
+                )}
                 </div>
-            )}
-            </ImageWrapper>
-        </div>
-    </div></div>
-    )}
+            :null}
+            </div>
+        )}
+    </ImageWrapper>}
 
     {showResults ?
         <div>
@@ -111,8 +102,8 @@ return (
         </div>
         :
     null}
-    <div align = 'center'>
-        <StyledButton color = 'orchid' onClick={nextCallback} disabled={nextDisabled}>{nextLable}</StyledButton>
+    <div>
+        <button className = "generalButton" onClick={nextCallback} disabled={nextDisabled}>{nextLable}</button>
     </div>
 </div></div>)}
 

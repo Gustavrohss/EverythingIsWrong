@@ -1,6 +1,5 @@
 import React from 'react'
-import StyledButton from '../styledComponents/StyledButton'
-import DivBox from '../styledComponents/DivBox.js'
+
 // The welcome screen component
 const WelcomeComponent = ({
     host: [hostLabel, hostCallback],
@@ -9,27 +8,24 @@ const WelcomeComponent = ({
     loggedIn,
     name
 }) =>
-(<DivBox column = {true}>
+(<div className = "flexContainer mainContent">
     <p>{loggedIn ? 
         "Welcome to Everything is Wrong, " + name + "!" 
         : 
         "Welcome to Everything is Wrong!"}
     </p>
-    <StyledButton 
-        color = '#E8334A' 
+    <button className = "generalButton"
         onClick = {joinCallback}>
         {joinLabel}
-    </StyledButton>
-    <StyledButton 
-        color = '#FC6E51' 
+    </button>
+    <button className = "generalButton"
         onClick = {hostCallback}>
         {hostLabel}
-    </StyledButton>
-    <StyledButton 
-        color = '#ED8585' 
+    </button>
+    <button className = "generalButton"
         onClick = {loginCallback}>
         {loginLabel}
-    </StyledButton>
-</DivBox>)
+    </button>
+</div>)
 
 export default WelcomeComponent

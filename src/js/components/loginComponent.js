@@ -1,6 +1,4 @@
 import React from 'react'
-import StyledButton from '../styledComponents/StyledButton'
-import DivBox from '../styledComponents/DivBox'
 
 const LoginComponent = ({
     login: [loginLabel, loginNav],
@@ -11,12 +9,14 @@ const LoginComponent = ({
     const [pass, setPass] = React.useState("")
     const [type, setType] = React.useState("password")
 
-    return (<DivBox column = {true}>
+    return (<div className = "flexContainer">
         Your username: <input
+            className = "extraMargin"
             onChange = {e => setName(e.target.value)}
             value = {name}
         />
         Your password: <input 
+            className = "extraMargin"
             type = {type}
             onChange = {e => {
                 setPass(e.target.value)
@@ -24,7 +24,7 @@ const LoginComponent = ({
             }}
             value = {pass}
         />
-        <StyledButton
+        <button className = "generalButton"
             color = 'orchid'
             onClick = {() => {
                 const validName = name.length > 0
@@ -41,8 +41,8 @@ const LoginComponent = ({
                     setType("")
                 }
             }}
-        >{loginLabel}</StyledButton>
-    </DivBox>)
+        >{loginLabel}</button>
+    </div>)
 }
 
 export default LoginComponent

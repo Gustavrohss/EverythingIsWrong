@@ -14,25 +14,24 @@ import {
   Switch,
   Route
 } from "react-router-dom"
-import DivBox from './js/styledComponents/DivBox'
 function App() {
 
-  const aboutNav  = ["About",               "/about"]
-  const homeNav   = ["Home",                "/"]
-  const lobbyNav  = ["Go to game session",  "/lobby"]
-  const joinNav   = ["Join game session",   "/join"]
-  const hostNav   = ["Host game session",   "/host"]
-  const gameNav   = ["Start game",          "/game"]
-  const resultsNav= ["Results",             "/results"]
-  const hsNav     = ["High Scores",         "/high_scores"]
+  const aboutNav  = ["About",                   "/about"]
+  const homeNav   = ["Home",                    "/"]
+  const lobbyNav  = ["Go to game session",      "/lobby"]
+  const joinNav   = ["Join game session",       "/join"]
+  const hostNav   = ["Host game session",       "/host"]
+  const gameNav   = ["Start game",              "/game"]
+  const resultsNav= ["Results",                 "/results"]
+  const hsNav     = ["High Scores",             "/high_scores"]
   const loginNav  = ["Log in / Create account", "/login"]
 
   return (
-    <DivBox column = {true}>
-      <DivBox>
+    <div>
+      <div>
         <TopBarContainer home = {homeNav} about = {aboutNav} highScores = {hsNav}/>
-      </DivBox>
-      <DivBox>
+      </div>
+      <div>
         <Switch>
           <Route path="/about">
             <AboutContainer/>
@@ -75,8 +74,8 @@ function App() {
             />
           </Route>
         </Switch>
-      </DivBox>
-    </DivBox>
+      </div>
+    </div>
   );
 }
 
