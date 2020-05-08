@@ -25,4 +25,4 @@ The test were performed in different locations, while talking over Zoom. Since b
 - L made an account and wanted to play a new round.
 - One more round was played
 - L could happily navigate to the high scores page and see her name threre
-- L mentioned that there was a bit sad that a lot of the questions returned from the API didn't exist. But realised that it was a problem with the API that we couldn't fix.
+- L mentioned that there was a bit sad that a lot of the images returned from the API didn't exist. But realised that it was a problem with the API that we couldn't fix.
