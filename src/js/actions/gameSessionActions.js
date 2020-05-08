@@ -22,6 +22,7 @@ import {
   getRoundCount
 } from '../selectors/gameSessionSelectors'
 import {setLoader} from './loaderActions'
+import {GAME as GAMEPATH} from './redirectActions'
 import {asyncAction, performAsync} from './utilActions'
 
 /**
@@ -273,7 +274,7 @@ const setBackendListeners = (dispatch, getState) => {
         if (!isHost(getState())) {
           dispatch(startGameSession())
         }
-        dispatch(push("/game"))
+        dispatch(push(GAMEPATH))
       } else {
         dispatch(setGameInfo(gameInfo))
       }

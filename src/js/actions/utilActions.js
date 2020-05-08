@@ -7,8 +7,11 @@ import {
 } from './gameSessionActions'
 import {
   getLoggedIn,
-  gameHasEnded
+  gameHasEnded,
+  getInLobby,
+  getRoundCount
 } from '../selectors/gameSessionSelectors'
+import * as routes from './redirectActions'
 
 /**
  * Get an async action that show and hide the loader, and handle errors.
@@ -89,3 +92,18 @@ export const nextCallback = (resultsPath) => {
     }
   }
 }
+
+/**
+ *
+ */
+ export const navBackToGame = () => {
+   return (dispatch, getState) => {
+     const state = getState()
+     const nextPath = getInLobby(state) ?
+      (getRoundCount(state) > 0 ?
+        routes.GAME :
+        routes.LOBBY) :
+      routes.HOME
+     return dispatch(push(nextPath))
+   }
+ }

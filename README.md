@@ -21,6 +21,20 @@ For the backend development we're using:
 Uses a third-party generic presentational component:
 **react-list**
 
+## Initialisation:
+run the following commands in the root folder:
+
+- <b>npm install</b>
+- <b>npm install react-list</b>
+- <b>npm install styled-components</b>
+
+If you wish to deploy this on your own firebase project: run the following commands in "functions/" folder:
+
+- <b>npm install --save request</b>
+- <b>npm install --save request-promise</b>
+
+and then run deploy them to firebase.
+
 ## What we've done
 
 - Implemented the basic layout and navigation of the website.

@@ -1,37 +1,38 @@
 import React from 'react'
+import GeneralButton from './generalButton'
 
 // The welcome screen component
 // Main game navigation
 const WelcomeComponent = ({
-    host: [hostLabel, hostCallback],
-    join: [joinLabel, joinCallback],
-    login: [loginLabel, loginCallback],
+    host,
+    join,
+    login,
+    rejoin,
+    quit,
+    inGame,
     loggedIn,
     name,
     signout
 }) =>
 (<div className = "flexContainer mainContent">
-    <p>{loggedIn ? 
-        "Welcome to Everything is Wrong, " + name + "!" 
-        : 
+    <p>{loggedIn ?
+        "Welcome to Everything is Wrong, " + name + "!"
+        :
         "Welcome to Everything is Wrong!"}
     </p>
-    <button className = "generalButton"
-        onClick = {joinCallback}>
-        {joinLabel}
-    </button>
-    <button className = "generalButton"
-        onClick = {hostCallback}>
-        {hostLabel}
-    </button>
-    {loggedIn ? 
-        <button className ="generalButton" onClick ={signout}>Sign out
-        </button>
-    :
-        <button className = "generalButton"
-            onClick = {loginCallback}>
-            {loginLabel}
-        </button>
+    {inGame ?
+      <React.Fragment>
+        <GeneralButton navArray={rejoin}/>
+        <GeneralButton navArray={quit}/>
+      </React.Fragment> :
+      <React.Fragment>
+        <GeneralButton navArray={join}/>
+        <GeneralButton navArray={host}/>
+      </React.Fragment>
+    }
+    {loggedIn ?
+      <GeneralButton navArray={["Sign Out", signout]}/> :
+      <GeneralButton navArray={login}/>
     }
 </div>)
 
