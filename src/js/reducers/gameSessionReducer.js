@@ -110,6 +110,7 @@ const gameSessionReducer = function(state = getInitState() , action) {
             })
 
         case SET_GAME_INFO:
+            if (state.gameInfo === null) return state
             const updateObj = action.newGameInfo.round !== state.gameInfo.round ?
               {gameInfo: action.newGameInfo, haveAnswered: false} :
               {gameInfo: action.newGameInfo}

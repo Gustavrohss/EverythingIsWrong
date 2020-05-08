@@ -282,9 +282,9 @@ const setBackendListeners = (dispatch, getState) => {
     modifyPlayerCallback,
     modifyPlayerCallback,
     ({playerID}) => {
-      if(getPlayerID(getState() === playerID)) {
-        dispatch(resetGameSession())
+      if(getPlayerID(getState()) === playerID) {
         dispatch(push(HOMEPATH))
+        dispatch(resetGameSession())
       } else {
         dispatch(deletePlayer(playerID))
       }
@@ -420,6 +420,7 @@ export const setStatus = newStatus => {
  * Removes a player.
  */
 export const kickPlayer = player => {
+  console.log("here")
   return asyncAction(
     (dispatch, getState) => {
       return deletePlayerBackend(getLobbyID(getState()), player.playerID)
