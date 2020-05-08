@@ -2,6 +2,10 @@ import {getHighScores as getHighScoresBackend} from '../backend'
 import {asyncAction} from './utilActions'
 import {hideLoader, showLoader} from './loaderActions'
 
+/**
+ * Actions to get High Scores (from backend) and set them in state to make them visible
+ */
+
 export const SET_HIGHSCORES = "SET_HIGHSCORES"
 
 export const setHighScores = (highScores) => ({

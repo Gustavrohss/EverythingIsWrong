@@ -2,6 +2,7 @@ import React from 'react'
 import GeneralButton from './generalButton'
 
 // The welcome screen component
+// Main game navigation
 const WelcomeComponent = ({
     host,
     join,

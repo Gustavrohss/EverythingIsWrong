@@ -5,8 +5,10 @@ import {
     setUserhash
 } from '../actions/gameSessionActions'
 import {populateNavArray} from '../actions/utilActions'
+import {isLoading} from '../selectors/loaderSelectors'
 
 const mapStateToProps = (state, ownProps) => ({
+    isLoading: isLoading(state)
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -17,6 +19,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     }
 })
 
+// Container for login component
 const LoginContainer = connect(
     mapStateToProps,
     mapDispatchToProps

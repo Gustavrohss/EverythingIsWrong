@@ -5,7 +5,6 @@ import loaderReducer from './loaderReducer'
 import redirectReducer from './redirectReducer'
 import highScoresReducer from './highScoresReducer'
 
-
 const createRootReducer = (history) => combineReducers({
   router: connectRouter(history),
   redirect: redirectReducer,

@@ -29,36 +29,16 @@ const redirectMiddleWare = store => next => action => {
     const oldPath = getURL(store.getState())
     const newPath = action.payload.location.pathname
     const inGame = getInLobby(store.getState())
-    //console.log(`in game: ${inGame}`)
-    //console.log(`new path: ${newPath}`)
-    //console.log(`old path: ${getURL(store.getState())}`)
 
-    // TODO: Add a check so that you cannot leave the game if you are in it!
-    // You can check if the old path getURL(store.getState()) is from the game.
-    /*
-    if (inGame) {
-      console.log("redirect 1")
-      action = didRedirect("Navigating during a game will make you leave the game!")
+    if (inGamePaths.includes(newPath) && !inGame) {
+      store.dispatch(push("/"))
+      action = didRedirect(`Cannot navigate to '${newPath}' without being in a game`)
     }
-    */
-
-    if (inGamePaths.includes(newPath)) {
-      if (!inGame) {
-        console.log("redirected to home!")
-        store.dispatch(push("/"))
-        action = didRedirect(`Cannot navigate to '${newPath}' without being in a game`)
-      } /*else if (newPath === "/results" && !gameHasEnded(store.getState())) {
-        store.dispatch(push(oldPath))
-        action = didRedirect(`Navigating away from the game will end the game`)
-      }*/
-    }
-    //console.groupEnd()
   }
   next(action)
 }
 
 export default function configureStore(preloadedState) {
-  // TODO: add devTools ...
 
   const middlewares = [
     ReduxThunk,  // this is what allows us to dispatch functions rather than objects

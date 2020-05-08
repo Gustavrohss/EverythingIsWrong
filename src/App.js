@@ -27,6 +27,7 @@ function App() {
   const hsNav     = ["High Scores",             routes.HISGH_SCORES]
   const loginNav  = ["Log in / Create account", routes.LOGIN]
 
+  // Main screen
   return (
     <div>
       <div>

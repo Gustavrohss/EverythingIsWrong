@@ -18,8 +18,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   rejoin: ["Rejoin Game", () => dispatch(navBackToGame())],
   signout: () => {
     dispatch(resetUserHash())
-    /*dispatch(setUsername(name))
-    dispatch(setUserhash(name, pass))*/
 }
 })
 

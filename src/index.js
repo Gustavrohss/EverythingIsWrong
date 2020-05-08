@@ -5,9 +5,11 @@ import {ConnectedRouter} from 'connected-react-router'
 import './style/index.css'
 import App from './App'
 import configureStore, {history} from './configureStore'
-import {reconnectToLobby} from './js/actions/gameSessionActions'
+import {reconnectToLobby, setLobbyID} from './js/actions/gameSessionActions'
 import {getInitState as getInitSessionState} from './js/reducers/gameSessionReducer'
+import {push} from 'connected-react-router'
 
+// Load from local storage
 const gameSession = JSON.parse(localStorage.getItem("gameSession"))
 const initSessionState = getInitSessionState()
 const initialState = gameSession ? {
@@ -24,10 +26,17 @@ const initialState = gameSession ? {
 
 const store = configureStore(initialState)
 
+// Attempt lobby reconnect on user refresh
 if (gameSession && gameSession.currentLobby) {
-  store.dispatch(reconnectToLobby(gameSession.currentLobby, gameSession.playerID))
+  store.dispatch(reconnectToLobby(
+    gameSession.currentLobby, 
+    gameSession.playerID,
+    () => store.dispatch(setLobbyID(null)),
+    () => store.dispatch(push("/"))
+  ))
 }
 
+// Save in local state
 store.subscribe(() => {
   const obj = JSON.stringify({
     username:     store.getState().gameSession.self.username,

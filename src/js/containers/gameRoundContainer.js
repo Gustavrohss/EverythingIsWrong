@@ -17,6 +17,7 @@ import {
 import {isLoading} from '../selectors/loaderSelectors'
 
 const mapStateToProps = (state, ownProps) => ({
+  // See gameRoundComponent
   gameInfo: getGameInfo(state),
   answers: getPlayerAnswers(state),
   canAnswer: !getHaveAnswered(state),
@@ -25,7 +26,7 @@ const mapStateToProps = (state, ownProps) => ({
   answerOptions: getAnswerOptions(state),
   question: getQuestion(state),
   nextDisabled: !allPlayersReady(state),
-  nextLable: gameHasEnded(state) ? ownProps.results[0] : "Next Question",
+  nextLabel: gameHasEnded(state) ? ownProps.results[0] : "Next Question",
   isLoading: isLoading(state),
   roundReason: getRoundReason(state)
 })

@@ -2,6 +2,9 @@ import {
     SET_HIGHSCORES
 } from "../actions/highScoresActions"
 
+/**
+ * Reducer for high scores
+ */
 const highScoresReducer = function(state = {
     highScores: []
 }, action) {
