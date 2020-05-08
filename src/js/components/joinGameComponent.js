@@ -1,5 +1,6 @@
 import React from 'react'
 import ErrorContainer from '../containers/errorContainer'
+import LoaderContainer from '../containers/loaderContainer'
 
 // Single-use styling
 const styles = {
@@ -15,7 +16,8 @@ const JoinGameComponent = ({
     lobby: [lobbyLabel, lobbyCallback],
     joinLobby,
     loggedIn,
-    name
+    name,
+    isLoading
 }) => {
     
 const [text, setText] = React.useState("");
@@ -24,6 +26,8 @@ const [myError, setError] = React.useState(null)
 
 return (
 <div className = "flexContainer mainContent">
+    {isLoading &&
+        (<LoaderContainer />)}
     {(myError != null) && <ErrorContainer error={myError}/>}
     Your name:
     {loggedIn ? 

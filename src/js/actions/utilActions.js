@@ -1,5 +1,5 @@
 import {push} from 'connected-react-router'
-import {showLoader, hideLoader} from './loaderActions'
+import {showLoader_front, hideLoader_front} from './loaderActions'
 import {
   startNextRound,
   uploadHighscore
@@ -20,11 +20,13 @@ import {
  */
 export const asyncAction = (asyncCall, errorMessage) => {
   return (dispatch, getState) => {
+    dispatch(showLoader_front())
     return asyncCall(dispatch, getState)
       .then(/*() => dispatch(hideLoader())*/) //This will hide the loader only when promise is resolved
       .catch(error => {
         throw error; //Throw it again, since we cannot do much for the user to handle the error here!
       })
+      .finally(() => dispatch(hideLoader_front())) /* This is executed wether or not the promise is resolved.*/
   }
 }
 
@@ -40,12 +42,14 @@ export const asyncAction = (asyncCall, errorMessage) => {
  *    know where the error occured
  */
 export const performAsync = (dispatch, getState, asyncCall, errorMessage) => {
-  dispatch(showLoader())
+  dispatch(showLoader_front())
   return asyncCall(dispatch, getState)
-    .then(() => dispatch(hideLoader())) //This will hide the loader only when promise is resolved
-    .catch(error => {
-      // Catch error
+    .then(/*() => dispatch(hideLoader())*/) //This will hide the loader only when promise is resolved
+    .catch( error => {
+      console.log(errorMessage)
+      console.log(error)
     })
+    .finally(() => dispatch(hideLoader_front()))
 }
 
 /**
