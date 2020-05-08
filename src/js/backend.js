@@ -166,30 +166,24 @@ export function joinLobby(lobbyCode, user) {
  * Attempts to reconnect to lobby backend on user refreshing page
  */
 export function reconnectToLobby(lobbyCode, playerID) {
-  
-  const ref = fbDatabase.ref(`/lobbies/${lobbyCode}`)
-
-  const playerOrFalseOrNull = ref.once("value")
+  return fbDatabase.ref(`/lobbies/${lobbyCode}`)
+    .once("value")
     .then(snapshot => {
-      if (!snapshot.exists()) return false
+      if (!snapshot.exists()) throw new Error(`Could not connect to ${lobbyCode}`)
+      
       let playerObj = null
-      snapshot.child("players").forEach(child => {
-        if (child.ref.key === playerID) {
-          playerObj = {
-            playerID,
-            lobby: snapshot.val()
+      snapshot.child("players")
+        .forEach(child => {
+          if (child.ref.key === playerID) {
+            playerObj = {
+              playerID,
+              lobby: snapshot.val()
+            }
           }
-        }
-      })
+        })
+      if (playerObj === null) throw new Error(`Could not find player ${playerID} in ${lobbyCode}`)
       return playerObj
     })
-  
-  if (playerOrFalseOrNull !== null) {
-    return playerOrFalseOrNull
-  } else if (playerOrFalseOrNull === false) {
-    return playerOrFalseOrNull
-  }
-  throw new Error(`Could not reconnect to lobby ${lobbyCode}`)
 }
 
 /**

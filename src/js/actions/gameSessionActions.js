@@ -227,7 +227,7 @@ export const joinLobby = (lobbyID) => {
  * Attempts to reconnect to a lobby
  * Triggered when the user refreshes the page, otherwise user would disconnect
  */
-export const reconnectToLobby = (lobbyID, playerID) => {
+export const reconnectToLobby = (lobbyID, playerID, setIdNull, goToHome) => {
   return asyncAction(
     (dispatch, getState) =>
       reconnectToLobbyBackend(lobbyID, playerID)
@@ -237,6 +237,9 @@ export const reconnectToLobby = (lobbyID, playerID) => {
             dispatch(initGameSession(playerID, lobby))
             setBackendListeners(dispatch, getState)
           }
+        }).catch(error => {
+          setIdNull()
+          goToHome()
         }),
     "Error rejoining lobby:"
   )

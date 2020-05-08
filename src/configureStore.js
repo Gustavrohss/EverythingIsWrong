@@ -23,7 +23,6 @@ const redirectMiddleWare = store => next => action => {
     const inGame = getInLobby(store.getState())
 
     if (inGamePaths.includes(newPath) && !inGame) {
-      console.log("redirected to home!")
       store.dispatch(push("/"))
       action = didRedirect(`Cannot navigate to '${newPath}' without being in a game`)
     }
