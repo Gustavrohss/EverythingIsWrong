@@ -61,6 +61,14 @@
   }
 }
 
+.generalButton:active {
+  background-color:white;
+}
+
+.topBarButton:active {
+  background-color: white;
+}
+
 
 
 .generalButton {
