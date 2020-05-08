@@ -68,7 +68,7 @@ exports.UPDATE_IMAGES = functions.database.ref('/lobbies/{lobbyID}/gameInfo/roun
             gameInfo_ref.once('value', snapshot => {
                 if(snapshot.child("images").val() === null){
                     //console.log("invalid!");
-                    setTimeout(pr(resolution, rejection), 1000); //Wait a while
+                    setTimeout(() => pr(resolution, rejection), 1000); //Wait a while
                 }
                 else{
                     //Rest of the code.
