@@ -1,6 +1,6 @@
 import {connect} from 'react-redux'
 import GameRoundComponent from '../components/gameRoundComponent'
-import {answerQuestion} from '../actions/gameSessionActions'
+import {answerQuestion, kickPlayer} from '../actions/gameSessionActions'
 import {nextCallback} from '../actions/utilActions'
 import {
   getPlayerAnswers,
@@ -12,7 +12,9 @@ import {
   allPlayersReady,
   allPlayersHaveAnswered,
   getHaveAnswered,
-  gameHasEnded
+  gameHasEnded,
+  isHost,
+  getUnreadyPlayers
 } from '../selectors/gameSessionSelectors'
 import {isLoading} from '../selectors/loaderSelectors'
 
@@ -28,14 +30,19 @@ const mapStateToProps = (state, ownProps) => ({
   nextDisabled: !allPlayersReady(state),
   nextLabel: gameHasEnded(state) ? ownProps.results[0] : "Next Question",
   isLoading: isLoading(state),
-  roundReason: getRoundReason(state)
+  roundReason: getRoundReason(state),
+  isHost: isHost(state),
+  unreadyPlayers: getUnreadyPlayers(state)
 })
 
 const mapDispatchToProps = (dispatch, ownProps) =>  ({
   answerCallback: (answerOption, correct) => {
     dispatch(answerQuestion(answerOption, correct))
   },
-  nextCallback: () => dispatch(nextCallback(ownProps.results[1]))
+  nextCallback: (answers) => dispatch(nextCallback(ownProps.results[1], answers)),
+  kickUnready: players => players.forEach(player => {
+    if (player.playerID !== "host") dispatch(kickPlayer(player))
+  })
 })
 
 // Container for the game round component

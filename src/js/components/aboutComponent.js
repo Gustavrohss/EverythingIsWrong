@@ -29,6 +29,7 @@ const AboutComponent = () => (
       The questions might seem arbitrary and somewhat impossible to answer with any sort of accuracy. 
       This is the point of the game. 
       It's not supposed to be a serious multiplayer experience, but rather a fun party-game type of experience.
+      Want to be seen in the high scores? Remember to log in!
     </p>
   </div>
 )

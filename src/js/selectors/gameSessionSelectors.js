@@ -207,3 +207,11 @@ export const getUnsubscribe = createSelector(
   [unsubscribe],
   func => func
 )
+
+// Checks what players have answered
+export const getUnreadyPlayers = createSelector(
+  [getPlayerList],
+  players => players.filter(
+    player => player.status !== STATUS.ready
+  )
+)

@@ -390,6 +390,6 @@ export function nextQuestion(lobbyCode) {
  *
  * @return {Promise}
  */
-export function deletePlayer(lobbyCode, playerID){
+export function deletePlayer(lobbyCode, playerID) {
   return fbDatabase.ref(`lobbies/${lobbyCode}/players/${playerID}`).remove()
 }
