@@ -3,8 +3,7 @@ import LoaderContainer from '../containers/loaderContainer'
 
 const styles = {
     table: {
-        fontFamily: "cursive",
-        fontSize: "24px",
+        fontSize: "20px",
         border: "1px solid black"
     },
     row: {
