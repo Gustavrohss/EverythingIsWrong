@@ -101,7 +101,7 @@ return (
         <button 
         className = "generalButton" 
         onClick={() => {
-            if (!override && isHost) {
+            if (!override && isHost && nextDisabled) {
                 setOverride(true)
             } else if (override) {
                 kickUnready(unreadyPlayers)

@@ -22,8 +22,8 @@ import {
   getRoundCount
 } from '../selectors/gameSessionSelectors'
 import {setLoader} from './loaderActions'
-import {GAME as GAMEPATH} from './redirectActions'
 import {asyncAction, performAsync} from './utilActions'
+import {GAME as GAMEPATH, HOME as HOMEPATH} from './redirectActions'
 
 /**
  * All possible actions regarding the gameSession part of the state
@@ -281,7 +281,14 @@ const setBackendListeners = (dispatch, getState) => {
     },
     modifyPlayerCallback,
     modifyPlayerCallback,
-    ({playerID}) => dispatch(deletePlayer(playerID)),
+    ({playerID}) => {
+      if(getPlayerID(getState() === playerID)) {
+        dispatch(resetGameSession())
+        dispatch(push(HOMEPATH))
+      } else {
+        dispatch(deletePlayer(playerID))
+      }
+    },
     isLoading => dispatch(setLoader(isLoading))
   )
   dispatch(setUnsubscribe(unsubscribe))
