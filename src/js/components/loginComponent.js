@@ -1,8 +1,10 @@
 import React from 'react'
+import LoaderContainer from '../containers/loaderContainer'
 
 const LoginComponent = ({
     login: [loginLabel, loginNav],
-    finalize_login_callback
+    finalize_login_callback,
+    isLoading
 }) => {
 
     const [name, setName] = React.useState("")
@@ -10,6 +12,8 @@ const LoginComponent = ({
     const [type, setType] = React.useState("password")
 
     return (<div className = "flexContainer">
+    {isLoading &&
+        (<LoaderContainer />)}
         Your username: <input
             className = "extraMargin"
             onChange = {e => setName(e.target.value)}
