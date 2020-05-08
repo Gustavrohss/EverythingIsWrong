@@ -1,6 +1,6 @@
 # User consultation
 #### Informtaion
-- **Date:** 28<sup>th</sup> of May 2020
+- **Date:** 8<sup>th</sup> of May 2020
 - **Duration:** ~30 minutes <br>
 - **Participants:**
   - M - Maja Tennander, group member of the project
