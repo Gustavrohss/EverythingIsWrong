@@ -18,10 +18,6 @@ const TopBarComponent = ({
             <button className = "topBarButton" onClick = {highScoresCallback}>
                 {highScoresLabel}
             </button>
-            {loggedIn && (      /**If logged in, add sign out button. */
-                <button className ="topBarButton" onClick ={() => console.log("sign out!")}>Sign out
-                </button>
-            )}
         </div>
     </div>
 }
