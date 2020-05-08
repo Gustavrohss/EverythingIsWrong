@@ -31,10 +31,18 @@ Constructive feedback on:
 - <b>On the phone, the hover function activates on previously clicked elements showing them as "hovered".</b>
 - <b>Images during the game session were experienced as too "cropped".</b>
 - <b>The ability to choose number of game rounds, in order to adapt to the number of players present</b>
+- <b>Host name was difficult to read, due to its color</b>
+- <b>Unsure how to get on the highscore list</b>
+
+other remarks: 
+- <b>Users are sad that some images do not exist. This is hard to fix due to imgur API not providing this information in the response. Images that do not exist have valid links and only redirect to "does not exist image".
 
 ## Specific improvements after second session:
 - <b>Hover bug was fixed for mobile phones.</b>
 - <b>Images were made larger to remove the cropped experience </b>
+- <b>Made the host name color darker to make it more visible </b>
+- <b>About page was updated with info regarding the highscore list </b>
+
 
 
 
