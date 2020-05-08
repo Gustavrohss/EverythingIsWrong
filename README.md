@@ -33,13 +33,13 @@ npm install @material/react-top-app-bar
 - Implemented communication between backend and frontend.
 - Implemented the system to generate prompts and correct answers based on image category and model category for some categories.
 
-## What we plan to do
+## What we planned to do after first user-feedback:
 
-- Implement High Scores.
-- Finish implementing the "Full Game" system.
-- Additional image and model categories.
-- Styling.
-- Implementing better feedback to users when the app is loading or error occurs.
+- Implement High Scores. **Done**
+- Finish implementing the "Full Game" system. **Done**
+- Additional image and model categories. **Added aditional images**
+- Styling. **Done**
+- Implementing better feedback to users when the app is loading or error occurs. **Done**
 - Handling clients disconnecting during a game session.
 
 ## File Structure
