@@ -306,7 +306,6 @@ export const leaveLobby = () => {
         (dispatch, getState) => {
           const state = getState()
           const unsubscribe = getUnsubscribe(state)
-          console.log(unsubscribe)
           try {
               unsubscribe()
           } catch (e) {

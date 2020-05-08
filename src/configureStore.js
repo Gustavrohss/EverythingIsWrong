@@ -3,8 +3,7 @@ import { applyMiddleware, createStore } from 'redux'
 import { push, routerMiddleware, LOCATION_CHANGE } from 'connected-react-router'
 import ReduxThunk from 'redux-thunk'
 import createRootReducer from './js/reducers/rootReducer'
-import { getInLobby, gameHasEnded } from './js/selectors/gameSessionSelectors'
-import { getURL } from './js/selectors/navigationSelectors'
+import { getInLobby } from './js/selectors/gameSessionSelectors'
 import {
   didRedirect,
   LOBBY as LOBBYPATH,
@@ -26,7 +25,6 @@ const inGamePaths = [LOBBYPATH, GAMEPATH, RESULTSPATH]
 const redirectMiddleWare = store => next => action => {
   if (action.type === LOCATION_CHANGE) {
     //console.group("location change")
-    const oldPath = getURL(store.getState())
     const newPath = action.payload.location.pathname
     const inGame = getInLobby(store.getState())
 
