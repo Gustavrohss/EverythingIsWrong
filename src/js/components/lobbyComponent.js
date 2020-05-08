@@ -11,11 +11,12 @@ const LobbyComponent = ({
 }) =>
 (<div className = "flexContainer mainContent">
     {isHost && <button className = "generalButton" onClick =  {gameCallback}>{gameLabel}</button>}
-    <b>Game code: {lobbyID}</b>
+    <b className = "bigFont">Game code: {lobbyID}</b>
+    <b className = "bigFont">Players:</b>
     <ReactList
         itemRenderer = {(index, key) => {
             const {playerID, name} = players[index]
-            return <p key = {key} className = {playerID} style = {{fontSize: "30px"}}>
+            return <p key = {key} className = {playerID + " bigFont"}>
                 {name}
             </p>}}
         length = {players.length}

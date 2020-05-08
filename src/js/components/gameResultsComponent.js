@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactList from 'react-list'
 
 // Game results component
 const GameResultsComponent = ({
@@ -9,15 +10,19 @@ const GameResultsComponent = ({
 // Winners deserve the clout
 (<div className = "flexContainer mainContent">
     {scores && scores.length > 0 ?
-        <p>The winner is <b>{scores[0].name}</b>!</p>
+        <>
+        <p className = "bigFont">The winner is <b>{scores[0].name}</b>!</p>
+        <ReactList
+            itemRenderer = {(index, key) => {
+                const {name, score} = scores[index]
+                return <p key = {key} className = "bigFont">
+                    {name}: <b>{score}</b>
+                </p>}}
+            length = {scores.length}
+        /></>
         :
         <p>Trying to reconnect...</p>
     }
-    <ol>
-        {scores
-            .map(player => <p key = {player.playerID}> {player.name}: <b>{player.score}</b></p>)
-        }
-    </ol>
 </div>)
 
 export default GameResultsComponent

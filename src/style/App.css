@@ -2,6 +2,10 @@
   color: rgb(224, 195, 31);
 }
 
+.bigFont {
+  font-size: 30px;
+}
+
 .flexContainer {
   display: flex;
   flex: 1;
