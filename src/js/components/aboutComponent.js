@@ -2,9 +2,9 @@ import React from 'react'
 
 // Component for the About page.
 const AboutComponent = () => (
-  <div>
+  <div className = "flexContainer aboutComponent">
     <h1>About Everything is Wrong</h1>
-    <p>
+    <p> 
       Everything is Wrong is a multiplayer game. 
       Anyone can host a game, and then anyone can join the game. 
     </p>

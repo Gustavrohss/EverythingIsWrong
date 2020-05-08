@@ -1,8 +1,4 @@
 import React from 'react'
-import TopAppBar, {
-    TopAppBarRow,
-} from '@material/react-top-app-bar'
-import StyledButton from '../styledComponents/StyledButton'
 
 const TopBarComponent = ({
     home: [homeLabel, homeCallback],
@@ -10,20 +6,19 @@ const TopBarComponent = ({
     highScores: [highScoresLabel, highScoresCallback]
 }) => {
 
-    return <TopAppBar>
-        <TopAppBarRow>
-            <StyledButton color = '#A0CECB' onClick = {homeCallback}>
+    return <div className = "flexContainer">
+        <div>
+            <button className = "topBarButton" onClick = {homeCallback}>
                 {homeLabel}
-            </StyledButton>
-            <StyledButton color = '#48CFAD' onClick = {aboutCallback}>
+            </button>
+            <button className = "topBarButton" onClick = {aboutCallback}>
                 {aboutLabel}
-            </StyledButton>
-            <StyledButton color = '#A0D468' onClick = {highScoresCallback}>
+            </button>
+            <button className = "topBarButton" onClick = {highScoresCallback}>
                 {highScoresLabel}
-            </StyledButton>
-        </TopAppBarRow>
-    </TopAppBar>
+            </button>
+        </div>
+    </div>
 }
 
 export default TopBarComponent
-//<MaterialIcon hasRipple icon='menu' onClick={() => console.log('click')}/>
