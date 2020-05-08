@@ -28,6 +28,24 @@ const MODELS = {
     "MODEL_FOOD":           Clarifai.FOOD_MODEL
 };
 
+//imgur client ID
+const imgur_client_id = functions.config().imgur.id
+
+//Clarifai app
+const clarifai_app = new Clarifai.App({
+    apiKey: functions.config().clarifai.key
+});
+
+//Returns random default data if clarifai has failed.
+const default_data = (images) => {
+    const concepts = ["Gore", "Drug", "Explicit", "Suggestive", "Safe"]
+    var outputs = []
+    outputs["data"]["concepts"] = Array.from(images.map(() => ({name : concepts[Math.floor(Math.random() * concepts.length)], 
+                                                                value : Math.random()} )))/**generate concept array with objects containing conceptName and probValue*/
+    return outputs;
+};
+
+
 const choice = arr => arr[Math.floor(Math.random() * arr.length)]
 
 //=================================
@@ -41,47 +59,52 @@ exports.UPDATE_IMAGES = functions.database.ref('/lobbies/{lobbyID}/gameInfo/roun
     }
     const curr_round = change.before.val(); //round in index format
 
-    const gameInfo_ref = change.before.ref.parent; //ref to ".../gameInfo/"
+    const gameInfo_ref = change.before.ref.parent; //ref to ".../gameInfo/" 
 
     //Get a promise containing images and subreddit.
-    
-    return gameInfo_ref.once('value', snapshot => {
-        const images = snapshot.child("images").val().slice(curr_round * 3, curr_round * 3 + 3); //empty array to be filled
-        const subreddit = snapshot.child("types").val()[curr_round];
-        const model = MODELS[subreddit === IMAGES.FOOD ? 
-            choice(Object.keys(MODELS).filter(key => key !== "MODEL_FOOD")):choice(Object.keys(MODELS))
-        ];
-
-        /*
-        console.log(curr_round);
-        console.log(images);
-        console.log(subreddit);
-        console.log(model);
-        */
-
-        //Clarifai app
-        const clarifai_app = new Clarifai.App({
-            apiKey: functions.config().clarifai.key
-        });
-
-        return clarifai_app.models.predict(model, images)
-        .then(response => response)
-        .then(result => {
-            const data = result.outputs;
-    
-            //Call to generate prompts and scores
-            const roundInfo = gameRoundGen.generatePromptAndScores({
-                modelType: model,
-                imageType: subreddit,
-                modelOutputs: data,
-                images: images
+    const myFunction = () => {
+        //console.log(snapshot.child("images").val());
+        return new Promise(function pr(resolution, rejection){
+            gameInfo_ref.once('value', snapshot => {
+                if(snapshot.child("images").val() === null){
+                    //console.log("invalid!");
+                    setTimeout(pr(resolution, rejection), 1000); //Wait a while
+                }
+                else{
+                    //Rest of the code.
+                    //console.log("Valid!");
+                    const images = snapshot.child("images").val().slice(curr_round * 3, curr_round * 3 + 3); //empty array to be filled
+                    const subreddit = snapshot.child("types").val()[curr_round];
+                    const model = MODELS[subreddit === IMAGES.FOOD ? 
+                    choice(Object.keys(MODELS).filter(key => key !== "MODEL_FOOD")):choice(Object.keys(MODELS))
+                    ];
+        
+                    resolution(clarifai_app.models.predict(model, images)
+                    .then(response => response)
+                    .then(result => {
+                        var data = result.outputs;
+                
+                        //Call to generate prompts and scores
+                        if(data === "undefined"){
+                            data = default_data(images);
+                        }
+                        const roundInfo = gameRoundGen.generatePromptAndScores({
+                            modelType: model,
+                            imageType: subreddit,
+                            modelOutputs: data,
+                            images: images
+                        });
+                        //return change.after.ref.parent.child("images").set(images); //update the database.
+                        return change.after.ref.parent.child("roundInfo").set(roundInfo)
+                                .then(() => change.after.ref.parent.child("isLoading").set(0));
+                    })
+                    .catch(error => console.log(error.message))); //Probably return some error
+                }
             });
-            //return change.after.ref.parent.child("images").set(images); //update the database.
-            return change.after.ref.parent.child("roundInfo").set(roundInfo)
-                    .then(() => change.after.ref.parent.child("isLoading").set(0));
-        })
-        .catch(error => console.log(error.message)); //Probably return some error
-    });
+        });
+        
+    };
+    return myFunction();
 });
 
 
@@ -123,9 +146,6 @@ exports.ADD_TIMESTAMP = functions.database.ref("/lobbies/{lobbyID}")
 //Function to add images when lobby/gameInfo is created.
 exports.ADD_IMAGES = functions.database.ref("/lobbies/{lobbyID}/gameInfo")
 .onCreate((snapshot, context) => {
-
-    const imgur_client_id = functions.config().imgur.id
-
     const num_rounds = 10;
     const num_images = 3;
 
