@@ -7,6 +7,7 @@ import {getHighScores as getHighScoresAction} from '../actions/highScoresActions
 const mapStateToProps = (state, ownProps) => ({
     isLoading: isLoading(state),
     highScores: getHighScores(state)
+      .sort((s1, s2) => s2.score - s1.score)
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

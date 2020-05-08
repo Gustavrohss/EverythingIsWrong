@@ -10,7 +10,7 @@ const AboutComponent = () => (
       Anyone can host a game, and then anyone can join the game. 
       It is, by far, the best game ever made.
     </p>
-    <img src = {dab} width = {100}></img>
+    <img src = {dab} alt = "DAB" width = {100}></img>
     <p>
       Once the game starts, the players will be presented with a set of images and a question ("prompt") to go with them. 
       The players will choose an image as their answer to the prompt. If the player is correct, they get a point. 
