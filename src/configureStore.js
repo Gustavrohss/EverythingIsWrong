@@ -3,7 +3,8 @@ import { applyMiddleware, createStore } from 'redux'
 import { push, routerMiddleware, LOCATION_CHANGE } from 'connected-react-router'
 import ReduxThunk from 'redux-thunk'
 import createRootReducer from './js/reducers/rootReducer'
-import { getInLobby } from './js/selectors/gameSessionSelectors'
+import { getInLobby, gameHasEnded } from './js/selectors/gameSessionSelectors'
+import { getURL } from './js/selectors/navigationSelectors'
 import { didRedirect } from './js/actions/redirectActions'
 
 /**
@@ -20,6 +21,7 @@ const inGamePaths = ["/lobby", "/game", "/results"]
 const redirectMiddleWare = store => next => action => {
   if (action.type === LOCATION_CHANGE) {
     //console.group("location change")
+    const oldPath = getURL(store.getState())
     const newPath = action.payload.location.pathname
     const inGame = getInLobby(store.getState())
     //console.log(`in game: ${inGame}`)
@@ -35,10 +37,15 @@ const redirectMiddleWare = store => next => action => {
     }
     */
 
-    if (inGamePaths.includes(newPath) && !inGame) {
-      console.log("redirected to home!")
-      store.dispatch(push("/"))
-      action = didRedirect(`Cannot navigate to '${newPath}' without being in a game`)
+    if (inGamePaths.includes(newPath)) {
+      if (!inGame) {
+        console.log("redirected to home!")
+        store.dispatch(push("/"))
+        action = didRedirect(`Cannot navigate to '${newPath}' without being in a game`)
+      } /*else if (newPath === "/results" && !gameHasEnded(store.getState())) {
+        store.dispatch(push(oldPath))
+        action = didRedirect(`Navigating away from the game will end the game`)
+      }*/
     }
     //console.groupEnd()
   }

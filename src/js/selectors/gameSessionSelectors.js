@@ -118,7 +118,7 @@ export const getRoundCount = createSelector(
 // or if the final round has been reached.
 export const gameHasEnded = createSelector(
   [getRoundCount],
-  round => round && round >= 10
+  round => round ? !(round > 0 && round < 10) : undefined
 )
 
 // Get the question for the current game round
