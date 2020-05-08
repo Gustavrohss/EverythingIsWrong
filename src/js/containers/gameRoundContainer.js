@@ -1,7 +1,7 @@
 import {connect} from 'react-redux'
-import {push} from 'connected-react-router'
 import GameRoundComponent from '../components/gameRoundComponent'
-import {answerQuestion, startNextRound, uploadHighscore} from '../actions/gameSessionActions'
+import {answerQuestion} from '../actions/gameSessionActions'
+import {nextCallback} from '../actions/utilActions'
 import {
   getPlayerAnswers,
   getGameInfo,
@@ -12,7 +12,7 @@ import {
   allPlayersReady,
   allPlayersHaveAnswered,
   getHaveAnswered,
-  getLoggedIn
+  gameHasEnded
 } from '../selectors/gameSessionSelectors'
 import {isLoading} from '../selectors/loaderSelectors'
 
@@ -25,31 +25,17 @@ const mapStateToProps = (state, ownProps) => ({
   answerOptions: getAnswerOptions(state),
   question: getQuestion(state),
   nextDisabled: !allPlayersReady(state),
+  nextLable: gameHasEnded(state) ? ownProps.results[0] : "Next Question",
   isLoading: isLoading(state),
-  roundReason: getRoundReason(state),
-  loggedIn: getLoggedIn(state)
-
+  roundReason: getRoundReason(state)
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  const [resultsLabel, resultsPath] = ownProps.results
-  return {
-    answerCallback: (answerOption, correct) => {
-      dispatch(answerQuestion(answerOption, correct))
-    },
-    next: [
-      "Next Question",
-      () => dispatch(startNextRound())
-    ],
-    results: [
-      resultsLabel,
-      (isLoggedIn) => {
-        if (isLoggedIn) dispatch(uploadHighscore())
-        dispatch(push(resultsPath))
-      }
-    ]
-  }
-}
+const mapDispatchToProps = (dispatch, ownProps) =>  ({
+  answerCallback: (answerOption, correct) => {
+    dispatch(answerQuestion(answerOption, correct))
+  },
+  nextCallback: () => dispatch(nextCallback(ownProps.results[1]))
+})
 
 // Container for the game round component
 const GameRoundContainer = connect(

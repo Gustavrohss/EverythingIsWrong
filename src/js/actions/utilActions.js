@@ -1,5 +1,13 @@
-import {showLoader, hideLoader} from './loaderActions'
 import {push} from 'connected-react-router'
+import {showLoader, hideLoader} from './loaderActions'
+import {
+  startNextRound,
+  uploadHighscore
+} from './gameSessionActions'
+import {
+  getLoggedIn,
+  gameHasEnded
+} from '../selectors/gameSessionSelectors'
 
 /**
  * Get an async action that show and hide the loader, and handle errors.
@@ -64,4 +72,21 @@ export const populateNavArray = (navArray, dispatch, extraWork = () => {}) => {
     dispatch(push(path))
     extraWork()
   }]
+}
+
+
+/**
+ * The callback for the button on the game component.
+ *
+ * @param {str} resultsPath - the path to the result page
+ */
+export const nextCallback = (resultsPath) => {
+  return (dispatch, getState) => {
+    if (gameHasEnded(getState())) {
+      if (getLoggedIn(getState())) dispatch(uploadHighscore())
+      dispatch(push(resultsPath))
+    } else {
+      dispatch(startNextRound())
+    }
+  }
 }

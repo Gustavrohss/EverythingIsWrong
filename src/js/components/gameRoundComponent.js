@@ -4,8 +4,8 @@ import {ImageStyle, ImageBoxStyle, ImageWrapper} from '../styledComponents/Image
 import LoaderContainer from '../containers/loaderContainer';
 
 const GameRoundComponent = ({
-    results: [resultsLabel, resultsCallback],
-    next: [nextLable, nextCallback],
+    nextLable,
+    nextCallback,
     nextDisabled,
     round,          // which round is it?
     answerOptions,  // the answer options (images, correct, etc.)
@@ -19,9 +19,7 @@ const GameRoundComponent = ({
         See default argument for testing example
     */
     isLoading,
-    roundReason,
-    loggedIn
-
+    roundReason
 }) => {
 
 /*
@@ -115,7 +113,6 @@ return (
     null}
     <div align = 'center'>
         <StyledButton color = 'orchid' onClick={nextCallback} disabled={nextDisabled}>{nextLable}</StyledButton>
-        <StyledButton color = 'orchid' onClick={() => resultsCallback(loggedIn)}>{resultsLabel}</StyledButton>
     </div>
 </div></div>)}
 

@@ -114,6 +114,13 @@ export const getRoundCount = createSelector(
   infoObj => infoObj ? infoObj.round : undefined
 )
 
+// Check if there exist more rounds in the current game,
+// or if the final round has been reached.
+export const gameHasEnded = createSelector(
+  [getRoundCount],
+  round => round && round >= 10
+)
+
 // Get the question for the current game round
 // "" if player hasn't joined a lobby or no round has been started
 export const getQuestion = createSelector(
