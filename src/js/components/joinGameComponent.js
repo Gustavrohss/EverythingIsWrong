@@ -1,6 +1,7 @@
 import React from 'react'
 import ErrorContainer from '../containers/errorContainer'
 
+// Single-use styling
 const styles = {
     input: toUpperCase => ({
         margin: "10px",

@@ -20,15 +20,11 @@ import {
  */
 export const asyncAction = (asyncCall, errorMessage) => {
   return (dispatch, getState) => {
-    /*dispatch(showLoader())*/
     return asyncCall(dispatch, getState)
       .then(/*() => dispatch(hideLoader())*/) //This will hide the loader only when promise is resolved
-      .catch( error => {
-        console.log(errorMessage)
-        console.log(error)
+      .catch(error => {
         throw error; //Throw it again, since we cannot do much for the user to handle the error here!
       })
-      //.finally(() => dispatch(hideLoader())) /* This is executed wether or not the promise is resolved.*/
   }
 }
 
@@ -47,11 +43,9 @@ export const performAsync = (dispatch, getState, asyncCall, errorMessage) => {
   dispatch(showLoader())
   return asyncCall(dispatch, getState)
     .then(() => dispatch(hideLoader())) //This will hide the loader only when promise is resolved
-    .catch( error => {
-      console.log(errorMessage)
-      console.log(error)
+    .catch(error => {
+      // Catch error
     })
-    //.finally(() => dispatch(hideLoader()))
 }
 
 /**

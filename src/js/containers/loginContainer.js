@@ -17,6 +17,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     }
 })
 
+// Container for login component
 const LoginContainer = connect(
     mapStateToProps,
     mapDispatchToProps

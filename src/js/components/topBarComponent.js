@@ -1,10 +1,12 @@
 import React from 'react'
 
+/**
+ * Top bar with "master" navigation
+ */
 const TopBarComponent = ({
     home: [homeLabel, homeCallback],
     about: [aboutLabel, aboutCallback],
-    highScores: [highScoresLabel, highScoresCallback],
-    loggedIn
+    highScores: [highScoresLabel, highScoresCallback]
 }) => {
 
     return <div className = "flexContainer">

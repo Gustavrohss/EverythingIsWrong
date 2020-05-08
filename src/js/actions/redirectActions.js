@@ -1,3 +1,7 @@
+/**
+ * Navigation errors state-logging
+ */
+
 export const DID_REDIRECT = "DID_REDIRECT";
 
 export const didRedirect = error => ({

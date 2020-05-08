@@ -16,8 +16,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   login: populateNavArray(ownProps.login, dispatch),
   signout: () => {
     dispatch(resetUserHash())
-    /*dispatch(setUsername(name))
-    dispatch(setUserhash(name, pass))*/
 }
 })
 

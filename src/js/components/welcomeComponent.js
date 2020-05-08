@@ -1,6 +1,7 @@
 import React from 'react'
 
 // The welcome screen component
+// Main game navigation
 const WelcomeComponent = ({
     host: [hostLabel, hostCallback],
     join: [joinLabel, joinCallback],

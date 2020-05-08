@@ -22,6 +22,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   })
 })
 
+// Container for top bar component
 const TopBarContainer = connect(
     mapStateToProps,
     mapDispatchToProps

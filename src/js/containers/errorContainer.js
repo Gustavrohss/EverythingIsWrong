@@ -1,17 +1,18 @@
 import {connect} from 'react-redux'
 import ErrorComponent from '../components/errorComponent'
 
-
 const mapStateToProps = (state, ownProps) => ({
-    error: ownProps.error
-  })
+  
+})
 
+const mapDispatchToProps = (dispatch, ownProps) => ({
 
+})
 
-
+// Error component container
 const ErrorContainer = connect(
-    mapStateToProps,
-    //mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(ErrorComponent)
 
 export default ErrorContainer

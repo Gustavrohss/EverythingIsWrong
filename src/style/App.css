@@ -1,11 +1,14 @@
+/* Host name color in the lobby */
 .host {
   color: rgb(224, 195, 31);
 }
 
+/* Extra large font */
 .bigFont {
   font-size: 20px;
 }
 
+/* Container for flex-styled divs */
 .flexContainer {
   display: flex;
   flex: 1;
@@ -16,24 +19,24 @@
   flex-direction: column;
 }
 
+/* Extra margins on "main" content; used with flexContainer */
 .mainContent{
-  margin: 5% 20% 5% 20%
+  margin: 5% 15% 5% 15%
 }
 
+/* Reduced margins on phone */
 @media (max-width: 900px) {
   .mainContent{
     margin: 5%;
   }
 }
 
-.aboutComponent {
-  margin: 5% 15% 5% 15%;
-}
-
+/* A bit of extra margins for smaller components */
 .extraMargin {
   margin: 15px;
 }
 
+/* Buttons in the top bar */
 .topBarButton {
   width: 200px;
   height: 50px;
@@ -46,6 +49,7 @@
   z-index: 9999;
 }
 
+/* Reduce top bar button size on phone */
 @media (max-width: 900px) {
   .topBarButton {
     width: 105px;
@@ -55,12 +59,12 @@
   }
 }
 
+/* User responsiveness */
 @media (hover: hover){
   .topBarButton:hover {
     background: white;
   }
 
-    
   .generalButton:hover {
     background-color: white;
   }
@@ -74,8 +78,7 @@
   background-color: white;
 }
 
-
-
+/* Main button style */
 .generalButton {
   width: 240px;
   height: 90px;
