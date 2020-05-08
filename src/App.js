@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import './style/App.css';
 import WelcomeContainer     from './js/containers/welcomeContainer'
 import AboutContainer       from './js/containers/aboutContainer'
 import LobbyContainer       from './js/containers/lobbyContainer'
