@@ -58,6 +58,12 @@ export const setUserhash = (name, pass) => ({
   pass
 })
 
+export const RESET_USERHASH = 'RESET_USERHASH'
+
+export const resetUserHash = () => ({
+  type: RESET_USERHASH
+})
+
 // Init a new game session, with `lobby` and `playerID` from the database
 export const INIT_GAME_SESSION = "INIT_GAME_SESSION"
 

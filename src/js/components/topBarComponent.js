@@ -3,11 +3,12 @@ import React from 'react'
 const TopBarComponent = ({
     home: [homeLabel, homeCallback],
     about: [aboutLabel, aboutCallback],
-    highScores: [highScoresLabel, highScoresCallback]
+    highScores: [highScoresLabel, highScoresCallback],
+    loggedIn
 }) => {
 
     return <div className = "flexContainer">
-        <div>
+        <div style = {{flexDirection: "row"}}>
             <button className = "topBarButton" onClick = {homeCallback}>
                 {homeLabel}
             </button>

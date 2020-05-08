@@ -4,8 +4,9 @@ import { leaveLobby } from '../actions/gameSessionActions'
 import { populateNavArray } from '../actions/utilActions'
 import { getHighScores } from '../actions/highScoresActions'
 
-const mapStateToProps = (state, ownProps) => ({
 
+const mapStateToProps = (state, ownProps) => ({
+  
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

@@ -41,7 +41,7 @@ export const ImageStyle = styled.img`
     height: 300px;
     opacity:${props => props.transparent ? 0.5 : 1.0};
     @media (max-height: 1400px) and (max-width: 1000px){ /*Fit to smaller screens */
-      height:100px;
+      height:200px;
       width:20rem;
       /*width:auto;*/
     }
