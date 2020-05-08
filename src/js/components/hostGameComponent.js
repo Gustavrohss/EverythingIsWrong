@@ -1,7 +1,7 @@
 import React from 'react'
-import ErrorContainer from '../error/errorContainer'
-import StyledButton from '../../stylingComponents/StyledButton'
-import DivBox from '../../stylingComponents/DivBox'
+import ErrorContainer from '../containers/errorContainer'
+import StyledButton from '../styledComponents/StyledButton'
+import DivBox from '../styledComponents/DivBox'
 
 // Host Game component.
 // This is where a user starts a game by hosting it.

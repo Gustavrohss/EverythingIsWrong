@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import GameResultsComponent from './gameResultsComponent'
+import GameResultsComponent from '../components/gameResultsComponent'
 import {getPlayerListSorted} from '../selectors/gameSessionSelectors'
 
 const mapStateToProps = (state, ownProps) => ({

@@ -1,4 +1,4 @@
-import LoaderComponent from './loaderComponent';
+import LoaderComponent from '../components/loaderComponent';
 import {connect} from 'react-redux';
 import {isLoading} from '../selectors/loaderSelectors';
 

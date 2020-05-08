@@ -1,6 +1,6 @@
 import {connect} from 'react-redux'
-import JoinGameComponent from './joinGameComponent'
-import {joinLobby, setUsername} from '../actions/gameSessionActions'
+import HostGameComponent from '../components/hostGameComponent'
+import {createLobby, setUsername} from '../actions/gameSessionActions'
 import {getLoggedIn, getUsername} from '../selectors/gameSessionSelectors'
 import {populateNavArray} from '../actions/utilActions'
 
@@ -10,17 +10,17 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  joinLobby: (lobbyID, name) => {
+  createLobby: (name) => {
     dispatch(setUsername(name))
-    return dispatch(joinLobby(lobbyID))
+    return dispatch(createLobby())
   },
   lobby: populateNavArray(ownProps.lobby, dispatch)
 })
 
-// Container for join game component
-const JoinGameContainer = connect(
+// Container for host game component
+const HostGameContainer = connect(
     mapStateToProps,
     mapDispatchToProps
-)(JoinGameComponent)
+)(HostGameComponent)
 
-export default JoinGameContainer
+export default HostGameContainer

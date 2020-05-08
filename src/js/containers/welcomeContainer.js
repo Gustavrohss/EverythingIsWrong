@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import WelcomeComponent from './welcomeComponent'
+import WelcomeComponent from '../components/welcomeComponent'
 import {populateNavArray} from '../actions/utilActions'
 import {getLoggedIn, getUsername} from '../selectors/gameSessionSelectors'
 

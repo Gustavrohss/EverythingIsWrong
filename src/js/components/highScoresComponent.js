@@ -1,5 +1,5 @@
 import React from 'react'
-import LoaderContainer from '../loader/loaderContainer'
+import LoaderContainer from '../containers/loaderContainer'
 
 const styles = {
     table: {

@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import LoginComponent from './loginComponent'
+import LoginComponent from '../components/loginComponent'
 import {
     setUsername,
     setUserhash

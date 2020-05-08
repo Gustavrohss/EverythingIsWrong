@@ -1,5 +1,5 @@
 import React from 'react'
-import Spinner from '../../stylingComponents/Spinner'
+import Spinner from '../styledComponents/Spinner'
 
 const styles = {
     div:{

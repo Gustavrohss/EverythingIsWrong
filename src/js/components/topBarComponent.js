@@ -2,7 +2,7 @@ import React from 'react'
 import TopAppBar, {
     TopAppBarRow,
 } from '@material/react-top-app-bar'
-import StyledButton from '../../stylingComponents/StyledButton'
+import StyledButton from '../styledComponents/StyledButton'
 
 const TopBarComponent = ({
     home: [homeLabel, homeCallback],

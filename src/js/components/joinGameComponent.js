@@ -1,7 +1,7 @@
 import React from 'react'
-import StyledButton from '../../stylingComponents/StyledButton'
-import ErrorContainer from '../error/errorContainer'
-import DivBox from '../../stylingComponents/DivBox'
+import StyledButton from '../styledComponents/StyledButton'
+import ErrorContainer from '../containers/errorContainer'
+import DivBox from '../styledComponents/DivBox'
 
 // Join Game component.
 // Shown when a player wants to join a game.

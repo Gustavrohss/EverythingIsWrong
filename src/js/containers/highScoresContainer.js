@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import HighScoreComponent from './highScoresComponent'
+import HighScoreComponent from '../components/highScoresComponent'
 import {getHighScores} from '../selectors/highScoresSelectors'
 import {isLoading} from '../selectors/loaderSelectors'
 import {getHighScores as getHighScoresAction} from '../actions/highScoresActions'

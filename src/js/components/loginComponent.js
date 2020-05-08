@@ -1,6 +1,6 @@
 import React from 'react'
-import StyledButton from '../../stylingComponents/StyledButton'
-import DivBox from '../../stylingComponents/DivBox'
+import StyledButton from '../styledComponents/StyledButton'
+import DivBox from '../styledComponents/DivBox'
 
 const LoginComponent = ({
     login: [loginLabel, loginNav],

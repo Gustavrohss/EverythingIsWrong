@@ -1,6 +1,6 @@
 import React from 'react'
-import StyledButton from '../../stylingComponents/StyledButton'
-import DivBox from '../../stylingComponents/DivBox.js'
+import StyledButton from '../styledComponents/StyledButton'
+import DivBox from '../styledComponents/DivBox.js'
 // The welcome screen component
 const WelcomeComponent = ({
     host: [hostLabel, hostCallback],

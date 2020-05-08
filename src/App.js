@@ -1,20 +1,20 @@
 import React from 'react';
 import './App.css';
-import WelcomeContainer from './js/welcome/welcomeContainer'
-import AboutContainer from './js/about/aboutContainer'
-import LobbyContainer from './js/lobby/lobbyContainer'
-import JoinGameContainer from './js/joinGame/joinGameContainer'
-import HostGameContainer from './js/hostGame/hostGameContainer'
-import GameRoundContainer from './js/gameRound/gameRoundContainer'
-import GameResultsContainer from './js/gameResults/gameResultsContainer'
-import HighScoresContainer from './js/highScores/highScoresContainer'
-import TopBarContainer from './js/topBar/topBarContainer'
-import LoginContainer from './js/login/loginContainer'
+import WelcomeContainer     from './js/containers/welcomeContainer'
+import AboutContainer       from './js/containers/aboutContainer'
+import LobbyContainer       from './js/containers/lobbyContainer'
+import JoinGameContainer    from './js/containers/joinGameContainer'
+import HostGameContainer    from './js/containers/hostGameContainer'
+import GameRoundContainer   from './js/containers/gameRoundContainer'
+import GameResultsContainer from './js/containers/gameResultsContainer'
+import HighScoresContainer  from './js/containers/highScoresContainer'
+import TopBarContainer      from './js/containers/topBarContainer'
+import LoginContainer       from './js/containers/loginContainer'
 import {
   Switch,
   Route
 } from "react-router-dom"
-import DivBox from './stylingComponents/DivBox'
+import DivBox from './js/styledComponents/DivBox'
 function App() {
 
   const aboutNav  = ["About",               "/about"]

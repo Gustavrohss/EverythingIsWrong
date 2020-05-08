@@ -1,7 +1,7 @@
 import React from 'react'
-import StyledButton from '../../stylingComponents/StyledButton';
-import {ImageStyle, ImageBoxStyle, ImageWrapper} from '../../stylingComponents/ImageBox';
-import LoaderContainer from '../loader/loaderContainer';
+import StyledButton from '../styledComponents/StyledButton';
+import {ImageStyle, ImageBoxStyle, ImageWrapper} from '../styledComponents/ImageBox';
+import LoaderContainer from '../containers/loaderContainer';
 
 const GameRoundComponent = ({
     results: [resultsLabel, resultsCallback],

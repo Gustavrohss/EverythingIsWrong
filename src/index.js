@@ -6,7 +6,7 @@ import './index.css'
 import App from './App'
 import configureStore, {history} from './configureStore'
 import {reconnectToLobby} from './js/actions/gameSessionActions'
-import {getInitState as getInitSessionState} from './js/_reducers/gameSessionReducer'
+import {getInitState as getInitSessionState} from './js/reducers/gameSessionReducer'
 
 const gameSession = JSON.parse(localStorage.getItem("gameSession"))
 const initSessionState = getInitSessionState()

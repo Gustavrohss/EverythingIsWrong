@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import TopBarComponent from "./topBarComponent"
+import TopBarComponent from "../components/topBarComponent"
 import { leaveLobby } from '../actions/gameSessionActions'
 import { populateNavArray } from '../actions/utilActions'
 import { getHighScores } from '../actions/highScoresActions'

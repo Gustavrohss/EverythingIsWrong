@@ -2,7 +2,7 @@ import { createBrowserHistory } from 'history'
 import { applyMiddleware, createStore } from 'redux'
 import { push, routerMiddleware, LOCATION_CHANGE } from 'connected-react-router'
 import ReduxThunk from 'redux-thunk'
-import createRootReducer from './js/_reducers/rootReducer'
+import createRootReducer from './js/reducers/rootReducer'
 import { getInLobby } from './js/selectors/gameSessionSelectors'
 import { didRedirect } from './js/actions/redirectActions'
 

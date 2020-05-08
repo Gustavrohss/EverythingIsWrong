@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import LobbyComponent from './lobbyComponent'
+import LobbyComponent from '../components/lobbyComponent'
 import {getPlayerList, getLobbyID, isHost} from '../selectors/gameSessionSelectors'
 import {startGameSession} from '../actions/gameSessionActions'
 

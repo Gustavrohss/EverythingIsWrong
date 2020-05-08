@@ -1,6 +1,6 @@
 import {connect} from 'react-redux'
 import {push} from 'connected-react-router'
-import GameRoundComponent from './gameRoundComponent'
+import GameRoundComponent from '../components/gameRoundComponent'
 import {answerQuestion, startNextRound, uploadHighscore} from '../actions/gameSessionActions'
 import {
   getPlayerAnswers,

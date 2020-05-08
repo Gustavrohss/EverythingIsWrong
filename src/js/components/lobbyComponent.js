@@ -1,5 +1,5 @@
 import React from 'react'
-import StyledButton from '../../stylingComponents/StyledButton'
+import StyledButton from '../styledComponents/StyledButton'
 
 // Returns a list of players (currently seen only as strings) as table rows
 // Two players per row
