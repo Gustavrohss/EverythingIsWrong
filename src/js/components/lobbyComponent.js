@@ -10,9 +10,10 @@ const LobbyComponent = ({
     game: [gameLabel, gameCallback],
 }) =>
 (<div className = "flexContainer mainContent">
+    <p className = "bigFont">Warning! Going to Home, About, or High Scores during a game will cause you to leave!</p>
     {isHost && <button className = "generalButton" onClick =  {gameCallback}>{gameLabel}</button>}
     <b className = "bigFont">Game code: {lobbyID}</b>
-    <b className = "bigFont">Players:</b>
+    <p className = "bigFont">Players:</p>
     <ReactList
         itemRenderer = {(index, key) => {
             const {playerID, name} = players[index]
