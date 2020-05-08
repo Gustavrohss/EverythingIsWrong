@@ -306,7 +306,12 @@ export const leaveLobby = () => {
         (dispatch, getState) => {
           const state = getState()
           const unsubscribe = getUnsubscribe(state)
-          unsubscribe()
+          console.log(unsubscribe)
+          try {
+              unsubscribe()
+          } catch (e) {
+            //
+          }
           return deletePlayerBackend(getLobbyID(state), getPlayerID(state))
             .then(() => dispatch(resetGameSession()))
         },
