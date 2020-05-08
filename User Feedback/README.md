@@ -23,9 +23,9 @@ No direct feedback was given to users when things were loading either.
 
 ## Second Session
 Positive remarks:
--<b>Styling was appreciated.</b>
--<b>Feedback for users was welcomed. Especially on loading screen, welcoming logged in users and see scores and correct answers during the game.</b>
--<b>Users experienced joy and superiority of performing better than their peers during the game </b>
+- <b>Styling was appreciated.</b>
+- <b>Feedback for users was welcomed. Especially on loading screen, welcoming logged in users and see scores and correct answers during the game.</b>
+- <b>Users experienced joy and superiority of performing better than their peers during the game </b>
 
 Constructive feedback on:
 - <b>On the phone, the hover function activates on previously clicked elements showing them as "hovered".</b>
@@ -33,8 +33,8 @@ Constructive feedback on:
 - <b>The ability to choose number of game rounds, in order to adapt to the number of players present</b>
 
 ## Specific improvements after second session:
--<b>Hover bug was fixed for mobile phones.</b>
--<b>Images were made larger to remove the cropped experience </b>
+- <b>Hover bug was fixed for mobile phones.</b>
+- <b>Images were made larger to remove the cropped experience </b>
 
 
 
