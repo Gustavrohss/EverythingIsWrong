@@ -2,7 +2,7 @@ import React from 'react'
 import ReactList from 'react-list'
 
 // Lobby component
-// What the player, and host, sees when waiting to start a game
+// What the player, and host, see when waiting to start a game
 const LobbyComponent = ({
     players,
     lobbyID,
@@ -10,10 +10,11 @@ const LobbyComponent = ({
     game: [gameLabel, gameCallback],
 }) =>
 (<div className = "flexContainer mainContent">
-    <p className = "bigFont">Warning! Going to Home, About, or High Scores during a game will cause you to leave!</p>
+    <u className = "bigFont">Warning! Going to Home, About, or High Scores during a game will cause you to leave!</u>
     {isHost && <button className = "generalButton" onClick =  {gameCallback}>{gameLabel}</button>}
     <b className = "bigFont">Game code: {lobbyID}</b>
     <p className = "bigFont">Players:</p>
+    {/** Third-party generic presentational component */}
     <ReactList
         itemRenderer = {(index, key) => {
             const {playerID, name} = players[index]

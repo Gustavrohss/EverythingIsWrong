@@ -47,6 +47,7 @@ const gameSessionReducer = function(state = getInitState() , action) {
               })
 
         case SET_USERHASH:
+          // Hash function one-liner source:
           // https://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript
           const hashCode = s => s.split('').reduce((a,b)=>{a=((a<<5)-a)+b.charCodeAt(0);return a&a},0)
           return Object.assign({}, state, {

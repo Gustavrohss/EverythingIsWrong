@@ -4,6 +4,7 @@ const styles = {
     color: "red"
 }
 
+// Used to display errors to the user.
 const ErrorComponent = ({
     error
 }) => (<div style = {styles}>

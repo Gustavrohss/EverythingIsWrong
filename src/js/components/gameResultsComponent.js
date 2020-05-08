@@ -5,13 +5,12 @@ import ReactList from 'react-list'
 const GameResultsComponent = ({
     scores
 }) =>
-// TODO
-// Show the winner in a more stylish way than "top of list"
-// Winners deserve the clout
+
 (<div className = "flexContainer mainContent">
     {scores && scores.length > 0 ?
         <>
         <p className = "bigFont">The winner is <b>{scores[0].name}</b>!</p>
+        {/** Third-party generic presentational component */}
         <ReactList
             itemRenderer = {(index, key) => {
                 const {name, score} = scores[index]

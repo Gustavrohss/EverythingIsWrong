@@ -7,6 +7,7 @@ const mapStateToProps = (state, ownProps) => ({
     showLoading : isLoading(state)
 });
 
+// Container for loader/spinner
 const loaderContainer = connect(
     mapStateToProps
 )(LoaderComponent);

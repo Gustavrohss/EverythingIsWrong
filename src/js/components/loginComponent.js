@@ -1,6 +1,9 @@
 import React from 'react'
 import LoaderContainer from '../containers/loaderContainer'
 
+/**
+ * Login screen 
+ */
 const LoginComponent = ({
     login: [loginLabel, loginNav],
     finalize_login_callback,
@@ -9,6 +12,7 @@ const LoginComponent = ({
 
     const [name, setName] = React.useState("")
     const [pass, setPass] = React.useState("")
+    // Enables/disable password censoring
     const [type, setType] = React.useState("password")
 
     return (<div className = "flexContainer">

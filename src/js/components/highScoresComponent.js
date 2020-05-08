@@ -1,6 +1,7 @@
 import React from 'react'
 import LoaderContainer from '../containers/loaderContainer'
 
+// Single-use styling
 const styles = {
     table: {
         fontSize: "20px",

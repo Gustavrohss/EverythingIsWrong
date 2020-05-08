@@ -2,6 +2,7 @@ import React from 'react'
 import ErrorContainer from '../containers/errorContainer'
 import LoaderContainer from '../containers/loaderContainer'
 
+// Single-use styling
 const styles = {
     input: toUpperCase => ({
         margin: "10px",

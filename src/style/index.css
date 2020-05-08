@@ -6,6 +6,7 @@ https://www.1001freefonts.com/lato.font
   src: url(Lato-Regular.ttf)
 }
 
+/* Master font */
 html {
   font-family: Lato;
 }

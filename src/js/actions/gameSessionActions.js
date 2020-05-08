@@ -40,7 +40,7 @@ import {asyncAction, performAsync} from './utilActions'
 
 /* ------------------ normal actions ------------------ */
 
-// Update the username of this player
+// Assigns a new value to the `username` value in the state
 export const SET_USERNAME = "SET_USERNAME";
 
 export const setUsername = function (newName) {
@@ -50,6 +50,11 @@ export const setUsername = function (newName) {
     }
 }
 
+/**
+ * User hash is generated when logging in
+ * The hash is a simple hash function of a concatenated username + password
+ * This allows High Scores to be saved "per user" in the backend
+ */
 export const SET_USERHASH = 'SET_USERHASH'
 
 export const setUserhash = (name, pass) => ({
@@ -218,18 +223,16 @@ export const joinLobby = (lobbyID) => {
   )
 }
 
+/**
+ * Attempts to reconnect to a lobby
+ * Triggered when the user refreshes the page, otherwise user would disconnect
+ */
 export const reconnectToLobby = (lobbyID, playerID) => {
   return asyncAction(
     (dispatch, getState) =>
       reconnectToLobbyBackend(lobbyID, playerID)
         .then(returnValue => {
-          if (returnValue === false) {
-
-            /**
-              Here a trigger for failed reconnections (without "errors")
-             */
-
-          } else {
+          if (!(returnValue === false)) {
             const {playerID, lobby} = returnValue
             dispatch(initGameSession(playerID, lobby))
             setBackendListeners(dispatch, getState)
@@ -239,6 +242,9 @@ export const reconnectToLobby = (lobbyID, playerID) => {
   )
 }
 
+/**
+ * Uploads user high score
+ */
 export const uploadHighscore = () => {
   return asyncAction(
     (dispatch, getState) => {
@@ -264,7 +270,7 @@ const setBackendListeners = (dispatch, getState) => {
         if (!isHost(getState())) {
           dispatch(startGameSession())
         }
-        dispatch(push("/game")) // TODO: save the route elsewhere?
+        dispatch(push("/game"))
       } else {
         dispatch(setGameInfo(gameInfo))
       }
@@ -324,8 +330,6 @@ export const increaseScore = dx => {
  * was correct and register the answer in the database.
  */
 export const answerQuestion = (answerOption, correct) => {
-  // TODO: should probably be able to check if answer is correct by
-  //       only getting the `answerOption` and looking in `gameInfo`
   return (dispatch, getState) => {
     const state = getState()
     const newScore = correct ? getScore(state) + 1 : getScore(state)
@@ -348,8 +352,6 @@ export const answerQuestion = (answerOption, correct) => {
  * Indicate to the backend that you want to start a new round
  * Will increment the round counter, generate a new question and set the status
  * of all the players to "ANSWERING"
- *
- * TODO: The question generation should be moved to the backend.
  */
 export const startNextRound = () => {
   return asyncAction(
